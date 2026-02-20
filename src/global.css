@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+
+  --color-primary-50: #e6f0f7;
+  --color-primary-100: #c1d9ea;
+  --color-primary-200: #98bfdb;
+  --color-primary-300: #6ea4cb;
+  --color-primary-400: #4d8fbf;
+  --color-primary-500: #2c7ab3;
+  --color-primary-600: #1a6599;
+  --color-primary-700: #0e4f7a;
+  --color-primary-800: #063a5c;
+  --color-primary-900: #012C49;
+  --color-primary-950: #001a2e;
+
+  --color-navy-50: #f5f7fa;
+  --color-navy-100: #eaedf3;
+  --color-navy-200: #d0d7e5;
+  --color-navy-300: #aab8ce;
+  --color-navy-400: #7e96b3;
+  --color-navy-500: #5d7899;
+  --color-navy-600: #465f7e;
+  --color-navy-700: #394d66;
+  --color-navy-800: #314053;
+  --color-navy-900: #2b3644;
+  --color-navy-950: #1c232d;
+}
+
+@layer base {
+  body {
+    @apply bg-navy-50 text-navy-900 antialiased font-sans;
+  }
+  
+  /* Custom Scrollbar for dense views */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-navy-200 rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-navy-300;
+  }
+}
