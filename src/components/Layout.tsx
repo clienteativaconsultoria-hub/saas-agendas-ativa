@@ -10,7 +10,8 @@ import {
   FileText,
   History,
   FileSpreadsheet,
-  Bell
+  Bell,
+  Menu
 } from 'lucide-react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
@@ -20,6 +21,7 @@ import { supabase } from '../lib/supabase';
 export function Layout() {
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userProfile, setUserProfile] = useState({ name: '', role: '' });
 
   useEffect(() => {
@@ -73,11 +75,20 @@ export function Layout() {
     <div className='flex h-screen overflow-hidden bg-navy-50'>
 
       {/* ── Sidebar (dark) ── */}
+      {/* Mobile backdrop */}
+      {mobileMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-navy-900/50 z-30 md:hidden backdrop-blur-sm transition-opacity"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
+
       <aside
         className={clsx(
-          'relative flex flex-col transition-all duration-300 ease-in-out z-20 flex-shrink-0',
+          'absolute md:relative flex flex-col transition-all duration-300 ease-in-out z-40 h-full flex-shrink-0',
           'bg-navy-900 border-r border-navy-800',
-          collapsed ? 'w-[72px]' : 'w-64'
+          collapsed ? 'w-[72px] hidden md:flex' : 'w-64',
+          !mobileMenuOpen && 'max-md:-translate-x-full'
         )}
         style={{ boxShadow: '2px 0 12px rgba(0,0,0,0.08)' }}
       >
@@ -127,6 +138,7 @@ export function Layout() {
                   : 'text-white/50 hover:text-white hover:bg-white/7'
               )}
               title={collapsed ? item.label : undefined}
+              onClick={() => setMobileMenuOpen(false)}
             >
               {({ isActive }) => (
                 <>
@@ -189,7 +201,14 @@ export function Layout() {
       <div className='flex-1 flex flex-col min-w-0 overflow-hidden'>
 
         {/* Topbar */}
-        <header className='h-14 flex-shrink-0 flex items-center justify-between px-6 bg-white border-b border-navy-100'>
+        <header className='h-14 flex-shrink-0 flex items-center justify-between px-4 md:px-6 bg-white border-b border-navy-100 gap-3'>
+          <button 
+            className="md:hidden p-2 -ml-2 text-navy-500 hover:bg-navy-50 rounded-lg transition-colors"
+            onClick={() => setMobileMenuOpen(true)}
+          >
+            <Menu className="w-5 h-5" />
+          </button>
+          
           {/* Search */}
           <div className='relative flex-1 max-w-md group'>
             <Search className='w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-navy-400 group-focus-within:text-primary-500 transition-colors' />
