@@ -1762,7 +1762,7 @@ export function Schedule() {
                                        {Object.keys(stat.projectDays).length > 0 && (
                                           <div className="flex flex-wrap gap-1">
                                              {Object.entries(stat.projectDays).sort((a,b) => b[1] - a[1]).map(([proj, days]) => (
-                                                <span key={proj} className="text-[10px] px-2 py-0.5 rounded bg-indigo-50 text-indigo-600 border border-indigo-100 truncate max-w-[160px]" title={`${proj}: ${days} dias`}>
+                                                <span key={proj} className="text-[10px] px-2 py-0.5 rounded bg-navy-50 text-navy-600 border border-navy-100 truncate max-w-[160px]" title={`${proj}: ${days} dias`}>
                                                    {proj} ({days}d)
                                                 </span>
                                              ))}
@@ -1895,7 +1895,7 @@ export function Schedule() {
                                           {cellAlloc.filter(a => a.projectId !== 'free').map((alloc, idx) => (
                                              <div 
                                                 key={idx} 
-                                                className="text-[10px] font-medium px-2 py-1 rounded bg-indigo-50 text-indigo-700 border border-indigo-100 truncate shadow-sm cursor-pointer hover:bg-indigo-100 hover:border-indigo-200 transition-colors"
+                                                className="text-[10px] font-medium px-2 py-1 rounded bg-navy-50 text-navy-700 border border-navy-100 truncate shadow-sm cursor-pointer hover:bg-navy-100 hover:border-navy-200 transition-colors"
                                                 draggable
                                                 onDragStart={(e) => handleDragStart(e, alloc)}
                                                 onClick={(e) => { e.stopPropagation(); handleCellClick(alloc); }}
@@ -2007,8 +2007,9 @@ export function Schedule() {
                                       onClick={() => cell.projectId !== 'free' && handleCellClick(cell)}
                                       className={clsx(
                                         'w-full min-h-[30px] rounded-md flex items-center justify-center text-[11px] font-bold tracking-tight cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border shadow-sm',
-                                        cell.proj?.color || 'bg-navy-50 border-navy-100 text-navy-300 hover:bg-navy-100',
-                                        cell.projectId === 'free' && 'hidden'
+                                        cell.projectId === 'free' 
+                                          ? 'hidden' 
+                                          : 'bg-primary-50 border-primary-100 text-primary-700 hover:bg-primary-100 hover:border-primary-200'
                                       )}
                                       title={cell.proj?.name !== 'VAGO' ? [
                                         cell.proj?.name,
