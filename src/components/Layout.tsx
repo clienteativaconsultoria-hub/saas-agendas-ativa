@@ -8,7 +8,8 @@
   Users,
   Briefcase,
   FileText,
-  History
+  History,
+  FileSpreadsheet
 } from 'lucide-react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
@@ -70,6 +71,8 @@ export function Layout() {
       : []),
     // Relatórios apenas para ADM
     ...(userProfile.role === 'ADM' ? [{ to: '/reports', icon: FileText, label: 'Relatórios' }] : []),
+    // Conferência por Excel apenas para ADM
+    ...(userProfile.role === 'ADM' ? [{ to: '/import', icon: FileSpreadsheet, label: 'Conferência Excel' }] : []),
     { to: '/config', icon: Settings, label: 'Configurações' },
   ];
 
