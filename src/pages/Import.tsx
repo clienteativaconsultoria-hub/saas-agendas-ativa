@@ -201,17 +201,17 @@ export function Import() {
   const shown = diffs?.filter(d => filter === 'all' || d.status === filter) || [];
 
   const STATUS_META: Record<RowDiff['status'], { label: string; cls: string; icon: any }> = {
-    match: { label: 'Confere', cls: 'bg-emerald-50 text-emerald-700 border-emerald-200', icon: CheckCircle2 },
-    divergente: { label: 'Divergente', cls: 'bg-amber-50 text-amber-700 border-amber-200', icon: AlertTriangle },
+    match: { label: 'Confere', cls: 'bg-navy-50 text-navy-900 border-emerald-200', icon: CheckCircle2 },
+    divergente: { label: 'Divergente', cls: 'bg-navy-50 text-amber-700 border-amber-200', icon: AlertTriangle },
     so_excel: { label: 'Só na planilha', cls: 'bg-blue-50 text-blue-700 border-blue-200', icon: ArrowRight },
-    so_sistema: { label: 'Só no sistema', cls: 'bg-purple-50 text-purple-700 border-purple-200', icon: ArrowRight },
+    so_sistema: { label: 'Só no sistema', cls: 'bg-primary-50 text-purple-700 border-purple-200', icon: ArrowRight },
   };
 
   return (
     <div className="min-h-full p-6 space-y-6">
       <div>
         <h1 className="text-[1.375rem] font-extrabold text-navy-950 tracking-tight flex items-center gap-2">
-          <FileSpreadsheet className="w-7 h-7 text-emerald-600" />
+          <FileSpreadsheet className="w-7 h-7 text-navy-900" />
           Conferência por Excel
         </h1>
         <p className="text-sm text-navy-500 mt-0.5">
@@ -258,10 +258,10 @@ export function Import() {
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
             {([
               ['all', 'Total', counts.all, 'text-navy-900'],
-              ['match', 'Confere', counts.match, 'text-emerald-600'],
-              ['divergente', 'Divergente', counts.divergente, 'text-amber-600'],
+              ['match', 'Confere', counts.match, 'text-navy-900'],
+              ['divergente', 'Divergente', counts.divergente, 'text-navy-900'],
               ['so_excel', 'Só planilha', counts.so_excel, 'text-blue-600'],
-              ['so_sistema', 'Só sistema', counts.so_sistema, 'text-purple-600'],
+              ['so_sistema', 'Só sistema', counts.so_sistema, 'text-primary-600'],
             ] as const).map(([key, label, val, color]) => (
               <button
                 key={key}
@@ -275,11 +275,11 @@ export function Import() {
           </div>
 
           {counts.divergente === 0 && counts.so_excel === 0 && counts.so_sistema === 0 ? (
-            <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 flex items-center gap-2 text-emerald-700">
+            <div className="bg-navy-50 border border-emerald-200 rounded-xl p-4 flex items-center gap-2 text-navy-900">
               <CheckCircle2 className="w-5 h-5" /> Tudo confere! A planilha bate 100% com o sistema.
             </div>
           ) : (
-            <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 flex items-start gap-2 text-amber-800 text-sm">
+            <div className="bg-navy-50 border border-amber-200 rounded-xl p-3 flex items-start gap-2 text-amber-800 text-sm">
               <Info className="w-4 h-4 shrink-0 mt-0.5" />
               Encontrei divergências. Use os cartões acima para filtrar. A comparação de "só no sistema" considera apenas as datas presentes na planilha.
             </div>

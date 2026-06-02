@@ -71,17 +71,17 @@ export function Home() {
             className="group relative flex flex-col p-8 bg-white/80 backdrop-blur-sm rounded-[2rem] shadow-lg hover:shadow-2xl hover:shadow-emerald-500/10 transition-all duration-300 border border-white/50 hover:border-emerald-200 overflow-hidden"
           >
              <div className="absolute top-0 right-0 p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-x-2 group-hover:translate-x-0">
-               <ExternalLink className="w-5 h-5 text-emerald-400" />
+               <ExternalLink className="w-5 h-5 text-navy-400" />
             </div>
 
             <div className="mb-6">
-              <div className="w-16 h-16 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600 shadow-sm group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300 group-hover:scale-110 group-hover:-rotate-3">
+              <div className="w-16 h-16 bg-navy-50 rounded-2xl flex items-center justify-center text-navy-900 shadow-sm group-hover:bg-navy-900 group-hover:text-white transition-all duration-300 group-hover:scale-110 group-hover:-rotate-3">
                 <LifeBuoy className="w-8 h-8" />
               </div>
             </div>
 
             <div className="flex-1 space-y-4">
-              <h3 className="text-2xl font-bold text-navy-900 group-hover:text-emerald-700 transition-colors">
+              <h3 className="text-2xl font-bold text-navy-900 group-hover:text-navy-900 transition-colors">
                 Central de Suporte
               </h3>
               <p className="text-navy-500 text-base leading-relaxed">
@@ -90,9 +90,9 @@ export function Home() {
             </div>
 
             <div className="mt-8 pt-6 border-t border-navy-50">
-              <span className="flex items-center justify-between w-full font-semibold text-emerald-600 group-hover:text-emerald-700 transition-colors">
+              <span className="flex items-center justify-between w-full font-semibold text-navy-900 group-hover:text-navy-900 transition-colors">
                 Solicitar Ajuda
-                <span className="bg-emerald-50 p-2 rounded-full group-hover:bg-emerald-100 transition-colors">
+                <span className="bg-navy-50 p-2 rounded-full group-hover:bg-emerald-100 transition-colors">
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </span>
               </span>

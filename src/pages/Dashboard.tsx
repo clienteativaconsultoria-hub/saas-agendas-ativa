@@ -224,7 +224,7 @@ export function Dashboard() {
                 ) : todayAllocations.length === 0 ? (
                   <div className='flex flex-col items-center justify-center h-full py-8 text-navy-400'>
                     <div className='w-12 h-12 rounded-full bg-navy-50 flex items-center justify-center mb-3'>
-                      <CheckCircle2 className='w-6 h-6 text-emerald-400' />
+                      <CheckCircle2 className='w-6 h-6 text-navy-400' />
                     </div>
                     <p className='text-sm font-medium'>Nenhuma alocação hoje</p>
                   </div>
@@ -264,8 +264,8 @@ export function Dashboard() {
             <div className='card flex flex-col' style={{ minHeight: '380px' }}>
               <div className='px-5 py-4 border-b border-navy-50 flex items-center justify-between'>
                 <div className='flex items-center gap-2.5'>
-                  <div className='w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center'>
-                    <AlertTriangle className='w-4 h-4 text-amber-500' />
+                  <div className='w-8 h-8 rounded-lg bg-navy-50 flex items-center justify-center'>
+                    <AlertTriangle className='w-4 h-4 text-navy-400' />
                   </div>
                   <h3 className='font-bold text-navy-900 text-sm'>Alertas & Prazos</h3>
                 </div>
@@ -288,8 +288,8 @@ export function Dashboard() {
                         </p>
                         {pendingChangeRequests.map(req => (
                           <div key={req.id}
-                            className='p-3 rounded-xl border border-amber-200/60 bg-amber-50/50 flex items-start gap-3'>
-                            <Bell className='w-4 h-4 shrink-0 mt-0.5 text-amber-500' />
+                            className='p-3 rounded-xl border border-amber-200/60 bg-navy-50/50 flex items-start gap-3'>
+                            <Bell className='w-4 h-4 shrink-0 mt-0.5 text-navy-400' />
                             <div className='flex-1 min-w-0'>
                               <span className='inline-flex text-[10px] font-bold uppercase px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-700 mb-1'>
                                 {req.request_type === 'new_agenda' ? '+ Nova Agenda'
@@ -316,10 +316,10 @@ export function Dashboard() {
                         {projectAlerts.map(proj => (
                           <div key={proj.id}
                             className='p-3 rounded-xl border border-red-100 bg-red-50/40 flex items-start gap-3'>
-                            <AlertTriangle className={`w-4 h-4 shrink-0 mt-0.5 ${proj.daysRemaining < 0 ? 'text-red-500' : 'text-amber-500'}`} />
+                            <AlertTriangle className={`w-4 h-4 shrink-0 mt-0.5 ${proj.daysRemaining < 0 ? 'text-primary-500' : 'text-navy-400'}`} />
                             <div>
                               <p className='text-sm font-semibold text-navy-800'>{proj.name}</p>
-                              <p className={`text-xs font-medium mt-0.5 ${proj.daysRemaining < 0 ? 'text-red-600' : 'text-amber-600'}`}>
+                              <p className={`text-xs font-medium mt-0.5 ${proj.daysRemaining < 0 ? 'text-navy-900' : 'text-navy-900'}`}>
                                 {proj.daysRemaining < 0
                                   ? `Atrasado há ${Math.abs(proj.daysRemaining)} dias`
                                   : `Vence em ${proj.daysRemaining} dias (${format(parseISO(proj.deadline), 'dd/MM')})`}
@@ -332,8 +332,8 @@ export function Dashboard() {
 
                     {projectAlerts.length === 0 && pendingChangeRequests.length === 0 && (
                       <div className='flex flex-col items-center justify-center h-full py-8 text-navy-400'>
-                        <div className='w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center mb-3'>
-                          <CheckCircle2 className='w-6 h-6 text-emerald-400' />
+                        <div className='w-12 h-12 rounded-full bg-navy-50 flex items-center justify-center mb-3'>
+                          <CheckCircle2 className='w-6 h-6 text-navy-400' />
                         </div>
                         <p className='text-sm font-medium'>Tudo em dia!</p>
                       </div>
@@ -371,15 +371,15 @@ export function Dashboard() {
                   <p className='text-sm text-center text-navy-400 py-6'>Carregando...</p>
                 ) : pendingLogs.length === 0 ? (
                   <div className='flex flex-col items-center justify-center h-full py-8 text-navy-400'>
-                    <div className='w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center mb-3'>
-                      <CheckCircle2 className='w-6 h-6 text-emerald-400' />
+                    <div className='w-12 h-12 rounded-full bg-navy-50 flex items-center justify-center mb-3'>
+                      <CheckCircle2 className='w-6 h-6 text-navy-400' />
                     </div>
                     <p className='text-sm font-medium'>Nenhum diário pendente</p>
                     <p className='text-xs text-navy-400 mt-1'>de ontem</p>
                   </div>
                 ) : (
                   pendingLogs.map(alloc => (
-                    <div key={alloc.id} className='p-3 rounded-xl border border-purple-100 bg-purple-50/40'>
+                    <div key={alloc.id} className='p-3 rounded-xl border border-purple-100 bg-primary-50/40'>
                       <div className='flex justify-between items-start'>
                         <span className='font-semibold text-navy-800 text-sm'>{alloc.project?.name}</span>
                         <span className='text-[10px] text-navy-400 bg-white px-1.5 py-0.5 rounded-full border border-navy-100 flex-shrink-0 ml-2'>
@@ -392,7 +392,7 @@ export function Dashboard() {
                           {alloc.consultant?.full_name}
                         </div>
                         <NavLink to='/schedule'
-                          className='text-[10px] font-bold text-purple-600 hover:text-purple-700 bg-purple-50 hover:bg-purple-100 px-2 py-0.5 rounded-full transition-colors'>
+                          className='text-[10px] font-bold text-primary-600 hover:text-primary-700 bg-primary-50 hover:bg-primary-100 px-2 py-0.5 rounded-full transition-colors'>
                           PREENCHER
                         </NavLink>
                       </div>

@@ -131,7 +131,7 @@ export function Schedule() {
   const [consultants, setConsultants] = useState<Consultant[]>([]);
   const [selectedConsultantId, setSelectedConsultantId] = useState<string>('');
   const [projects, setProjects] = useState<Project[]>([
-     { id: 'free', name: 'VAGO', color: 'bg-emerald-50 text-emerald-600 border-emerald-100 dashed border' }
+     { id: 'free', name: 'VAGO', color: 'bg-navy-50 text-navy-900 border-emerald-100 dashed border' }
   ]);
   
   const [loading, setLoading] = useState(true);
@@ -1282,7 +1282,7 @@ export function Schedule() {
                        <Bell className='w-4 h-4' />
                        <span className='hidden sm:inline'>Minhas Solicitações</span>
                        {myRequests.filter(r => r.status === 'pending').length > 0 && (
-                         <span className='absolute -top-1.5 -right-1.5 h-5 w-5 flex items-center justify-center rounded-full bg-amber-500 text-white text-[10px] font-bold ring-2 ring-white animate-pulse'>
+                         <span className='absolute -top-1.5 -right-1.5 h-5 w-5 flex items-center justify-center rounded-full bg-navy-500 text-white text-[10px] font-bold ring-2 ring-white animate-pulse'>
                            {myRequests.filter(r => r.status === 'pending').length}
                          </span>
                        )}
@@ -1372,7 +1372,7 @@ export function Schedule() {
                      {(filterText || selectedProjectFilter !== 'all' || selectedManagerFilter !== 'all') && (
                        <button 
                          onClick={() => { setFilterText(''); setSelectedProjectFilter('all'); setSelectedManagerFilter('all'); }}
-                         className="px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg text-sm font-medium transition-colors border border-transparent hover:border-red-100"
+                         className="px-3 py-2 text-navy-900 hover:bg-red-50 rounded-lg text-sm font-medium transition-colors border border-transparent hover:border-red-100"
                          title="Limpar filtros"
                        >
                          <X className="w-5 h-5" />
@@ -1388,7 +1388,7 @@ export function Schedule() {
           <div className='bg-white rounded-xl shadow-sm border border-amber-200 p-5 shrink-0 mb-6 animate-in fade-in slide-in-from-top-2'>
             <div className='flex items-center justify-between mb-4'>
               <div className='flex items-center gap-3'>
-                <div className='p-2 bg-amber-50 rounded-lg text-amber-600'>
+                <div className='p-2 bg-navy-50 rounded-lg text-navy-900'>
                   <Bell className='w-5 h-5' />
                 </div>
                 <div>
@@ -1417,8 +1417,8 @@ export function Schedule() {
                   return (
                     <div key={req.id} className={clsx(
                       'rounded-lg p-4 border transition-all',
-                      req.status === 'pending' && 'bg-amber-50/50 border-amber-200 hover:border-amber-300',
-                      req.status === 'approved' && 'bg-emerald-50/50 border-emerald-200',
+                      req.status === 'pending' && 'bg-navy-50/50 border-amber-200 hover:border-amber-300',
+                      req.status === 'approved' && 'bg-navy-50/50 border-emerald-200',
                       req.status === 'rejected' && 'bg-red-50/50 border-red-200'
                     )}>
                       <div className='flex items-start justify-between gap-3'>
@@ -1433,7 +1433,7 @@ export function Schedule() {
                             </span>
                             <span className={clsx(
                               'text-[10px] font-bold uppercase px-1.5 py-0.5 rounded-full',
-                              req.status === 'pending' ? 'bg-amber-100 text-amber-700' : req.status === 'approved' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'
+                              req.status === 'pending' ? 'bg-amber-100 text-amber-700' : req.status === 'approved' ? 'bg-emerald-100 text-navy-900' : 'bg-red-100 text-red-700'
                             )}>
                               {req.status === 'pending' ? 'Pendente' : req.status === 'approved' ? 'Aprovada' : 'Recusada'}
                             </span>
@@ -1469,7 +1469,7 @@ export function Schedule() {
                           <div className='flex flex-col gap-1.5 shrink-0'>
                             <button
                               onClick={() => handleResolveRequest(req.id, 'approved')}
-                              className='px-3 py-1.5 text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg flex items-center gap-1 transition-colors'
+                              className='px-3 py-1.5 text-xs font-semibold text-white bg-navy-900 hover:bg-emerald-700 rounded-lg flex items-center gap-1 transition-colors'
                             >
                               <CheckCheck className='w-3 h-3' /> Aprovar
                             </button>
@@ -1495,7 +1495,7 @@ export function Schedule() {
           <div className='bg-white rounded-xl shadow-sm border border-amber-200 p-5 shrink-0 mb-6 animate-in fade-in slide-in-from-top-2'>
             <div className='flex items-center justify-between mb-4'>
               <div className='flex items-center gap-3'>
-                <div className='p-2 bg-amber-50 rounded-lg text-amber-600'>
+                <div className='p-2 bg-navy-50 rounded-lg text-navy-900'>
                   <Bell className='w-5 h-5' />
                 </div>
                 <div>
@@ -1506,7 +1506,7 @@ export function Schedule() {
               <div className='flex items-center gap-2'>
                 <button
                   onClick={() => { setSolicitacaoModalTab('alterar'); setShowSolicitacaoModal(true); }}
-                  className='flex items-center gap-1.5 px-3 py-1.5 text-sm font-semibold text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-lg transition-colors'
+                  className='flex items-center gap-1.5 px-3 py-1.5 text-sm font-semibold text-amber-700 bg-navy-50 hover:bg-amber-100 border border-amber-200 rounded-lg transition-colors'
                 >
                   <MessageSquarePlus className='w-3.5 h-3.5' /> Nova Solicitação
                 </button>
@@ -1521,7 +1521,7 @@ export function Schedule() {
                 <p className='text-sm'>Nenhuma solicitação enviada ainda.</p>
                 <button
                   onClick={() => { setSolicitacaoModalTab('alterar'); setShowSolicitacaoModal(true); }}
-                  className='mt-3 px-4 py-2 text-sm font-semibold text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-lg transition-colors inline-flex items-center gap-2'
+                  className='mt-3 px-4 py-2 text-sm font-semibold text-amber-700 bg-navy-50 hover:bg-amber-100 border border-amber-200 rounded-lg transition-colors inline-flex items-center gap-2'
                 >
                   <MessageSquarePlus className='w-4 h-4' /> Criar primeira solicitação
                 </button>
@@ -1542,8 +1542,8 @@ export function Schedule() {
                   return (
                     <div key={req.id} className={clsx(
                       'rounded-lg p-4 border',
-                      req.status === 'pending' && 'bg-amber-50/50 border-amber-200',
-                      req.status === 'approved' && 'bg-emerald-50/50 border-emerald-200',
+                      req.status === 'pending' && 'bg-navy-50/50 border-amber-200',
+                      req.status === 'approved' && 'bg-navy-50/50 border-emerald-200',
                       req.status === 'rejected' && 'bg-red-50/50 border-red-200'
                     )}>
                       <div className='flex items-start justify-between gap-3'>
@@ -1557,7 +1557,7 @@ export function Schedule() {
                             </span>
                             <span className={clsx(
                               'text-[10px] font-bold uppercase px-1.5 py-0.5 rounded-full',
-                              req.status === 'pending' ? 'bg-amber-100 text-amber-700' : req.status === 'approved' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'
+                              req.status === 'pending' ? 'bg-amber-100 text-amber-700' : req.status === 'approved' ? 'bg-emerald-100 text-navy-900' : 'bg-red-100 text-red-700'
                             )}>
                               {req.status === 'pending' ? '⏳ Pendente' : req.status === 'approved' ? '✅ Aprovada' : '❌ Recusada'}
                             </span>
@@ -1743,7 +1743,7 @@ export function Schedule() {
                                  <div className="flex items-center justify-center">
                                     <span className={clsx(
                                        "text-base font-bold",
-                                       stat.occupancy >= 80 ? "text-red-600" : stat.occupancy >= 50 ? "text-amber-600" : "text-emerald-600"
+                                       stat.occupancy >= 80 ? "text-primary-700" : stat.occupancy >= 50 ? "text-primary-600" : "text-navy-600"
                                     )}>
                                        {stat.occupancy}%
                                     </span>
@@ -1754,7 +1754,7 @@ export function Schedule() {
                                           <div
                                              className={clsx(
                                                 "h-full rounded-full transition-all duration-700",
-                                                stat.occupancy >= 80 ? "bg-red-500" : stat.occupancy >= 50 ? "bg-amber-400" : "bg-emerald-500"
+                                                stat.occupancy >= 80 ? "bg-primary-600" : stat.occupancy >= 50 ? "bg-primary-500" : "bg-navy-300"
                                              )}
                                              style={{ width: `${stat.occupancy}%` }}
                                           />
@@ -1836,13 +1836,13 @@ export function Schedule() {
 
                           <div className="flex items-center gap-6 bg-navy-50/50 px-8 py-4 rounded-xl border border-navy-100">
                               <div className="text-center group cursor-default">
-                                 <div className="text-3xl font-bold text-emerald-600 transition-transform group-hover:scale-110">{availableCount}</div>
+                                 <div className="text-3xl font-bold text-navy-500 transition-transform group-hover:scale-110">{availableCount}</div>
                                  <div className="text-xs font-bold text-navy-400 uppercase tracking-wide mt-1">Disponíveis</div>
                               </div>
                               <div className="w-px h-10 bg-navy-200"></div>
                               <div className="text-center group cursor-default">
-                                 <div className="text-3xl font-bold text-red-600 transition-transform group-hover:scale-110">{busyCount}</div>
-                                 <div className="text-xs font-bold text-navy-400 uppercase tracking-wide mt-1">Ocupados</div>
+                                 <div className="text-3xl font-bold text-primary-600 transition-transform group-hover:scale-110">{busyCount}</div>
+                                 <div className="text-xs font-bold text-primary-400 uppercase tracking-wide mt-1">Ocupados</div>
                               </div>
                           </div>
                        </div>
@@ -1886,7 +1886,7 @@ export function Schedule() {
                                          {isCurrentMonth && !isWeekend && (
                                             <div className={clsx(
                                                'w-2.5 h-2.5 rounded-full ring-2 ring-white shadow-sm',
-                                               isOccupied ? 'bg-red-500' : 'bg-emerald-400 animate-pulse'
+                                               isOccupied ? 'bg-primary-500' : 'bg-navy-200'
                                             )}></div>
                                          )}
                                       </div>
@@ -1907,7 +1907,7 @@ export function Schedule() {
                                           
                                           {!isOccupied && !isWeekend && isCurrentMonth && (
                                               <div className="mt-auto flex justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                                                 <span className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600 text-[10px] font-bold border border-emerald-100">
+                                                 <span className="px-2 py-0.5 rounded-full bg-navy-50 text-navy-500 text-[10px] font-bold border border-navy-100">
                                                     + LIVRE
                                                  </span>
                                               </div>
@@ -2225,7 +2225,7 @@ export function Schedule() {
                     <div className="flex justify-end gap-2">
                        <button 
                          onClick={() => handleDeleteAllocation(selectedAllocation.id)}
-                         className="px-3 py-1.5 text-xs font-semibold text-red-600 bg-red-50 hover:bg-red-100 rounded border border-red-200 transition-colors"
+                         className="px-3 py-1.5 text-xs font-semibold text-navy-900 bg-red-50 hover:bg-red-100 rounded border border-red-200 transition-colors"
                        >
                          Excluir Alocação
                        </button>
@@ -2339,8 +2339,8 @@ export function Schedule() {
                          {allocationRequests.map(req => (
                            <div key={req.id} className={clsx(
                              'rounded-lg p-3 text-xs border',
-                             req.status === 'pending' && 'bg-amber-50 border-amber-200 text-amber-800',
-                             req.status === 'approved' && 'bg-emerald-50 border-emerald-200 text-emerald-800',
+                             req.status === 'pending' && 'bg-navy-50 border-amber-200 text-amber-800',
+                             req.status === 'approved' && 'bg-navy-50 border-emerald-200 text-emerald-800',
                              req.status === 'rejected' && 'bg-red-50 border-red-200 text-red-800'
                            )}>
                              <div className='flex items-center justify-between mb-1'>
@@ -2363,7 +2363,7 @@ export function Schedule() {
                      {!showChangeRequestForm ? (
                        <button
                          onClick={() => setShowChangeRequestForm(true)}
-                         className='w-full py-2.5 px-4 text-sm font-medium text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-lg transition-colors flex items-center justify-center gap-2'
+                         className='w-full py-2.5 px-4 text-sm font-medium text-amber-700 bg-navy-50 hover:bg-amber-100 border border-amber-200 rounded-lg transition-colors flex items-center justify-center gap-2'
                        >
                          <MessageSquarePlus className='w-4 h-4' />
                          Solicitar Mudança nesta Agenda
@@ -2410,7 +2410,7 @@ export function Schedule() {
 
                          <div>
                            <label className='text-xs font-semibold text-navy-600 block mb-1'>
-                             Motivo da solicitação <span className='text-red-500'>*</span>
+                             Motivo da solicitação <span className='text-primary-500'>*</span>
                            </label>
                            <textarea
                              value={changeRequestReason}
@@ -2445,14 +2445,14 @@ export function Schedule() {
                  {userRole === 'ADM' && allocationRequests.length > 0 && (
                    <div className='space-y-3'>
                      <h3 className='font-semibold text-navy-900 border-b border-navy-100 pb-2 flex items-center gap-2'>
-                       <MessageSquarePlus className='w-4 h-4 text-amber-500' />
+                       <MessageSquarePlus className='w-4 h-4 text-navy-400' />
                        Solicitações ({allocationRequests.filter(r => r.status === 'pending').length} pendente{allocationRequests.filter(r => r.status === 'pending').length !== 1 ? 's' : ''})
                      </h3>
                      {allocationRequests.map(req => (
                        <div key={req.id} className={clsx(
                          'rounded-lg p-3 text-xs border',
-                         req.status === 'pending' && 'bg-amber-50 border-amber-200',
-                         req.status === 'approved' && 'bg-emerald-50 border-emerald-200',
+                         req.status === 'pending' && 'bg-navy-50 border-amber-200',
+                         req.status === 'approved' && 'bg-navy-50 border-emerald-200',
                          req.status === 'rejected' && 'bg-red-50 border-red-200'
                        )}>
                          <div className='flex items-center justify-between mb-1'>
@@ -2461,7 +2461,7 @@ export function Schedule() {
                            </span>
                            <span className={clsx(
                              'font-bold uppercase text-[10px]',
-                             req.status === 'pending' ? 'text-amber-600' : req.status === 'approved' ? 'text-emerald-600' : 'text-red-600'
+                             req.status === 'pending' ? 'text-navy-900' : req.status === 'approved' ? 'text-navy-900' : 'text-navy-900'
                            )}>
                              {req.status === 'pending' ? '⏳ Pendente' : req.status === 'approved' ? '✅ Aprovada' : '❌ Recusada'}
                            </span>
@@ -2483,7 +2483,7 @@ export function Schedule() {
                              <div className='flex gap-2'>
                                <button
                                  onClick={() => handleResolveRequest(req.id, 'approved')}
-                                 className='flex-1 py-1.5 text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded flex items-center justify-center gap-1 transition-colors'
+                                 className='flex-1 py-1.5 text-xs font-semibold text-white bg-navy-900 hover:bg-emerald-700 rounded flex items-center justify-center gap-1 transition-colors'
                                >
                                  <CheckCheck className='w-3 h-3' /> Aprovar
                                </button>
@@ -2719,7 +2719,7 @@ export function Schedule() {
               )}
 
               {bulkForm.action === 'create' && (
-                <p className='text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg p-2.5'>
+                <p className='text-xs text-amber-700 bg-navy-50 border border-amber-200 rounded-lg p-2.5'>
                   Atenção: se já existir agenda para o consultor em algum dia do intervalo, ela será <strong>sobrescrita</strong> pelo projeto selecionado.
                 </p>
               )}
@@ -2759,7 +2759,7 @@ export function Schedule() {
             {/* Header */}
             <div className='flex justify-between items-center p-6 border-b border-navy-100'>
               <div className='flex items-center gap-3'>
-                <div className='p-2 bg-amber-50 rounded-lg text-amber-600'>
+                <div className='p-2 bg-navy-50 rounded-lg text-navy-900'>
                   <MessageSquarePlus className='w-6 h-6' />
                 </div>
                 <div>
@@ -2779,7 +2779,7 @@ export function Schedule() {
                 className={clsx(
                   'px-4 py-2 text-sm font-semibold rounded-t-lg border-b-2 transition-colors',
                   solicitacaoModalTab === 'alterar'
-                    ? 'border-amber-500 text-amber-700 bg-amber-50'
+                    ? 'border-amber-500 text-amber-700 bg-navy-50'
                     : 'border-transparent text-navy-500 hover:text-navy-800'
                 )}
               >
@@ -2871,7 +2871,7 @@ export function Schedule() {
 
                   <div>
                     <label className='block text-sm font-semibold text-navy-700 mb-1.5'>
-                      Motivo <span className='text-red-500'>*</span>
+                      Motivo <span className='text-primary-500'>*</span>
                     </label>
                     <textarea
                       value={solicitacaoReason}
@@ -2910,7 +2910,7 @@ export function Schedule() {
 
                   <div>
                     <label className='block text-sm font-semibold text-navy-700 mb-1.5 flex items-center gap-2'>
-                      <Briefcase className='w-4 h-4' /> Projeto / Cliente <span className='text-red-500'>*</span>
+                      <Briefcase className='w-4 h-4' /> Projeto / Cliente <span className='text-primary-500'>*</span>
                     </label>
                     <input
                       type='text'
@@ -2924,7 +2924,7 @@ export function Schedule() {
                   <div className='grid grid-cols-2 gap-3'>
                     <div>
                       <label className='block text-sm font-semibold text-navy-700 mb-1.5 flex items-center gap-2'>
-                        <CalendarDays className='w-4 h-4' /> Data de início <span className='text-red-500'>*</span>
+                        <CalendarDays className='w-4 h-4' /> Data de início <span className='text-primary-500'>*</span>
                       </label>
                       <input
                         type='date'
@@ -2948,7 +2948,7 @@ export function Schedule() {
 
                   <div>
                     <label className='block text-sm font-semibold text-navy-700 mb-1.5'>
-                      Observações / Detalhes <span className='text-red-500'>*</span>
+                      Observações / Detalhes <span className='text-primary-500'>*</span>
                     </label>
                     <textarea
                       value={novaAgendaObs}

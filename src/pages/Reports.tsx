@@ -386,7 +386,7 @@ export function Reports() {
                         onClick={handleExportExcel}
                         className="w-full px-4 py-2.5 text-sm text-left hover:bg-navy-50 flex items-center gap-2 text-navy-700"
                       >
-                        <FileSpreadsheet className="w-4 h-4 text-emerald-600" />
+                        <FileSpreadsheet className="w-4 h-4 text-navy-900" />
                         Exportar Excel (.xlsx)
                       </button>
                       <button
@@ -413,11 +413,11 @@ export function Reports() {
             <p className="text-xs text-navy-500 mt-0.5">Total Registros</p>
           </div>
           <div className="card p-4 text-center">
-            <p className="text-2xl font-bold text-emerald-600">{stats.completed}</p>
+            <p className="text-2xl font-bold text-navy-900">{stats.completed}</p>
             <p className="text-xs text-navy-500 mt-0.5">Concluídos</p>
           </div>
           <div className="card p-4 text-center">
-            <p className="text-2xl font-bold text-amber-600">{stats.pending}</p>
+            <p className="text-2xl font-bold text-navy-900">{stats.pending}</p>
             <p className="text-xs text-navy-500 mt-0.5">Pendentes</p>
           </div>
           <div className="card p-4 text-center">
@@ -425,7 +425,7 @@ export function Reports() {
             <p className="text-xs text-navy-500 mt-0.5">Consultores</p>
           </div>
           <div className="card p-4 text-center">
-            <p className="text-2xl font-bold text-purple-600">{stats.uniqueProjects}</p>
+            <p className="text-2xl font-bold text-primary-600">{stats.uniqueProjects}</p>
             <p className="text-xs text-navy-500 mt-0.5">Projetos</p>
           </div>
         </div>
@@ -502,12 +502,12 @@ export function Reports() {
                       </td>
                       <td className="px-4 py-3 text-center">
                         {isCompleted ? (
-                          <span className="inline-flex items-center gap-1 text-emerald-700 font-medium text-xs bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100">
+                          <span className="inline-flex items-center gap-1 text-navy-900 font-medium text-xs bg-navy-50 px-2.5 py-1 rounded-full border border-emerald-100">
                             <CheckCircle2 className="w-3 h-3" />
                             Concluído
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 text-amber-700 font-medium text-xs bg-amber-50 px-2.5 py-1 rounded-full border border-amber-100">
+                          <span className="inline-flex items-center gap-1 text-amber-700 font-medium text-xs bg-navy-50 px-2.5 py-1 rounded-full border border-amber-100">
                             <Clock className="w-3 h-3" />
                             Pendente
                           </span>

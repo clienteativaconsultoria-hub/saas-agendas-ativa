@@ -132,7 +132,7 @@ export function Config() {
                  value={profile.email} 
                  onChange={(e) => setProfile({ ...profile, email: e.target.value })}
                />
-               <p className='text-xs text-amber-600 mt-1'>
+               <p className='text-xs text-navy-900 mt-1'>
                  Alterar o email exigirá verificação no novo endereço.
                </p>
             </div>

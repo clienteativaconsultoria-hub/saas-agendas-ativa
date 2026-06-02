@@ -342,7 +342,7 @@ export function Consultants() {
       {toast && (
         <div className={clsx(
           'fixed top-4 right-4 z-[100] flex items-center gap-2 px-4 py-3 rounded-lg shadow-lg text-sm font-medium animate-in slide-in-from-right duration-300',
-          toast.type === 'success' ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-red-50 text-red-800 border border-red-200'
+          toast.type === 'success' ? 'bg-navy-50 text-emerald-800 border border-emerald-200' : 'bg-red-50 text-red-800 border border-red-200'
         )}>
           {toast.type === 'success' ? <CheckCircle2 className="w-4 h-4" /> : <AlertCircle className="w-4 h-4" />}
           {toast.message}
@@ -382,7 +382,7 @@ export function Consultants() {
         <div className='card p-4'>
           <div className='flex items-center gap-3'>
             <div className='w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center'>
-              <CheckCircle2 className='w-5 h-5 text-emerald-600' />
+              <CheckCircle2 className='w-5 h-5 text-navy-900' />
             </div>
             <div>
               <p className='text-2xl font-bold text-navy-900'>{stats.ativos}</p>
@@ -404,7 +404,7 @@ export function Consultants() {
         <div className='card p-4'>
           <div className='flex items-center gap-3'>
             <div className='w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center'>
-              <User className='w-5 h-5 text-amber-600' />
+              <User className='w-5 h-5 text-navy-900' />
             </div>
             <div>
               <p className='text-2xl font-bold text-navy-900'>{stats.consultores}</p>
@@ -456,14 +456,14 @@ export function Consultants() {
                     <button
                       onClick={() => handleResetPassword(consultant.id, consultant.name)}
                       title='Resetar Senha'
-                      className='p-1.5 text-navy-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors'
+                      className='p-1.5 text-navy-400 hover:text-navy-900 hover:bg-navy-50 rounded-lg transition-colors'
                     >
                       <KeyRound className='w-4 h-4' />
                     </button>
                     <button
                       onClick={() => setDeleteId(consultant.id)}
                       title='Excluir'
-                      className='p-1.5 text-navy-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors'
+                      className='p-1.5 text-navy-400 hover:text-navy-900 hover:bg-navy-50 rounded-lg transition-colors'
                     >
                       <Trash2 className='w-4 h-4' />
                     </button>
@@ -512,7 +512,7 @@ export function Consultants() {
                 >
                   <div className={clsx(
                     'w-2 h-2 rounded-full',
-                    consultant.status === 'Ativo' ? 'bg-emerald-500' : 'bg-red-400'
+                    consultant.status === 'Ativo' ? 'bg-navy-500' : 'bg-red-400'
                   )} />
                   {consultant.status}
                 </button>
@@ -666,7 +666,7 @@ export function Consultants() {
           <div className='card shadow-2xl w-full max-w-sm p-6 border border-navy-100'>
             <div className='flex flex-col items-center text-center'>
               <div className='w-12 h-12 rounded-full bg-red-100 flex items-center justify-center mb-4'>
-                <Trash2 className='w-6 h-6 text-red-600' />
+                <Trash2 className='w-6 h-6 text-navy-900' />
               </div>
               <h3 className='text-lg font-bold text-navy-900 mb-2'>Excluir Consultor?</h3>
               <p className='text-sm text-navy-500 mb-1'>

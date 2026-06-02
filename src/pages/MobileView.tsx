@@ -219,7 +219,7 @@ function MobileSchedule() {
           </div>
           <span className="font-bold text-navy-900">Agendas<span className="text-primary-600">Ativa</span></span>
         </div>
-        <button onClick={handleLogout} className="p-2 rounded-lg text-navy-400 hover:bg-navy-50 hover:text-red-500">
+        <button onClick={handleLogout} className="p-2 rounded-lg text-navy-400 hover:bg-navy-50 hover:text-primary-500">
           <LogOut className="w-5 h-5" />
         </button>
       </header>
