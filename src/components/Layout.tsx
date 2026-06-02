@@ -4,7 +4,6 @@ import {
   Settings, 
   LogOut, 
   ChevronLeft,
-  Search,
   Users,
   Briefcase,
   FileText,
@@ -209,18 +208,8 @@ export function Layout() {
             <Menu className="w-5 h-5" />
           </button>
           
-          {/* Search */}
-          <div className='relative flex-1 max-w-md group'>
-            <Search className='w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-navy-400 group-focus-within:text-primary-500 transition-colors' />
-            <input
-              type='text'
-              placeholder='Buscar consultores, projetos, OS...'
-              className='w-full h-9 pl-9 pr-4 bg-navy-50 border border-navy-100 rounded-xl text-sm text-navy-900 placeholder-navy-400 outline-none focus:bg-white focus:border-primary-300 focus:ring-2 focus:ring-primary-100 transition-all'
-            />
-            <kbd className='hidden sm:flex absolute right-3 top-1/2 -translate-y-1/2 items-center gap-0.5 px-1.5 py-0.5 bg-white border border-navy-200 rounded text-[10px] text-navy-400 font-sans'>
-              ⌘K
-            </kbd>
-          </div>
+          {/* Spacer to push actions to the right if needed, though justify-between handles it */}
+          <div className='flex-1'></div>
 
           {/* Right actions */}
           <div className='flex items-center gap-2 ml-4'>
