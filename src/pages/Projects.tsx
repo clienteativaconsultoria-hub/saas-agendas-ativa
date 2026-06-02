@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { 
-  Search, 
-  Plus, 
-  MoreVertical, 
+import {
+  Search,
+  Plus,
+  MoreVertical,
   Building2,
   CalendarDays,
   CheckCircle2,
@@ -11,7 +11,8 @@ import {
   User,
   FileText,
   X,
-  Save
+  Save,
+  Pencil
 } from 'lucide-react';
 import clsx from 'clsx';
 import { supabase } from '../lib/supabase';
@@ -65,6 +66,7 @@ export function Projects() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [loadingDetails, setLoadingDetails] = useState(false);
@@ -75,12 +77,25 @@ export function Projects() {
     name: '',
     client: '',
     manager: '',
+    os: '',
     status: 'Em Andamento',
     deadline: '',
     progress: 0,
     color: 'bg-primary-100 text-primary-700 border-primary-200',
     is_private: false
   });
+
+  const emptyProjectForm = {
+    name: '',
+    client: '',
+    manager: '',
+    os: '',
+    status: 'Em Andamento',
+    deadline: '',
+    progress: 0,
+    color: 'bg-primary-100 text-primary-700 border-primary-200',
+    is_private: false
+  };
 
   useEffect(() => {
     fetchProjects();
@@ -135,6 +150,7 @@ export function Projects() {
       const basePayload = {
         name: newProject.name,
         manager: newProject.manager || null,
+        os: newProject.os || null,
         status: newProject.status,
         deadline: newProject.deadline || null,
         progress: newProject.progress,
@@ -160,21 +176,87 @@ export function Projects() {
       if (insertResult.data) {
         setProjects(prev => [mapProjectRow(insertResult.data), ...prev]);
         setShowModal(false);
-        setNewProject({
-            name: '',
-            client: '',
-            manager: '',
-            status: 'Em Andamento',
-            deadline: '',
-            progress: 0,
-            color: 'bg-primary-100 text-primary-700 border-primary-200',
-            is_private: false
-        });
+        setNewProject(emptyProjectForm);
       }
     } catch (error) {
        console.error(error);
        alert('Erro ao criar projeto');
     }
+  };
+
+  const toDateInput = (display: string) => {
+    // mapProjectRow guarda deadline como dd/MM/yyyy (ou '-')
+    if (!display || display === '-') return '';
+    const [d, m, y] = display.split('/');
+    if (!d || !m || !y) return '';
+    return `${y}-${m}-${d}`;
+  };
+
+  const handleOpenEdit = (project: Project) => {
+    setEditingId(project.id);
+    setNewProject({
+      name: project.name,
+      client: project.client === 'Não informado' ? '' : project.client,
+      manager: project.manager || '',
+      os: project.os || '',
+      status: project.status,
+      deadline: toDateInput(project.deadline),
+      progress: project.progress,
+      color: project.color,
+      is_private: !!project.is_private
+    });
+    setShowModal(true);
+  };
+
+  const handleSaveProject = () => {
+    if (editingId) return handleUpdateProject();
+    return handleCreateProject();
+  };
+
+  const handleUpdateProject = async () => {
+    try {
+      if (!editingId) return;
+      if (!newProject.name) return alert('Nome do projeto é obrigatório');
+
+      const normalizedClient = normalizeClient(newProject.client);
+      const payload = {
+        name: newProject.name,
+        manager: newProject.manager || null,
+        os: newProject.os || null,
+        status: newProject.status,
+        deadline: newProject.deadline || null,
+        progress: newProject.progress,
+        color: newProject.color,
+        is_private: newProject.is_private,
+        tipo: getProjectTipo(normalizedClient),
+        client: normalizedClient
+      };
+
+      const { data, error } = await supabase
+        .from('projects')
+        .update(payload)
+        .eq('id', editingId)
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      if (data) {
+        setProjects(prev => prev.map(p => (p.id === editingId ? mapProjectRow(data) : p)));
+      }
+      setShowModal(false);
+      setEditingId(null);
+      setNewProject(emptyProjectForm);
+    } catch (error) {
+      console.error(error);
+      alert('Erro ao atualizar projeto');
+    }
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setEditingId(null);
+    setNewProject(emptyProjectForm);
   };
 
   const filtered = projects.filter(p => {
@@ -255,8 +337,8 @@ export function Projects() {
           <h1 className='text-2xl font-bold text-navy-900'>Projetos e Clientes</h1>
           <p className='text-navy-500'>Acompanhe o status e progresso de todos os projetos ativos.</p>
         </div>
-        <button 
-          onClick={() => setShowModal(true)}
+        <button
+          onClick={() => { setEditingId(null); setNewProject(emptyProjectForm); setShowModal(true); }}
           className='flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium shadow-sm transition-colors'
         >
           <Plus className='w-4 h-4' /> Novo Projeto
@@ -401,12 +483,22 @@ export function Projects() {
                       </div>
                    </td>
                    <td className='px-6 py-4 text-right'>
-                      <button
-                        onClick={() => handleOpenProjectDetails(project)}
-                        className='p-1.5 hover:bg-navy-100 rounded-lg text-navy-400 hover:text-navy-600 transition-colors'
-                      >
-                        <MoreVertical className='w-4 h-4' />
-                      </button>
+                      <div className='flex items-center justify-end gap-1'>
+                        <button
+                          onClick={() => handleOpenEdit(project)}
+                          title='Editar projeto'
+                          className='p-1.5 hover:bg-primary-50 rounded-lg text-navy-400 hover:text-primary-600 transition-colors'
+                        >
+                          <Pencil className='w-4 h-4' />
+                        </button>
+                        <button
+                          onClick={() => handleOpenProjectDetails(project)}
+                          title='Detalhes'
+                          className='p-1.5 hover:bg-navy-100 rounded-lg text-navy-400 hover:text-navy-600 transition-colors'
+                        >
+                          <MoreVertical className='w-4 h-4' />
+                        </button>
+                      </div>
                    </td>
                  </tr>
                )) : (
@@ -426,8 +518,8 @@ export function Projects() {
         <div className='absolute inset-0 z-50 flex items-center justify-center p-4 bg-navy-900/60 backdrop-blur-sm animate-in fade-in duration-200'>
           <div className='bg-white rounded-xl shadow-2xl w-full max-w-lg p-6 animate-in zoom-in-95 duration-200 border border-navy-100'>
             <div className='flex justify-between items-center mb-6 border-b border-navy-50 pb-4'>
-              <h3 className='text-xl font-bold text-navy-900'>Novo Projeto</h3>
-              <button onClick={() => setShowModal(false)} className='p-1 text-navy-400 hover:bg-navy-50 rounded-lg'>
+              <h3 className='text-xl font-bold text-navy-900'>{editingId ? 'Editar Projeto' : 'Novo Projeto'}</h3>
+              <button onClick={handleCloseModal} className='p-1 text-navy-400 hover:bg-navy-50 rounded-lg'>
                 <X className='w-5 h-5' />
               </button>
             </div>
@@ -469,13 +561,24 @@ export function Projects() {
                </div>
                <div>
                   <label className='block text-sm font-medium text-navy-700 mb-1'>Gerente</label>
-                  <input 
-                    type='text' 
+                  <input
+                    type='text'
                     className='w-full rounded-lg border-navy-300 shadow-sm focus:border-primary-500 text-sm p-2.5 border'
                     placeholder='Nome do gerente responsável'
                     value={newProject.manager}
                     onChange={(e) => setNewProject({...newProject, manager: e.target.value})}
                   />
+               </div>
+               <div>
+                  <label className='block text-sm font-medium text-navy-700 mb-1'>Número da OS</label>
+                  <input
+                    type='text'
+                    className='w-full rounded-lg border-navy-300 shadow-sm focus:border-primary-500 text-sm p-2.5 border'
+                    placeholder='Ex: OS-12345'
+                    value={newProject.os}
+                    onChange={(e) => setNewProject({...newProject, os: e.target.value})}
+                  />
+                  <p className='mt-1 text-xs text-navy-400'>Será sugerida automaticamente nas agendas deste projeto.</p>
                </div>
                <div className='grid grid-cols-2 gap-4'>
                   <div>
@@ -529,17 +632,17 @@ export function Projects() {
             </div>
 
             <div className='pt-6 mt-6 flex justify-end gap-3 border-t border-navy-50'>
-              <button 
-                onClick={() => setShowModal(false)}
+              <button
+                onClick={handleCloseModal}
                 className='px-4 py-2.5 border border-navy-300 text-navy-700 font-medium rounded-lg hover:bg-navy-50 transition-colors'
               >
                 Cancelar
               </button>
-              <button 
-                onClick={handleCreateProject}
+              <button
+                onClick={handleSaveProject}
                 className='flex items-center gap-2 px-6 py-2.5 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors shadow-lg shadow-primary-900/20'
               >
-                <Save className='w-4 h-4' /> Salvar Projeto
+                <Save className='w-4 h-4' /> {editingId ? 'Salvar Alterações' : 'Salvar Projeto'}
               </button>
             </div>
           </div>
