@@ -1,0 +1,68 @@
+{
+  "name": "Agendas Ativa - Envio Diário",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            { "field": "cronExpression", "expression": "0 7 * * 1-5" }
+          ]
+        }
+      },
+      "id": "schedule-trigger",
+      "name": "Todo dia útil 07h",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [260, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://kcijdanyqwavgsqtlqyj.supabase.co/functions/v1/daily-agenda",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "x-agenda-token", "value": "COLE_AQUI_O_AGENDA_TRIGGER_TOKEN" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"period\": \"day\"\n}",
+        "options": {}
+      },
+      "id": "http-agenda",
+      "name": "Buscar agenda do dia",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [520, 300]
+    },
+    {
+      "parameters": {
+        "fromEmail": "agendas@SEU_DOMINIO.com",
+        "toEmail": "andrei@futuree.org,lucas@ativaconsultoria.net.br",
+        "subject": "={{ $json.subject }}",
+        "emailFormat": "html",
+        "html": "={{ $json.html }}",
+        "options": {}
+      },
+      "id": "send-email",
+      "name": "Enviar e-mail",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [780, 300],
+      "credentials": {
+        "smtp": { "id": "CONFIGURE_SUA_CREDENCIAL_SMTP", "name": "SMTP" }
+      }
+    }
+  ],
+  "connections": {
+    "Todo dia útil 07h": {
+      "main": [[{ "node": "Buscar agenda do dia", "type": "main", "index": 0 }]]
+    },
+    "Buscar agenda do dia": {
+      "main": [[{ "node": "Enviar e-mail", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": { "executionOrder": "v1" }
+}
