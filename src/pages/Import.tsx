@@ -208,13 +208,13 @@ export function Import() {
   };
 
   return (
-    <div className="space-y-6 p-8">
+    <div className="min-h-full p-6 space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-navy-900 flex items-center gap-2">
+        <h1 className="text-[1.375rem] font-extrabold text-navy-950 tracking-tight flex items-center gap-2">
           <FileSpreadsheet className="w-7 h-7 text-emerald-600" />
           Conferência por Excel
         </h1>
-        <p className="text-navy-500 text-sm mt-1">
+        <p className="text-sm text-navy-500 mt-0.5">
           Importe uma planilha e veja onde ela <strong>bate ou diverge</strong> do sistema. Nada é alterado — é só conferência.
         </p>
       </div>
@@ -288,7 +288,7 @@ export function Import() {
           <div className="card overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
-                <thead className="bg-navy-50 border-b border-navy-200">
+                <thead className="bg-navy-50/60 border-b border-navy-100">
                   <tr>
                     <th className="px-4 py-3 text-xs font-bold text-navy-500 uppercase tracking-wider">Status</th>
                     <th className="px-4 py-3 text-xs font-bold text-navy-500 uppercase tracking-wider">Consultor</th>

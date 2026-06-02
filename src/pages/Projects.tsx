@@ -330,12 +330,12 @@ export function Projects() {
   };
 
   return (
-    <div className='space-y-6 p-8'>
+    <div className='min-h-full p-6 space-y-6'>
       {/* Header */}
       <div className='flex flex-col md:flex-row md:items-center justify-between gap-4'>
         <div>
-          <h1 className='text-2xl font-bold text-navy-900'>Projetos e Clientes</h1>
-          <p className='text-navy-500'>Acompanhe o status e progresso de todos os projetos ativos.</p>
+          <h1 className='text-[1.375rem] font-extrabold text-navy-950 tracking-tight'>Projetos e Clientes</h1>
+          <p className='text-sm text-navy-500 mt-0.5'>Acompanhe o status e progresso de todos os projetos ativos.</p>
         </div>
         <button
           onClick={() => { setEditingId(null); setNewProject(emptyProjectForm); setShowModal(true); }}
@@ -369,7 +369,7 @@ export function Projects() {
         {/* Table Header / Toolbar */}
         <div className='p-4 border-b border-navy-100 flex flex-col sm:flex-row items-center justify-between gap-4'>
             <div className='flex flex-wrap items-center gap-2'>
-              <div className='flex items-center gap-1 bg-navy-50 rounded-lg p-1 border border-navy-100'>
+              <div className='flex items-center gap-1 p-1 bg-white rounded-xl border border-navy-100'>
                 {['active', 'archived', 'all'].map(tab => (
                    <button 
                      key={tab}
@@ -384,7 +384,7 @@ export function Projects() {
                 ))}
               </div>
               {/* Tipo Filter */}
-              <div className='flex items-center gap-1 bg-navy-50 rounded-lg p-1 border border-navy-100'>
+              <div className='flex items-center gap-1 p-1 bg-white rounded-xl border border-navy-100'>
                 {(['all', 'Particular', 'MV'] as const).map(t => (
                   <button
                     key={t}
@@ -421,7 +421,7 @@ export function Projects() {
         {/* Projects List */}
         <div className='overflow-x-auto'>
            <table className='w-full text-left text-sm'>
-             <thead className='bg-navy-50/50 border-b border-navy-100 text-xs uppercase text-navy-500 font-semibold'>
+             <thead className='bg-navy-50/60 border-b border-navy-100 text-[11px] uppercase text-navy-500 font-bold tracking-wider'>
                <tr>
                  <th className='px-6 py-4'>Projeto</th>
                  <th className='px-6 py-4'>Tipo</th>

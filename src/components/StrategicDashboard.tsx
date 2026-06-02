@@ -293,15 +293,18 @@ export function StrategicDashboard() {
 
       {/* Month Navigator */}
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-bold text-navy-800">Painel Estratégico</h2>
-        <div className="flex items-center gap-2 bg-white border border-navy-200 rounded-lg px-1 py-1 shadow-sm">
-          <button onClick={() => goMonth(-1)} className="p-1.5 rounded-md hover:bg-navy-100 text-navy-600 transition-colors">
+        <div>
+          <h2 className="text-[1.375rem] font-extrabold text-navy-950 tracking-tight">Painel Estratégico</h2>
+          <p className="text-sm text-navy-500 mt-0.5">Indicadores de ocupação e evolução da equipe</p>
+        </div>
+        <div className="flex items-center gap-1 p-1 bg-[#0f1c2e] rounded-xl">
+          <button onClick={() => goMonth(-1)} className="p-2 rounded-lg hover:bg-white/10 text-white/60 hover:text-white transition-colors">
             <ChevronLeft className="w-4 h-4" />
           </button>
-          <span className="text-sm font-semibold text-navy-800 min-w-[120px] text-center capitalize">
+          <span className="text-sm font-bold text-white min-w-[130px] text-center capitalize px-2">
             {format(referenceDate, 'MMMM yyyy', { locale: ptBR })}
           </span>
-          <button onClick={() => goMonth(1)} className="p-1.5 rounded-md hover:bg-navy-100 text-navy-600 transition-colors">
+          <button onClick={() => goMonth(1)} className="p-2 rounded-lg hover:bg-white/10 text-white/60 hover:text-white transition-colors">
             <ChevronRight className="w-4 h-4" />
           </button>
         </div>
@@ -309,52 +312,29 @@ export function StrategicDashboard() {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="card p-5">
-          <div className="flex items-center justify-between mb-3">
-            <div className="p-2 rounded-lg bg-primary-50">
-              <Users className="w-5 h-5 text-primary-600" />
+        {[
+          { label: 'Consultores ativos', value: kpis.activeConsultants, sub: 'equipe', Icon: Users, iconBg: 'bg-primary-50', iconColor: 'text-primary-600', badge: null },
+          { label: 'Projetos alocados', value: kpis.activeProjects, sub: 'no mês', Icon: Briefcase, iconBg: 'bg-amber-50', iconColor: 'text-amber-600', badge: null },
+          { label: 'Taxa de ocupação', value: `${kpis.occupationPct}%`, sub: 'do mês', Icon: CalendarCheck, iconBg: 'bg-emerald-50', iconColor: 'text-emerald-600',
+            badge: kpis.occupationTrend !== 0 ? { icon: TrendIcon, color: trendColor, text: `${Math.abs(kpis.occupationTrend)}%` } : null },
+          { label: 'Diários preenchidos', value: `${kpis.logCompletionPct}%`, sub: `${kpis.logCompleted}/${kpis.logTotal} registros`, Icon: ClipboardCheck, iconBg: 'bg-purple-50', iconColor: 'text-purple-600', badge: null },
+        ].map((kpi) => (
+          <div key={kpi.label} className="card p-5">
+            <div className="flex items-center justify-between mb-4">
+              <div className={`p-2.5 rounded-xl ${kpi.iconBg}`}>
+                <kpi.Icon className={`w-5 h-5 ${kpi.iconColor}`} />
+              </div>
+              {kpi.badge && (
+                <span className={`flex items-center gap-0.5 text-xs font-bold ${kpi.badge.color}`}>
+                  <kpi.badge.icon className="w-3 h-3" />
+                  {kpi.badge.text}
+                </span>
+              )}
             </div>
-            <span className="text-xs font-medium text-navy-400">Ativos</span>
+            <p className="text-[1.75rem] font-extrabold text-navy-950 leading-none">{kpi.value}</p>
+            <p className="text-xs font-medium text-navy-500 mt-1.5">{kpi.label}</p>
           </div>
-          <p className="text-2xl font-bold text-navy-900">{kpis.activeConsultants}</p>
-          <p className="text-xs text-navy-500 mt-1">Consultores ativos</p>
-        </div>
-
-        <div className="card p-5">
-          <div className="flex items-center justify-between mb-3">
-            <div className="p-2 rounded-lg bg-amber-50">
-              <Briefcase className="w-5 h-5 text-amber-600" />
-            </div>
-            <span className="text-xs font-medium text-navy-400">Mês</span>
-          </div>
-          <p className="text-2xl font-bold text-navy-900">{kpis.activeProjects}</p>
-          <p className="text-xs text-navy-500 mt-1">Projetos com alocação</p>
-        </div>
-
-        <div className="card p-5">
-          <div className="flex items-center justify-between mb-3">
-            <div className="p-2 rounded-lg bg-emerald-50">
-              <CalendarCheck className="w-5 h-5 text-emerald-600" />
-            </div>
-            <div className={`flex items-center gap-0.5 text-xs font-medium ${trendColor}`}>
-              <TrendIcon className="w-3 h-3" />
-              {Math.abs(kpis.occupationTrend)}%
-            </div>
-          </div>
-          <p className="text-2xl font-bold text-navy-900">{kpis.occupationPct}%</p>
-          <p className="text-xs text-navy-500 mt-1">Taxa de ocupação</p>
-        </div>
-
-        <div className="card p-5">
-          <div className="flex items-center justify-between mb-3">
-            <div className="p-2 rounded-lg bg-purple-50">
-              <ClipboardCheck className="w-5 h-5 text-purple-600" />
-            </div>
-            <span className="text-xs font-medium text-navy-400">{kpis.logCompleted}/{kpis.logTotal}</span>
-          </div>
-          <p className="text-2xl font-bold text-navy-900">{kpis.logCompletionPct}%</p>
-          <p className="text-xs text-navy-500 mt-1">Diários preenchidos</p>
-        </div>
+        ))}
       </div>
 
       {/* Row 1: Occupation + Distribution */}

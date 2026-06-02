@@ -336,7 +336,7 @@ export function Consultants() {
   }
 
   return (
-    <div className='space-y-6 p-8'>
+    <div className='min-h-full p-6 space-y-6'>
 
       {/* Toast */}
       {toast && (
@@ -355,8 +355,8 @@ export function Consultants() {
       {/* Header */}
       <div className='flex flex-col md:flex-row md:items-center justify-between gap-4'>
         <div>
-          <h1 className='text-2xl font-bold text-navy-900'>Consultores</h1>
-          <p className='text-navy-500'>Gerencie a equipe de consultoria e seus perfis.</p>
+          <h1 className='text-[1.375rem] font-extrabold text-navy-950 tracking-tight'>Consultores</h1>
+          <p className='text-sm text-navy-500 mt-0.5'>Gerencie a equipe de consultoria e seus perfis.</p>
         </div>
         <button 
           onClick={openCreate}
@@ -421,7 +421,7 @@ export function Consultants() {
           <input 
             type='text' 
             placeholder='Buscar por nome, cargo, email, telefone...' 
-            className='w-full pl-10 pr-4 py-2 bg-navy-50 border border-navy-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500'
+            className='input pl-10 bg-navy-50 border-navy-100'
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -430,7 +430,7 @@ export function Consultants() {
 
       {/* Grid List */}
       {filtered.length === 0 ? (
-        <div className='bg-white rounded-xl border border-navy-100 p-12 text-center text-navy-400'>
+        <div className='card p-12 text-center text-navy-400'>
           <Users className='w-12 h-12 mx-auto mb-3 opacity-30' />
           <p className='text-lg font-medium'>Nenhum consultor encontrado</p>
           <p className='text-sm mt-1'>Tente ajustar a busca ou adicione um novo consultor.</p>
@@ -438,7 +438,7 @@ export function Consultants() {
       ) : (
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
           {filtered.map((consultant) => (
-            <div key={consultant.id} className='card hover:shadow-md transition-shadow group'>
+            <div key={consultant.id} className='card card-hover group'>
               <div className='p-6'>
                 <div className='flex justify-between items-start mb-4'>
                   <div className='w-12 h-12 rounded-full bg-gradient-to-br from-navy-100 to-navy-200 flex items-center justify-center text-navy-700 font-bold text-lg border-2 border-white shadow-sm'>
@@ -549,7 +549,7 @@ export function Consultants() {
                   <User className="w-4 h-4 absolute left-3 top-2.5 text-navy-400" />
                   <input 
                     type='text' 
-                    className='w-full rounded-lg border-navy-300 shadow-sm focus:border-primary-500 focus:ring-1 focus:ring-primary-500 text-sm pl-9 pr-3 py-2.5 border'
+                    className='input pl-9'
                     placeholder="Ex: Ana Maria da Silva"
                     value={formData.name}
                     onChange={(e) => setFormData({...formData, name: e.target.value})}
@@ -566,7 +566,7 @@ export function Consultants() {
                     type='email'
                     disabled={!!editingId}
                     className={clsx(
-                      'w-full rounded-lg border-navy-300 shadow-sm focus:border-primary-500 focus:ring-1 focus:ring-primary-500 text-sm pl-9 pr-3 py-2.5 border',
+                      'input pl-9',
                       editingId && 'bg-navy-50 text-navy-400 cursor-not-allowed'
                     )}
                     placeholder="email@empresa.com"
@@ -581,7 +581,7 @@ export function Consultants() {
               <div>
                 <label className='block text-sm font-medium text-navy-700 mb-1'>Cargo / Função</label>
                 <select 
-                  className='w-full rounded-lg border-navy-300 shadow-sm focus:border-primary-500 focus:ring-1 focus:ring-primary-500 text-sm p-2.5 border bg-white'
+                  className='input bg-white'
                   value={formData.role}
                   onChange={(e) => setFormData({...formData, role: e.target.value})}
                 >
@@ -598,7 +598,7 @@ export function Consultants() {
                   <Phone className="w-4 h-4 absolute left-3 top-2.5 text-navy-400" />
                   <input 
                     type='text' 
-                    className='w-full rounded-lg border-navy-300 shadow-sm focus:border-primary-500 focus:ring-1 focus:ring-primary-500 text-sm pl-9 pr-3 py-2.5 border'
+                    className='input pl-9'
                     placeholder="(11) 99999-0000"
                     value={formData.phone}
                     onChange={(e) => setFormData({...formData, phone: e.target.value})}
@@ -613,7 +613,7 @@ export function Consultants() {
                   <MapPin className="w-4 h-4 absolute left-3 top-2.5 text-navy-400" />
                   <input 
                     type='text' 
-                    className='w-full rounded-lg border-navy-300 shadow-sm focus:border-primary-500 focus:ring-1 focus:ring-primary-500 text-sm pl-9 pr-3 py-2.5 border'
+                    className='input pl-9'
                     placeholder="São Paulo - SP"
                     value={formData.location}
                     onChange={(e) => setFormData({...formData, location: e.target.value})}
@@ -629,7 +629,7 @@ export function Consultants() {
                     <KeyRound className="w-4 h-4 absolute left-3 top-2.5 text-navy-400" />
                     <input 
                       type='text' 
-                      className='w-full rounded-lg border-navy-300 shadow-sm focus:border-primary-500 focus:ring-1 focus:ring-primary-500 text-sm pl-9 pr-3 py-2.5 border'
+                      className='input pl-9'
                       placeholder="ativa2026"
                       value={formData.password}
                       onChange={(e) => setFormData({...formData, password: e.target.value})}
@@ -650,7 +650,7 @@ export function Consultants() {
               <button 
                 onClick={editingId ? handleUpdate : handleCreate}
                 disabled={saving}
-                className='flex items-center gap-2 px-6 py-2.5 bg-primary-600 hover:bg-primary-700 disabled:opacity-50 text-white font-medium rounded-lg transition-colors shadow-lg shadow-primary-900/20'
+                className='btn-primary px-6 disabled:opacity-50'
               >
                 {saving ? <Loader2 className='w-4 h-4 animate-spin' /> : <Save className='w-4 h-4' />}
                 {editingId ? 'Atualizar' : 'Criar Consultor'}
@@ -685,7 +685,7 @@ export function Consultants() {
                 <button 
                   onClick={handleDelete}
                   disabled={deleting}
-                  className='flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white font-medium rounded-lg transition-colors'
+                  className='btn-danger flex-1 disabled:opacity-50'
                 >
                   {deleting ? <Loader2 className='w-4 h-4 animate-spin' /> : <Trash2 className='w-4 h-4' />}
                   Excluir

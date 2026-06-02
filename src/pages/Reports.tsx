@@ -228,15 +228,15 @@ export function Reports() {
   };
 
   return (
-    <div className="space-y-6 p-8">
+    <div className="min-h-full p-6 space-y-6">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-navy-900 flex items-center gap-2">
+          <h1 className="text-[1.375rem] font-extrabold text-navy-950 tracking-tight flex items-center gap-2">
             <FileText className="w-7 h-7 text-primary-600" />
             Relatório — Diário de Bordo
           </h1>
-          <p className="text-navy-500 text-sm mt-1">
+          <p className="text-sm text-navy-500 mt-0.5">
             Gere, visualize e exporte os registros de atividades dos consultores.
           </p>
         </div>
@@ -280,7 +280,7 @@ export function Reports() {
               type="date"
               value={startDate}
               onChange={e => { setStartDate(e.target.value); setPeriodPreset('custom'); }}
-              className="w-full p-2.5 text-sm border border-navy-200 rounded-lg focus:ring-2 focus:ring-primary-100 focus:border-primary-500 outline-none transition-all"
+              className="input"
             />
           </div>
 
@@ -294,7 +294,7 @@ export function Reports() {
               type="date"
               value={endDate}
               onChange={e => { setEndDate(e.target.value); setPeriodPreset('custom'); }}
-              className="w-full p-2.5 text-sm border border-navy-200 rounded-lg focus:ring-2 focus:ring-primary-100 focus:border-primary-500 outline-none transition-all"
+              className="input"
             />
           </div>
 
@@ -307,7 +307,7 @@ export function Reports() {
             <select
               value={selectedConsultant}
               onChange={e => setSelectedConsultant(e.target.value)}
-              className="w-full p-2.5 text-sm border border-navy-200 rounded-lg focus:ring-2 focus:ring-primary-100 focus:border-primary-500 outline-none transition-all bg-white"
+              className="input bg-white"
             >
               <option value="all">Todos</option>
               {consultants.map(c => (
@@ -325,7 +325,7 @@ export function Reports() {
             <select
               value={selectedProject}
               onChange={e => setSelectedProject(e.target.value)}
-              className="w-full p-2.5 text-sm border border-navy-200 rounded-lg focus:ring-2 focus:ring-primary-100 focus:border-primary-500 outline-none transition-all bg-white"
+              className="input bg-white"
             >
               <option value="all">Todos</option>
               {projects.map(p => (
@@ -343,7 +343,7 @@ export function Reports() {
             <select
               value={selectedStatus}
               onChange={e => setSelectedStatus(e.target.value)}
-              className="w-full p-2.5 text-sm border border-navy-200 rounded-lg focus:ring-2 focus:ring-primary-100 focus:border-primary-500 outline-none transition-all bg-white"
+              className="input bg-white"
             >
               <option value="all">Todos</option>
               <option value="completed">Concluídos</option>
@@ -356,7 +356,7 @@ export function Reports() {
             <button
               onClick={handleGenerate}
               disabled={loading}
-              className="flex-1 bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-50 text-sm"
+              className="btn-primary flex-1"
             >
               {loading ? (
                 <span className="animate-pulse">Buscando...</span>
@@ -372,7 +372,7 @@ export function Reports() {
               <div className="relative">
                 <button
                   onClick={() => setShowExportMenu(!showExportMenu)}
-                  className="h-full px-3 py-2.5 bg-navy-900 hover:bg-navy-800 text-white rounded-lg transition-colors flex items-center gap-1"
+                  className="btn-secondary h-10 px-3"
                   title="Exportar"
                 >
                   <Download className="w-4 h-4" />
@@ -381,7 +381,7 @@ export function Reports() {
                 {showExportMenu && (
                   <>
                     <div className="fixed inset-0 z-10" onClick={() => setShowExportMenu(false)} />
-                    <div className="absolute right-0 top-full mt-1 bg-white border border-navy-200 rounded-lg shadow-lg z-20 min-w-[180px] py-1">
+                    <div className="absolute right-0 top-full mt-1 bg-white border border-navy-100 rounded-xl shadow-lg z-20 min-w-[180px] py-1 overflow-hidden">
                       <button
                         onClick={handleExportExcel}
                         className="w-full px-4 py-2.5 text-sm text-left hover:bg-navy-50 flex items-center gap-2 text-navy-700"
@@ -456,7 +456,7 @@ export function Reports() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="bg-navy-50 border-b border-navy-200">
+              <thead className="bg-navy-50/60 border-b border-navy-100">
                 <tr>
                   <th className="px-4 py-3 text-xs font-bold text-navy-500 uppercase tracking-wider">Data</th>
                   <th className="px-4 py-3 text-xs font-bold text-navy-500 uppercase tracking-wider">Consultor</th>

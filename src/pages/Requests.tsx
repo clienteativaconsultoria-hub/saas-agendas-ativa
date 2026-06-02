@@ -209,13 +209,13 @@ export function Requests() {
   }
 
   return (
-    <div className='space-y-6 p-8'>
+    <div className='min-h-full p-6 space-y-6'>
 
       {/* ── Header ── */}
       <div className='flex flex-col md:flex-row md:items-center justify-between gap-4'>
         <div>
-          <h1 className='text-2xl font-bold text-navy-900'>Histórico de Solicitações</h1>
-          <p className='text-navy-500'>
+          <h1 className='text-[1.375rem] font-extrabold text-navy-950 tracking-tight'>Histórico de Solicitações</h1>
+          <p className='text-sm text-navy-500 mt-0.5'>
             {userRole === 'ADM'
               ? 'Todas as solicitações da equipe, independente de projeto.'
               : 'Solicitações dos projetos sob sua responsabilidade.'}
@@ -223,7 +223,7 @@ export function Requests() {
         </div>
         <button
           onClick={fetchRequests}
-          className='flex items-center gap-2 px-4 py-2 border border-navy-200 text-navy-600 hover:bg-navy-50 rounded-lg font-medium text-sm transition-colors shadow-sm'
+          className='btn-secondary'
         >
           <RefreshCw className='w-4 h-4' /> Atualizar
         </button>
@@ -256,7 +256,7 @@ export function Requests() {
         <div className='p-4 border-b border-navy-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 flex-wrap'>
 
           {/* Status tab pills */}
-          <div className='flex items-center gap-1 bg-navy-50 rounded-lg p-1 border border-navy-100'>
+          <div className='flex items-center gap-1 p-1 bg-white rounded-xl border border-navy-100'>
             {STATUS_TABS.map(tab => (
               <button
                 key={tab.value}
@@ -295,7 +295,7 @@ export function Requests() {
               <select
                 value={filterType}
                 onChange={e => setFilterType(e.target.value)}
-                className='appearance-none pl-3 pr-8 py-2 text-sm border border-navy-200 rounded-lg bg-white focus:ring-2 focus:ring-primary-100 focus:border-primary-400'
+                className='input pl-3 pr-8'
               >
                 {TYPE_OPTS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
               </select>
@@ -307,14 +307,14 @@ export function Requests() {
                 type='date'
                 value={filterDateFrom}
                 onChange={e => setFilterDateFrom(e.target.value)}
-                className='py-2 px-2 text-sm border border-navy-200 rounded-lg bg-white focus:ring-2 focus:ring-primary-100 focus:border-primary-400 w-36'
+                className='input px-2 w-36'
               />
               <span className='text-navy-400 text-xs'>–</span>
               <input
                 type='date'
                 value={filterDateTo}
                 onChange={e => setFilterDateTo(e.target.value)}
-                className='py-2 px-2 text-sm border border-navy-200 rounded-lg bg-white focus:ring-2 focus:ring-primary-100 focus:border-primary-400 w-36'
+                className='input px-2 w-36'
               />
             </div>
 
@@ -357,7 +357,7 @@ export function Requests() {
                   <div className='flex items-start gap-4'>
 
                     {/* Avatar initials */}
-                    <div className='w-9 h-9 rounded-full bg-white border border-navy-200 flex items-center justify-center text-navy-700 font-bold text-xs shadow-sm shrink-0 mt-0.5'>
+                    <div className='w-9 h-9 rounded-xl bg-gradient-to-br from-primary-50 to-primary-100 border border-primary-200 flex items-center justify-center text-primary-700 font-bold text-xs shrink-0 mt-0.5'>
                       {initials}
                     </div>
 
@@ -473,13 +473,13 @@ export function Requests() {
                                 placeholder='Mensagem de resposta (opcional)...'
                                 value={responseText}
                                 onChange={e => setResponseText(e.target.value)}
-                                className='w-full text-sm p-2.5 border border-navy-200 rounded-lg focus:ring-2 focus:ring-primary-100 focus:border-primary-400 resize-none text-navy-700'
+                                className='input resize-none'
                               />
                               <div className='flex gap-2'>
                                 <button
                                   onClick={() => handleResolve(req.id, 'approved')}
                                   disabled={processingId === req.id}
-                                  className='flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg disabled:opacity-60 transition-colors shadow-sm'
+                                  className='flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg disabled:opacity-60 transition-colors'
                                 >
                                   <CheckCheck className='w-3.5 h-3.5' />
                                   {processingId === req.id ? 'Salvando...' : 'Aprovar'}
@@ -487,14 +487,14 @@ export function Requests() {
                                 <button
                                   onClick={() => handleResolve(req.id, 'rejected')}
                                   disabled={processingId === req.id}
-                                  className='flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-white bg-red-500 hover:bg-red-600 rounded-lg disabled:opacity-60 transition-colors shadow-sm'
+                                  className='flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-white bg-red-500 hover:bg-red-600 rounded-lg disabled:opacity-60 transition-colors'
                                 >
                                   <XCircle className='w-3.5 h-3.5' />
                                   {processingId === req.id ? 'Salvando...' : 'Recusar'}
                                 </button>
                                 <button
                                   onClick={() => setRespondingId(null)}
-                                  className='px-4 py-2 text-xs font-medium text-navy-600 border border-navy-200 hover:bg-navy-50 rounded-lg transition-colors'
+                                  className='btn-secondary text-xs py-1.5 px-3'
                                 >
                                   Cancelar
                                 </button>

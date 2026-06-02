@@ -104,14 +104,14 @@ export function Config() {
        <div className='card p-8'>
          <div className='flex items-center justify-between mb-8'>
             <h3 className='text-xl font-bold text-navy-900'>Meu Perfil</h3>
-            <span className='px-3 py-1 bg-primary-50 text-primary-700 text-xs font-semibold rounded-full'>
+            <span className='px-3 py-1 bg-navy-950 text-white text-xs font-bold rounded-full tracking-wide'>
               {profile.role || 'Usuário'}
             </span>
          </div>
          
          <div className='flex items-center gap-5 mb-10 pb-10 border-b border-navy-50'>
-            <div className='h-20 w-20 rounded-full bg-gradient-to-br from-primary-100 to-primary-200 border-4 border-white shadow-lg flex items-center justify-center shrink-0'>
-              <span className='text-primary-700 text-2xl font-bold'>
+            <div className='h-20 w-20 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-700 border-4 border-white shadow-lg flex items-center justify-center shrink-0'>
+              <span className='text-white text-2xl font-bold'>
                 {profile.full_name ? profile.full_name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase() : 'US'}
               </span>
             </div>
@@ -128,7 +128,7 @@ export function Config() {
                </label>
                <input 
                  type='email' 
-                 className='block w-full rounded-lg border-navy-200 bg-white focus:ring-2 focus:ring-primary-100 focus:border-primary-500 text-sm p-2.5 border transition-all' 
+                 className='input' 
                  value={profile.email} 
                  onChange={(e) => setProfile({ ...profile, email: e.target.value })}
                />
@@ -144,7 +144,7 @@ export function Config() {
               <input 
                 type='text' 
                 placeholder='Ex: João Silva'
-                className='block w-full rounded-lg border-navy-200 bg-white focus:ring-2 focus:ring-primary-100 focus:border-primary-500 text-sm p-2.5 border transition-all' 
+                className='input' 
                 value={profile.full_name}
                 onChange={(e) => setProfile({ ...profile, full_name: e.target.value })}
               />
@@ -155,7 +155,7 @@ export function Config() {
                 <Briefcase className='w-4 h-4 text-navy-400' /> Cargo
               </label>
               <select 
-                className='block w-full rounded-lg border-navy-200 bg-white focus:ring-2 focus:ring-primary-100 focus:border-primary-500 text-sm p-2.5 border transition-all' 
+                className='input' 
                 value={profile.role} 
                 onChange={(e) => setProfile({ ...profile, role: e.target.value })}
               >
@@ -171,7 +171,7 @@ export function Config() {
            <button 
              onClick={handleSave}
              disabled={isSaving}
-             className='flex items-center gap-2 px-6 py-2.5 bg-navy-900 text-white rounded-lg font-medium shadow-lg shadow-navy-900/20 hover:bg-navy-800 transition-all hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none'
+             className='btn-primary px-6'
            >
              <Save className='w-4 h-4' />
              {isSaving ? 'Salvando...' : 'Salvar Alterações'}
