@@ -23,7 +23,9 @@ import {
   Send,
   CheckCheck,
   XCircle,
-  Bell
+  Bell,
+  Layers,
+  Trash2
 } from 'lucide-react';
 import { 
   BarChart, 
@@ -109,6 +111,9 @@ type TimeView = 'day' | 'week' | 'month';
 type ViewMode = 'grid' | 'analytics' | 'overview';
 type UserRole = 'ADM' | 'CONSULTOR' | 'GERENTE' | null;
 
+// Projetos privados aparecem mascarados como "Particular" para GERENTE/CONSULTOR
+const MASKED_PROJECT_ID = 'private-masked';
+
 export function Schedule() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
@@ -134,6 +139,31 @@ export function Schedule() {
 
   // Allocation Detail State
   const [selectedAllocation, setSelectedAllocation] = useState<Allocation | null>(null);
+  const [allocForm, setAllocForm] = useState({ projectId: '', date: '', os: '', manager: '' });
+  const [savingAlloc, setSavingAlloc] = useState(false);
+
+  // Edição em massa
+  const [showBulkModal, setShowBulkModal] = useState(false);
+  const [bulkSaving, setBulkSaving] = useState(false);
+  const [bulkForm, setBulkForm] = useState<{
+    action: 'create' | 'update' | 'delete';
+    consultantIds: string[];
+    startDate: string;
+    endDate: string;
+    weekdaysOnly: boolean;
+    projectId: string;
+    os: string;
+    manager: string;
+  }>({
+    action: 'create',
+    consultantIds: [],
+    startDate: format(new Date(), 'yyyy-MM-dd'),
+    endDate: format(addDays(new Date(), 6), 'yyyy-MM-dd'),
+    weekdaysOnly: true,
+    projectId: '',
+    os: '',
+    manager: ''
+  });
   const [logs, setLogs] = useState<DailyLog[]>([]);
   const [logDrafts, setLogDrafts] = useState<Record<string, string>>({});
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -333,40 +363,44 @@ export function Schedule() {
               is_private: p.is_private
            }));
 
-           // Filter projects logic
-           if (role === 'GERENTE') {
-               loadedProjects = loadedProjects.filter(p => !p.is_private);
-           }
-           
+           // RLS já oculta projetos privados para quem não é ADM (o nome nunca chega ao cliente).
            loadedProjects.forEach(p => visibleProjectIds.add(p.id));
            visibleProjectIds.add('free');
 
-           setProjects(prev => [...prev.filter(p => p.id === 'free'), ...loadedProjects]);
+           // Para GERENTE, adiciona um projeto "Particular" mascarado para representar
+           // alocações em projetos privados sem expor o nome real.
+           const projectsToSet = role === 'ADM'
+             ? loadedProjects
+             : [...loadedProjects, {
+                 id: MASKED_PROJECT_ID,
+                 name: 'Particular',
+                 color: 'bg-navy-200 text-navy-700 border-navy-300',
+                 is_private: true
+               }];
+
+           setProjects(prev => [...prev.filter(p => p.id === 'free'), ...projectsToSet]);
         }
-        
+
         // 4. Fetch Allocations
         let allocQuery = supabase.from('allocations').select('*');
-        
+
         if (role === 'CONSULTOR' && user) {
            allocQuery = allocQuery.eq('consultant_id', user.id);
         }
 
         const { data: allocData } = await allocQuery;
         const loadedAllocations = (allocData || [])
-            .map(a => ({
-               id: a.id,
-               consultantId: a.consultant_id,
-               projectId: a.project_id,
-               date: a.date,
-               os: a.os,
-               manager: a.manager,
-            }))
-            .filter(a => {
-                // If Manager, only show allocations for visible projects
-                if (role === 'GERENTE') {
-                    return visibleProjectIds.has(a.projectId);
-                }
-                return true;
+            .map(a => {
+               // Projeto não visível (privado) → mascara como "Particular" para não-ADM
+               const masked = role !== 'ADM' && !visibleProjectIds.has(a.project_id);
+               return {
+                 id: a.id,
+                 consultantId: a.consultant_id,
+                 projectId: masked ? MASKED_PROJECT_ID : a.project_id,
+                 date: a.date,
+                 os: masked ? null : a.os,
+                 manager: masked ? null : a.manager,
+               };
             });
         setAllocations(loadedAllocations);
         
@@ -696,15 +730,19 @@ export function Schedule() {
 
   const handleUpdateAllocation = async (id: string, updates: Partial<Allocation>) => {
       try {
-        const { error } = await supabase.from('allocations').update({
-           project_id: updates.projectId,
-           os: updates.os,
-           manager: updates.manager,
-        }).eq('id', id);
+        const dbUpdates: Record<string, any> = {};
+        if (updates.projectId !== undefined) dbUpdates.project_id = updates.projectId;
+        if (updates.date !== undefined) dbUpdates.date = updates.date;
+        if (updates.os !== undefined) dbUpdates.os = updates.os || null;
+        if (updates.manager !== undefined) dbUpdates.manager = updates.manager || null;
+
+        const { error } = await supabase.from('allocations').update(dbUpdates).eq('id', id);
 
         if (error) throw error;
 
-        setAllocations(prev => prev.map(a => a.id === id ? { ...a, ...updates } : a));
+        setAllocations(prev => prev.map(a => a.id === id
+          ? { ...a, ...updates, proj: updates.projectId ? projects.find(p => p.id === updates.projectId) : a.proj }
+          : a));
         // Update selectedAllocation if it's the one being edited
         if (selectedAllocation?.id === id) {
            setSelectedAllocation(prev => prev ? { ...prev, ...updates, proj: updates.projectId ? projects.find(p => p.id === updates.projectId) : prev.proj } : null);
@@ -712,7 +750,11 @@ export function Schedule() {
         alert('Agenda atualizada com sucesso!');
       } catch (err: any) {
         console.error(err);
-        alert('Erro ao atualizar agenda: ' + err.message);
+        if (err?.code === '23505' || String(err?.message || '').toLowerCase().includes('duplicate')) {
+          alert('Já existe uma agenda para este consultor nessa data. Escolha outra data.');
+        } else {
+          alert('Erro ao atualizar agenda: ' + (err?.message || 'desconhecido'));
+        }
       }
   };
 
@@ -918,6 +960,145 @@ export function Schedule() {
     }
   }, [userRole, currentUser]);
 
+
+  // Sincroniza o formulário de edição quando outra alocação é aberta
+  useEffect(() => {
+    if (selectedAllocation) {
+      setAllocForm({
+        projectId: selectedAllocation.projectId || '',
+        date: selectedAllocation.date || '',
+        os: selectedAllocation.os || '',
+        manager: selectedAllocation.manager || ''
+      });
+    }
+  }, [selectedAllocation?.id]);
+
+  const handleSaveAllocEdit = async () => {
+    if (!selectedAllocation) return;
+    if (!allocForm.projectId || !allocForm.date) {
+      alert('Selecione o projeto e a data.');
+      return;
+    }
+    setSavingAlloc(true);
+    await handleUpdateAllocation(selectedAllocation.id, {
+      projectId: allocForm.projectId,
+      date: allocForm.date,
+      os: allocForm.os,
+      manager: allocForm.manager
+    });
+    setSavingAlloc(false);
+  };
+
+  // Recarrega as alocações do banco respeitando o papel atual
+  const reloadAllocations = async () => {
+    let q = supabase.from('allocations').select('*');
+    if (userRole === 'CONSULTOR' && currentUser) q = q.eq('consultant_id', currentUser.id);
+    const { data } = await q;
+    setAllocations((data || []).map((a: any) => ({
+      id: a.id,
+      consultantId: a.consultant_id,
+      projectId: a.project_id,
+      date: a.date,
+      os: a.os,
+      manager: a.manager,
+      proj: projects.find(p => p.id === a.project_id)
+    })));
+  };
+
+  // Lista de datas dentro do intervalo (opcionalmente só dias úteis)
+  const buildBulkDates = (): string[] => {
+    const start = parseISO(bulkForm.startDate);
+    const end = parseISO(bulkForm.endDate);
+    if (differenceInDays(end, start) < 0) return [];
+    return eachDayOfInterval({ start, end })
+      .filter(d => !bulkForm.weekdaysOnly || (d.getDay() !== 0 && d.getDay() !== 6))
+      .map(d => format(d, 'yyyy-MM-dd'));
+  };
+
+  const handleBulkApply = async () => {
+    if (bulkForm.consultantIds.length === 0) {
+      alert('Selecione ao menos um consultor.');
+      return;
+    }
+    if (bulkForm.action !== 'delete' && !bulkForm.projectId && bulkForm.action === 'create') {
+      alert('Selecione o projeto para criar as agendas.');
+      return;
+    }
+    const dates = buildBulkDates();
+    if (dates.length === 0) {
+      alert('Intervalo de datas inválido.');
+      return;
+    }
+
+    const totalOps = bulkForm.consultantIds.length * dates.length;
+    const verbo = bulkForm.action === 'create' ? 'criar/sobrescrever' : bulkForm.action === 'update' ? 'alterar' : 'excluir';
+    if (!confirm(`Confirma ${verbo} agendas para ${bulkForm.consultantIds.length} consultor(es) em ${dates.length} dia(s)? (até ${totalOps} registros)`)) return;
+
+    setBulkSaving(true);
+    try {
+      const proj = projects.find(p => p.id === bulkForm.projectId);
+
+      if (bulkForm.action === 'create') {
+        const rows = bulkForm.consultantIds.flatMap(cid =>
+          dates.map(date => ({
+            consultant_id: cid,
+            project_id: bulkForm.projectId,
+            date,
+            os: (bulkForm.os || proj?.os || null),
+            manager: (bulkForm.manager || null)
+          }))
+        );
+        // Sobrescreve agenda existente do dia (constraint consultant_id + date)
+        const { error } = await supabase
+          .from('allocations')
+          .upsert(rows, { onConflict: 'consultant_id,date' });
+        if (error) throw error;
+      } else if (bulkForm.action === 'update') {
+        const updates: Record<string, any> = {};
+        if (bulkForm.projectId) updates.project_id = bulkForm.projectId;
+        if (bulkForm.os) updates.os = bulkForm.os;
+        if (bulkForm.manager) updates.manager = bulkForm.manager;
+        if (Object.keys(updates).length === 0) {
+          alert('Informe ao menos um campo para alterar (projeto, OS ou gerente).');
+          setBulkSaving(false);
+          return;
+        }
+        const { error } = await supabase
+          .from('allocations')
+          .update(updates)
+          .in('consultant_id', bulkForm.consultantIds)
+          .gte('date', bulkForm.startDate)
+          .lte('date', bulkForm.endDate);
+        if (error) throw error;
+      } else if (bulkForm.action === 'delete') {
+        const { error } = await supabase
+          .from('allocations')
+          .delete()
+          .in('consultant_id', bulkForm.consultantIds)
+          .gte('date', bulkForm.startDate)
+          .lte('date', bulkForm.endDate);
+        if (error) throw error;
+      }
+
+      await reloadAllocations();
+      setShowBulkModal(false);
+      alert('Operação em massa concluída com sucesso!');
+    } catch (err: any) {
+      console.error(err);
+      alert('Erro na operação em massa: ' + (err?.message || 'desconhecido'));
+    } finally {
+      setBulkSaving(false);
+    }
+  };
+
+  const toggleBulkConsultant = (id: string) => {
+    setBulkForm(f => ({
+      ...f,
+      consultantIds: f.consultantIds.includes(id)
+        ? f.consultantIds.filter(c => c !== id)
+        : [...f.consultantIds, id]
+    }));
+  };
 
   // --- Filtering ---
   const HIDDEN_EMAILS = ['andreimagagna@gmail.com', 'andrei@futuree.org'];
@@ -1127,7 +1308,15 @@ export function Schedule() {
                        <ClipboardList className='w-4 h-4' /> <span className='hidden sm:inline'>Relatório</span>
                     </button>
 
-                     <button 
+                     <button
+                      onClick={() => setShowBulkModal(true)}
+                      className='flex items-center gap-2 px-3 py-2 bg-white hover:bg-navy-50 text-navy-700 border border-navy-200 rounded-lg text-sm font-medium transition-colors shadow-sm'
+                      title="Editar agendas em massa"
+                    >
+                       <Layers className='w-4 h-4' /> <span className='hidden sm:inline'>Em massa</span>
+                    </button>
+
+                     <button
                       onClick={() => setShowModal(true)}
                       className='flex items-center gap-2 px-3 py-2 bg-navy-900 hover:bg-navy-800 text-white rounded-lg text-sm font-medium transition-colors shadow-sm'
                     >
@@ -2042,37 +2231,69 @@ export function Schedule() {
                     </div>
                  )}
 
-                 {/* Edit Form (Simple inline for now) */}
+                 {/* Edit Form (ADM) */}
                  {userRole === 'ADM' ? (
                     <div className='bg-white rounded-lg p-4 border border-navy-200 space-y-4 shadow-sm'>
-                        <h3 className="text-sm font-bold text-navy-800 uppercase tracking-wide mb-2">Editar Detalhes</h3>
+                        <h3 className="text-sm font-bold text-navy-800 uppercase tracking-wide mb-2">Editar Agenda</h3>
                         <div className="grid grid-cols-2 gap-4">
+                           <div className="col-span-2">
+                              <label className="text-xs font-semibold text-navy-500 block mb-1">Projeto</label>
+                              <select
+                                 className="w-full text-sm border-navy-300 rounded-md py-1.5 px-2 bg-white"
+                                 value={allocForm.projectId}
+                                 onChange={(e) => {
+                                   const proj = projects.find(p => p.id === e.target.value);
+                                   setAllocForm(f => ({
+                                     ...f,
+                                     projectId: e.target.value,
+                                     // Sugere a OS do projeto se a agenda ainda não tiver uma
+                                     os: f.os || proj?.os || ''
+                                   }));
+                                 }}
+                              >
+                                 {projects.filter(p => p.id !== 'free').map(p => (
+                                   <option key={p.id} value={p.id}>{p.name}</option>
+                                 ))}
+                              </select>
+                           </div>
                            <div>
                               <label className="text-xs font-semibold text-navy-500 block mb-1">Data</label>
-                              <div className="w-full text-sm border border-navy-200 rounded-md py-1.5 px-2 bg-navy-50 text-navy-700 font-medium">
-                                 {format(parseISO(selectedAllocation.date), 'dd/MM/yyyy')}
-                              </div>
+                              <input
+                                 type="date"
+                                 className="w-full text-sm border-navy-300 rounded-md py-1.5 px-2"
+                                 value={allocForm.date}
+                                 onChange={(e) => setAllocForm(f => ({ ...f, date: e.target.value }))}
+                              />
                            </div>
                            <div>
                               <label className="text-xs font-semibold text-navy-500 block mb-1">OS</label>
-                              <input 
-                                 type="text" 
+                              <input
+                                 type="text"
                                  className="w-full text-sm border-navy-300 rounded-md py-1.5 px-2"
-                                 value={selectedAllocation.os || ''}
-                                 onChange={(e) => handleUpdateAllocation(selectedAllocation.id, { os: e.target.value })}
+                                 value={allocForm.os}
+                                 onChange={(e) => setAllocForm(f => ({ ...f, os: e.target.value }))}
                               />
                            </div>
                            <div className="col-span-2">
                               <label className="text-xs font-semibold text-navy-500 block mb-1">Gerente</label>
-                              <select 
+                              <select
                                  className="w-full text-sm border-navy-300 rounded-md py-1.5 px-2"
-                                 value={selectedAllocation.manager || ''}
-                                 onChange={(e) => handleUpdateAllocation(selectedAllocation.id, { manager: e.target.value })}
+                                 value={allocForm.manager}
+                                 onChange={(e) => setAllocForm(f => ({ ...f, manager: e.target.value }))}
                               >
                                  <option value="">Nenhum</option>
                                  {uniqueManagers.map(m => <option key={m} value={m}>{m}</option>)}
                               </select>
                            </div>
+                        </div>
+                        <div className="flex justify-end">
+                           <button
+                             onClick={handleSaveAllocEdit}
+                             disabled={savingAlloc}
+                             className="px-4 py-2 text-sm font-semibold rounded-lg bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 transition-colors"
+                           >
+                             {savingAlloc ? 'Salvando...' : 'Salvar alterações'}
+                           </button>
                         </div>
                     </div>
                  ) : (
@@ -2337,6 +2558,196 @@ export function Schedule() {
                  {loadingLogs && <span className='flex items-center gap-1'><Clock className='w-3 h-3 animate-spin' /> Salvando...</span>}
               </div>
            </div>
+        </div>
+      )}
+
+      {/* --- Modal Edição em Massa (ADM) --- */}
+      {showBulkModal && userRole === 'ADM' && (
+        <div className='absolute inset-0 z-50 flex items-center justify-center p-4 bg-navy-900/60 backdrop-blur-sm animate-in fade-in duration-200'>
+          <div className='bg-white rounded-xl shadow-2xl w-full max-w-2xl animate-in zoom-in-95 duration-200 border border-navy-100 max-h-[90vh] flex flex-col'>
+            <div className='flex justify-between items-center p-6 border-b border-navy-100'>
+              <div className='flex items-center gap-3'>
+                <div className='p-2 bg-primary-50 rounded-lg text-primary-600'>
+                  <Layers className='w-6 h-6' />
+                </div>
+                <div>
+                  <h3 className='text-xl font-bold text-navy-900'>Edição em Massa</h3>
+                  <p className='text-sm text-navy-500'>Crie, altere ou exclua várias agendas de uma só vez.</p>
+                </div>
+              </div>
+              <button onClick={() => setShowBulkModal(false)} className='p-1 text-navy-400 hover:bg-navy-50 rounded-lg'>
+                <X className='w-5 h-5' />
+              </button>
+            </div>
+
+            <div className='flex-1 overflow-y-auto p-6 space-y-5'>
+              {/* Ação */}
+              <div>
+                <label className='block text-sm font-semibold text-navy-700 mb-2'>Ação</label>
+                <div className='grid grid-cols-3 gap-2'>
+                  {([
+                    { v: 'create', label: 'Criar', icon: Plus },
+                    { v: 'update', label: 'Alterar', icon: Save },
+                    { v: 'delete', label: 'Excluir', icon: Trash2 },
+                  ] as const).map(opt => (
+                    <button
+                      key={opt.v}
+                      onClick={() => setBulkForm(f => ({ ...f, action: opt.v }))}
+                      className={clsx(
+                        'flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg text-sm font-semibold border transition-colors',
+                        bulkForm.action === opt.v
+                          ? opt.v === 'delete'
+                            ? 'bg-red-50 border-red-300 text-red-700'
+                            : 'bg-primary-50 border-primary-300 text-primary-700'
+                          : 'bg-white border-navy-200 text-navy-600 hover:bg-navy-50'
+                      )}
+                    >
+                      <opt.icon className='w-4 h-4' /> {opt.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Consultores */}
+              <div>
+                <div className='flex items-center justify-between mb-2'>
+                  <label className='block text-sm font-semibold text-navy-700'>Consultores</label>
+                  <div className='flex gap-2 text-xs'>
+                    <button
+                      onClick={() => setBulkForm(f => ({ ...f, consultantIds: filteredConsultants.map(c => c.id) }))}
+                      className='text-primary-600 hover:underline'
+                    >Todos</button>
+                    <button
+                      onClick={() => setBulkForm(f => ({ ...f, consultantIds: [] }))}
+                      className='text-navy-400 hover:underline'
+                    >Limpar</button>
+                  </div>
+                </div>
+                <div className='grid grid-cols-2 gap-2 max-h-40 overflow-y-auto border border-navy-100 rounded-lg p-2'>
+                  {filteredConsultants.map(c => (
+                    <label key={c.id} className='flex items-center gap-2 text-sm text-navy-700 px-2 py-1.5 rounded hover:bg-navy-50 cursor-pointer'>
+                      <input
+                        type='checkbox'
+                        checked={bulkForm.consultantIds.includes(c.id)}
+                        onChange={() => toggleBulkConsultant(c.id)}
+                        className='rounded border-navy-300 text-primary-600 focus:ring-primary-500'
+                      />
+                      <span className='truncate'>{c.name}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Intervalo */}
+              <div className='grid grid-cols-2 gap-3'>
+                <div>
+                  <label className='block text-sm font-semibold text-navy-700 mb-1.5'>Data início</label>
+                  <input
+                    type='date'
+                    value={bulkForm.startDate}
+                    onChange={e => setBulkForm(f => ({ ...f, startDate: e.target.value }))}
+                    className='w-full rounded-lg border border-navy-200 text-sm p-2.5 focus:ring-2 focus:ring-primary-100 focus:border-primary-400'
+                  />
+                </div>
+                <div>
+                  <label className='block text-sm font-semibold text-navy-700 mb-1.5'>Data fim</label>
+                  <input
+                    type='date'
+                    value={bulkForm.endDate}
+                    onChange={e => setBulkForm(f => ({ ...f, endDate: e.target.value }))}
+                    className='w-full rounded-lg border border-navy-200 text-sm p-2.5 focus:ring-2 focus:ring-primary-100 focus:border-primary-400'
+                  />
+                </div>
+              </div>
+
+              <label className='flex items-center gap-2 text-sm text-navy-700'>
+                <input
+                  type='checkbox'
+                  checked={bulkForm.weekdaysOnly}
+                  onChange={e => setBulkForm(f => ({ ...f, weekdaysOnly: e.target.checked }))}
+                  className='rounded border-navy-300 text-primary-600 focus:ring-primary-500'
+                />
+                Apenas dias úteis (seg–sex)
+              </label>
+
+              {/* Campos de projeto/OS/gerente (não para exclusão) */}
+              {bulkForm.action !== 'delete' && (
+                <div className='space-y-3 border-t border-navy-100 pt-4'>
+                  <div>
+                    <label className='block text-sm font-semibold text-navy-700 mb-1.5'>
+                      Projeto {bulkForm.action === 'update' && <span className='font-normal text-navy-400'>(opcional)</span>}
+                    </label>
+                    <select
+                      value={bulkForm.projectId}
+                      onChange={e => {
+                        const proj = projects.find(p => p.id === e.target.value);
+                        setBulkForm(f => ({ ...f, projectId: e.target.value, os: f.os || proj?.os || '' }));
+                      }}
+                      className='w-full rounded-lg border border-navy-200 bg-white text-sm p-2.5 focus:ring-2 focus:ring-primary-100 focus:border-primary-400'
+                    >
+                      <option value=''>{bulkForm.action === 'update' ? 'Manter projeto atual' : 'Selecione...'}</option>
+                      {projects.filter(p => p.id !== 'free').map(p => (
+                        <option key={p.id} value={p.id}>{p.name}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className='grid grid-cols-2 gap-3'>
+                    <div>
+                      <label className='block text-sm font-semibold text-navy-700 mb-1.5'>OS {bulkForm.action === 'update' && <span className='font-normal text-navy-400'>(opcional)</span>}</label>
+                      <input
+                        type='text'
+                        value={bulkForm.os}
+                        onChange={e => setBulkForm(f => ({ ...f, os: e.target.value }))}
+                        placeholder='Ex: OS-12345'
+                        className='w-full rounded-lg border border-navy-200 text-sm p-2.5 focus:ring-2 focus:ring-primary-100 focus:border-primary-400'
+                      />
+                    </div>
+                    <div>
+                      <label className='block text-sm font-semibold text-navy-700 mb-1.5'>Gerente {bulkForm.action === 'update' && <span className='font-normal text-navy-400'>(opcional)</span>}</label>
+                      <select
+                        value={bulkForm.manager}
+                        onChange={e => setBulkForm(f => ({ ...f, manager: e.target.value }))}
+                        className='w-full rounded-lg border border-navy-200 bg-white text-sm p-2.5 focus:ring-2 focus:ring-primary-100 focus:border-primary-400'
+                      >
+                        <option value=''>{bulkForm.action === 'update' ? 'Manter gerente atual' : 'Nenhum'}</option>
+                        {uniqueManagers.map(m => <option key={m} value={m}>{m}</option>)}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {bulkForm.action === 'create' && (
+                <p className='text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg p-2.5'>
+                  Atenção: se já existir agenda para o consultor em algum dia do intervalo, ela será <strong>sobrescrita</strong> pelo projeto selecionado.
+                </p>
+              )}
+              {bulkForm.action === 'delete' && (
+                <p className='text-xs text-red-700 bg-red-50 border border-red-200 rounded-lg p-2.5'>
+                  Todas as agendas dos consultores selecionados dentro do intervalo serão <strong>excluídas</strong>.
+                </p>
+              )}
+            </div>
+
+            <div className='flex justify-end gap-3 p-6 border-t border-navy-100'>
+              <button
+                onClick={() => setShowBulkModal(false)}
+                className='px-4 py-2.5 border border-navy-200 text-navy-700 font-medium rounded-lg hover:bg-navy-50 transition-colors'
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={handleBulkApply}
+                disabled={bulkSaving}
+                className={clsx(
+                  'flex items-center gap-2 px-6 py-2.5 text-white font-medium rounded-lg transition-colors shadow-lg disabled:opacity-50',
+                  bulkForm.action === 'delete' ? 'bg-red-600 hover:bg-red-700' : 'bg-primary-600 hover:bg-primary-700'
+                )}
+              >
+                {bulkSaving ? 'Aplicando...' : 'Aplicar'}
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
