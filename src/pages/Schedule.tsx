@@ -1924,54 +1924,53 @@ export function Schedule() {
             </div>
         ) : viewMode === 'grid' ? (
         <div className='flex-1 card overflow-hidden flex flex-col'>
-           
-           {/* Table Header */}
-           <div className='flex overflow-hidden border-b border-navy-200 bg-navy-50/90 z-20'>
-               <div className='w-64 shrink-0 p-3 font-bold text-[11px] text-navy-500 uppercase tracking-widest border-r border-navy-200 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.05)] z-20 bg-white/50 backdrop-blur-md'>
-                 Consultor
-               </div>
-               
-               <div className='flex-1 overflow-x-auto custom-scrollbar flex'>
-                  {timeView === 'month' ? (
-                     <div className='p-3 w-full text-center font-semibold text-xs text-navy-500 uppercase tracking-wider'>
-                       Resumo de Disponibilidade ({format(currentDate, 'MMMM', { locale: ptBR })})
-                     </div>
-                  ) : (
-                    timeColumns.map((date, idx) => {
-                      const isToday = isSameDay(date, new Date());
-                      const isWeekend = date.getDay() === 0 || date.getDay() === 6;
-                      
-                      return (
-                      <div key={idx} className={clsx(
-                        'border-r border-navy-200 p-2 text-center box-border shrink-0 transition-colors',
-                        isToday ? 'bg-primary-50/50 relative' : isWeekend ? 'bg-slate-50' : 'bg-navy-50',
-                        timeView === 'week' ? 'w-32' : 'w-24'
-                      )}>
-                         {isToday && (
-                           <div className="absolute top-0 bottom-0 left-0 w-[3px] bg-primary-500 rounded-r-full h-full"></div>
-                         )}
-                         <div className={clsx('text-xs font-semibold', isToday ? 'text-primary-700' : 'text-navy-700')}>
-                           {format(date, 'dd MMM', { locale: ptBR })}
-                         </div>
-                         <div className='text-[10px] text-navy-400 font-medium capitalize'>
-                           {format(date, 'EEEE', { locale: ptBR }).split('-')[0]}
-                         </div>
-                      </div>
-                    )})
-                  )}
-               </div>
-           </div>
-
-           {/* Table Body */}
-           <div className='overflow-y-auto overflow-x-auto flex-1 custom-scrollbar'>
+           <div className='overflow-auto flex-1 custom-scrollbar relative'>
               <div className='min-w-max w-full'>
+                 {/* Table Header */}
+                 <div className='flex border-b border-navy-200 bg-navy-50/90 z-30 sticky top-0 backdrop-blur-md'>
+                     <div className='w-40 md:w-64 shrink-0 p-3 font-bold text-[11px] text-navy-500 uppercase tracking-widest border-r border-navy-200 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.05)] sticky left-0 z-40 bg-navy-50/90 backdrop-blur-md'>
+                       Consultor
+                     </div>
+                     
+                     <div className='flex-1 flex'>
+                        {timeView === 'month' ? (
+                           <div className='p-3 w-full text-center font-semibold text-xs text-navy-500 uppercase tracking-wider'>
+                             Resumo de Disponibilidade ({format(currentDate, 'MMMM', { locale: ptBR })})
+                           </div>
+                        ) : (
+                          timeColumns.map((date, idx) => {
+                            const isToday = isSameDay(date, new Date());
+                            const isWeekend = date.getDay() === 0 || date.getDay() === 6;
+                            
+                            return (
+                            <div key={idx} className={clsx(
+                              'border-r border-navy-200 p-2 text-center box-border shrink-0 transition-colors',
+                              isToday ? 'bg-primary-50/50 relative' : isWeekend ? 'bg-slate-50' : 'bg-navy-50',
+                              timeView === 'week' ? 'w-32' : 'w-24'
+                            )}>
+                               {isToday && (
+                                 <div className="absolute top-0 bottom-0 left-0 w-[3px] bg-primary-500 rounded-r-full h-full"></div>
+                               )}
+                               <div className={clsx('text-xs font-semibold', isToday ? 'text-primary-700' : 'text-navy-700')}>
+                                 {format(date, 'dd MMM', { locale: ptBR })}
+                               </div>
+                               <div className='text-[10px] text-navy-400 font-medium capitalize'>
+                                 {format(date, 'EEEE', { locale: ptBR }).split('-')[0]}
+                               </div>
+                            </div>
+                          )})
+                        )}
+                     </div>
+                 </div>
+
+                 {/* Table Body */}
                  {filteredConsultants.map(consultant => {
                    return (
                    <div key={consultant.id} className='flex group hover:bg-navy-50/30 transition-colors border-b border-navy-100 last:border-0'>
                       {/* Name Column */}
                       <div 
                          onClick={() => { setSelectedConsultantId(consultant.id); setTimeView('month'); }}
-                         className='w-64 shrink-0 sticky left-0 z-10 bg-white group-hover:bg-navy-50/30 border-r border-navy-200 p-3 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.05)] cursor-pointer hover:bg-navy-50 transition-colors'
+                         className='w-40 md:w-64 shrink-0 sticky left-0 z-20 bg-white group-hover:bg-navy-50/30 border-r border-navy-200 p-2 md:p-3 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.05)] cursor-pointer hover:bg-navy-50 transition-colors'
                       >
                          <div className='flex items-center gap-3'>
                            <div className='w-8 h-8 rounded-full bg-navy-100 flex items-center justify-center text-navy-600 text-xs font-bold border border-navy-200'>
