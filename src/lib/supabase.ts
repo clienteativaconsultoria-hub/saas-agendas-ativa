@@ -13,7 +13,7 @@ export type Database = {
           id: string;
           email: string;
           full_name: string;
-          role: 'ADM' | 'CONSULTOR';
+          role: 'ADM' | 'GERENTE' | 'CONSULTOR';
           avatar_url: string | null;
           phone: string | null;
           location: string | null;
@@ -24,7 +24,7 @@ export type Database = {
           id: string;
           email: string;
           full_name: string;
-          role?: 'ADM' | 'CONSULTOR';
+          role?: 'ADM' | 'GERENTE' | 'CONSULTOR';
           avatar_url?: string | null;
           phone?: string | null;
           location?: string | null;
@@ -35,7 +35,7 @@ export type Database = {
           id?: string;
           email?: string;
           full_name?: string;
-          role?: 'ADM' | 'CONSULTOR';
+          role?: 'ADM' | 'GERENTE' | 'CONSULTOR';
           avatar_url?: string | null;
           phone?: string | null;
           location?: string | null;
@@ -47,31 +47,43 @@ export type Database = {
         Row: {
           id: string;
           name: string;
-          client_name: string;
+          client: string | null;
           color: string;
           status: string;
+          manager: string | null;
+          os: string | null;
           deadline: string | null;
           progress: number;
+          is_private: boolean;
+          tipo: 'MV' | 'Particular';
           created_at: string;
         };
         Insert: {
           id?: string;
           name: string;
-          client_name: string;
-          color: string;
-          status: string;
+          client?: string | null;
+          color?: string;
+          status?: string;
+          manager?: string | null;
+          os?: string | null;
           deadline?: string | null;
           progress?: number;
+          is_private?: boolean;
+          tipo?: 'MV' | 'Particular';
           created_at?: string;
         };
         Update: {
           id?: string;
           name?: string;
-          client_name?: string;
+          client?: string | null;
           color?: string;
           status?: string;
+          manager?: string | null;
+          os?: string | null;
           deadline?: string | null;
           progress?: number;
+          is_private?: boolean;
+          tipo?: 'MV' | 'Particular';
           created_at?: string;
         };
       };
@@ -80,9 +92,7 @@ export type Database = {
           id: string;
           consultant_id: string;
           project_id: string;
-          start_date: string;
-          end_date: string; // Using start/end simplifies ranges vs just 'week'
-          days: number;
+          date: string; // 1 registro = 1 dia
           os: string | null;
           manager: string | null;
           created_at: string;
@@ -91,9 +101,7 @@ export type Database = {
           id?: string;
           consultant_id: string;
           project_id: string;
-          start_date: string;
-          end_date: string;
-          days: number;
+          date: string;
           os?: string | null;
           manager?: string | null;
           created_at?: string;
@@ -102,9 +110,7 @@ export type Database = {
           id?: string;
           consultant_id?: string;
           project_id?: string;
-          start_date?: string;
-          end_date?: string;
-          days?: number;
+          date?: string;
           os?: string | null;
           manager?: string | null;
           created_at?: string;
