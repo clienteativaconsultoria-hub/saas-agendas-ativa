@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import {
-  FileSpreadsheet, Upload, CheckCircle2, AlertTriangle, XCircle,
+  Upload, CheckCircle2, AlertTriangle, XCircle,
   ArrowRight, Loader2, Info
 } from 'lucide-react';
 import * as XLSX from 'xlsx';
@@ -211,7 +211,6 @@ export function Import() {
     <div className="min-h-full p-6 space-y-6">
       <div>
         <h1 className="text-[1.375rem] font-extrabold text-navy-950 tracking-tight flex items-center gap-2">
-          <FileSpreadsheet className="w-7 h-7 text-navy-900" />
           Conferência por Excel
         </h1>
         <p className="text-sm text-navy-500 mt-0.5">

@@ -233,7 +233,6 @@ export function Reports() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-[1.375rem] font-extrabold text-navy-950 tracking-tight flex items-center gap-2">
-            <FileText className="w-7 h-7 text-primary-600" />
             Relatório — Diário de Bordo
           </h1>
           <p className="text-sm text-navy-500 mt-0.5">
