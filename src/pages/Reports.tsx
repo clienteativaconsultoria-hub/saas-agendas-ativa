@@ -4,8 +4,12 @@ import {
   FileText, Download, Search, Filter, Calendar as CalendarIcon,
   FileSpreadsheet, Users, Briefcase, CheckCircle2, Clock, ChevronDown
 } from 'lucide-react';
-import { format, parseISO, endOfMonth } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
+import {
+  format, parseISO, endOfMonth, startOfMonth,
+  startOfWeek, endOfWeek, startOfQuarter, endOfQuarter
+} from 'date-fns';
+
+type PeriodPreset = 'month' | 'week' | 'quarter' | 'custom';
 import * as XLSX from 'xlsx';
 
 const HIDDEN_EMAILS = ['andreimagagna@gmail.com', 'andrei@futuree.org'];
@@ -25,7 +29,9 @@ type LogEntry = {
 
 export function Reports() {
   const [loading, setLoading] = useState(false);
-  const [month, setMonth] = useState(format(new Date(), 'yyyy-MM'));
+  const [periodPreset, setPeriodPreset] = useState<PeriodPreset>('month');
+  const [startDate, setStartDate] = useState(format(startOfMonth(new Date()), 'yyyy-MM-dd'));
+  const [endDate, setEndDate] = useState(format(endOfMonth(new Date()), 'yyyy-MM-dd'));
   const [consultants, setConsultants] = useState<{ id: string; full_name: string }[]>([]);
   const [projects, setProjects] = useState<{ id: string; name: string }[]>([]);
   const [selectedConsultant, setSelectedConsultant] = useState('all');
@@ -52,14 +58,40 @@ export function Reports() {
     setProjects(projectData || []);
   };
 
+  const applyPreset = (preset: PeriodPreset) => {
+    setPeriodPreset(preset);
+    const now = new Date();
+    if (preset === 'month') {
+      setStartDate(format(startOfMonth(now), 'yyyy-MM-dd'));
+      setEndDate(format(endOfMonth(now), 'yyyy-MM-dd'));
+    } else if (preset === 'week') {
+      setStartDate(format(startOfWeek(now, { weekStartsOn: 1 }), 'yyyy-MM-dd'));
+      setEndDate(format(endOfWeek(now, { weekStartsOn: 1 }), 'yyyy-MM-dd'));
+    } else if (preset === 'quarter') {
+      setStartDate(format(startOfQuarter(now), 'yyyy-MM-dd'));
+      setEndDate(format(endOfQuarter(now), 'yyyy-MM-dd'));
+    }
+    // 'custom' mantém as datas atuais para o usuário ajustar
+  };
+
+  const periodLabel = () => {
+    try {
+      const s = format(parseISO(startDate), 'dd/MM/yyyy');
+      const e = format(parseISO(endDate), 'dd/MM/yyyy');
+      return `${s} — ${e}`;
+    } catch {
+      return '';
+    }
+  };
+
   const handleGenerate = async () => {
+    if (startDate > endDate) {
+      alert('A data inicial não pode ser maior que a final.');
+      return;
+    }
     setLoading(true);
     setHasSearched(true);
     try {
-      const [year, monthNum] = month.split('-');
-      const startDate = `${year}-${monthNum}-01`;
-      const endDate = format(endOfMonth(parseISO(startDate)), 'yyyy-MM-dd');
-
       let query = supabase
         .from('project_daily_logs')
         .select(`
@@ -156,7 +188,7 @@ export function Reports() {
 
     // Summary sheet
     const summaryRows = [
-      { 'Indicador': 'Período', 'Valor': format(parseISO(`${month}-01`), 'MMMM yyyy', { locale: ptBR }) },
+      { 'Indicador': 'Período', 'Valor': periodLabel() },
       { 'Indicador': 'Total de Registros', 'Valor': stats.total },
       { 'Indicador': 'Concluídos', 'Valor': stats.completed },
       { 'Indicador': 'Pendentes', 'Valor': stats.pending },
@@ -167,7 +199,7 @@ export function Reports() {
     wsSummary['!cols'] = [{ wch: 25 }, { wch: 30 }];
     XLSX.utils.book_append_sheet(wb, wsSummary, 'Resumo');
 
-    XLSX.writeFile(wb, `relatorio_diario_${month}.xlsx`);
+    XLSX.writeFile(wb, `relatorio_diario_${startDate}_a_${endDate}.xlsx`);
     setShowExportMenu(false);
   };
 
@@ -187,7 +219,7 @@ export function Reports() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', `relatorio_diario_${month}.csv`);
+    link.setAttribute('download', `relatorio_diario_${startDate}_a_${endDate}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -211,18 +243,57 @@ export function Reports() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white p-6 rounded-xl border border-navy-100 shadow-sm">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
-          {/* Month */}
+      <div className="bg-white p-6 rounded-xl border border-navy-100 shadow-sm space-y-4">
+        {/* Period presets */}
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-xs font-semibold text-navy-600 uppercase tracking-wider flex items-center gap-1.5 mr-1">
+            <CalendarIcon className="w-3.5 h-3.5 text-navy-400" /> Período
+          </span>
+          {([
+            { v: 'week', label: 'Semana' },
+            { v: 'month', label: 'Mês' },
+            { v: 'quarter', label: 'Trimestre' },
+            { v: 'custom', label: 'Personalizado' },
+          ] as const).map(p => (
+            <button
+              key={p.v}
+              onClick={() => applyPreset(p.v)}
+              className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors ${
+                periodPreset === p.v
+                  ? 'bg-primary-600 text-white border-primary-600'
+                  : 'bg-white text-navy-600 border-navy-200 hover:bg-navy-50'
+              }`}
+            >
+              {p.label}
+            </button>
+          ))}
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 items-end">
+          {/* Start date */}
           <div className="space-y-1.5">
             <label className="text-xs font-semibold text-navy-600 flex items-center gap-1.5 uppercase tracking-wider">
               <CalendarIcon className="w-3.5 h-3.5 text-navy-400" />
-              Mês
+              Início
             </label>
             <input
-              type="month"
-              value={month}
-              onChange={e => setMonth(e.target.value)}
+              type="date"
+              value={startDate}
+              onChange={e => { setStartDate(e.target.value); setPeriodPreset('custom'); }}
+              className="w-full p-2.5 text-sm border border-navy-200 rounded-lg focus:ring-2 focus:ring-primary-100 focus:border-primary-500 outline-none transition-all"
+            />
+          </div>
+
+          {/* End date */}
+          <div className="space-y-1.5">
+            <label className="text-xs font-semibold text-navy-600 flex items-center gap-1.5 uppercase tracking-wider">
+              <CalendarIcon className="w-3.5 h-3.5 text-navy-400" />
+              Fim
+            </label>
+            <input
+              type="date"
+              value={endDate}
+              onChange={e => { setEndDate(e.target.value); setPeriodPreset('custom'); }}
               className="w-full p-2.5 text-sm border border-navy-200 rounded-lg focus:ring-2 focus:ring-primary-100 focus:border-primary-500 outline-none transition-all"
             />
           </div>
@@ -454,7 +525,7 @@ export function Reports() {
         {logs.length > 0 && (
           <div className="px-4 py-3 border-t border-navy-100 bg-navy-50/50 flex items-center justify-between text-xs text-navy-500">
             <span>{logs.length} registro{logs.length !== 1 ? 's' : ''} encontrado{logs.length !== 1 ? 's' : ''}</span>
-            <span className="capitalize">{format(parseISO(`${month}-01`), 'MMMM yyyy', { locale: ptBR })}</span>
+            <span>{periodLabel()}</span>
           </div>
         )}
       </div>
