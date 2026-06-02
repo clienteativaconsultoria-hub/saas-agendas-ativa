@@ -423,13 +423,13 @@ export function Projects() {
            <table className='w-full text-left text-sm'>
              <thead className='bg-navy-50/60 border-b border-navy-100 text-[11px] uppercase text-navy-500 font-bold tracking-wider'>
                <tr>
-                 <th className='px-6 py-4'>Projeto</th>
-                 <th className='px-6 py-4'>Tipo</th>
-                 <th className='px-6 py-4'>Gerente</th>
-                 <th className='px-6 py-4'>Status</th>
-                 <th className='px-6 py-4'>Prazo</th>
-                 <th className='px-6 py-4'>Progresso</th>
-                 <th className='px-6 py-4 text-right'>Ações</th>
+                 <th className='table-header'>Projeto</th>
+                 <th className='table-header'>Tipo</th>
+                 <th className='table-header'>Gerente</th>
+                 <th className='table-header'>Status</th>
+                 <th className='table-header'>Prazo</th>
+                 <th className='table-header'>Progresso</th>
+                 <th className='table-header text-right'>Ações</th>
                </tr>
              </thead>
              <tbody className='divide-y divide-navy-50'>
@@ -441,7 +441,7 @@ export function Projects() {
                        {project.name}
                      </div>
                    </td>
-                   <td className='px-6 py-4'>
+                   <td className='table-header'>
                      <span className={clsx(
                        'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold border',
                        project.tipo === 'Particular'
@@ -457,7 +457,7 @@ export function Projects() {
                         {project.manager || '-'}
                      </div>
                    </td>
-                   <td className='px-6 py-4'>
+                   <td className='table-header'>
                       <span className={clsx(
                         'px-2.5 py-0.5 rounded-full text-xs font-medium border',
                         project.status === 'Em Andamento' ? 'bg-primary-50 text-primary-700 border-primary-100' :
@@ -474,7 +474,7 @@ export function Projects() {
                         {project.deadline}
                       </div>
                    </td>
-                   <td className='px-6 py-4'>
+                   <td className='table-header'>
                       <div className='flex items-center gap-2 max-w-[100px]'>
                         <div className='flex-1 h-1.5 bg-navy-100 rounded-full overflow-hidden'>
                           <div className='h-full bg-primary-600 rounded-full' style={{ width: `${project.progress}%` }}></div>
@@ -482,7 +482,7 @@ export function Projects() {
                         <span className='text-xs text-navy-500 font-medium'>{project.progress}%</span>
                       </div>
                    </td>
-                   <td className='px-6 py-4 text-right'>
+                   <td className='table-header text-right'>
                       <div className='flex items-center justify-end gap-1'>
                         <button
                           onClick={() => handleOpenEdit(project)}

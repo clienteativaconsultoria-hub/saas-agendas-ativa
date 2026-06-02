@@ -458,12 +458,12 @@ export function Reports() {
             <table className="w-full text-left text-sm">
               <thead className="bg-navy-50/60 border-b border-navy-100">
                 <tr>
-                  <th className="px-4 py-3 text-xs font-bold text-navy-500 uppercase tracking-wider">Data</th>
-                  <th className="px-4 py-3 text-xs font-bold text-navy-500 uppercase tracking-wider">Consultor</th>
-                  <th className="px-4 py-3 text-xs font-bold text-navy-500 uppercase tracking-wider">Projeto</th>
-                  <th className="px-4 py-3 text-xs font-bold text-navy-500 uppercase tracking-wider">OS</th>
-                  <th className="px-4 py-3 text-xs font-bold text-navy-500 uppercase tracking-wider w-[35%]">Atividade</th>
-                  <th className="px-4 py-3 text-xs font-bold text-navy-500 uppercase tracking-wider text-center">Status</th>
+                  <th className="table-header">Data</th>
+                  <th className="table-header">Consultor</th>
+                  <th className="table-header">Projeto</th>
+                  <th className="table-header">OS</th>
+                  <th className="table-header w-[35%]">Atividade</th>
+                  <th className="table-header text-center">Status</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-navy-50">

@@ -1223,9 +1223,9 @@ export function Schedule() {
                  {/* Date Navigation */}
                  <div className='flex items-center bg-white border border-navy-100 rounded-xl shadow-sm p-1 gap-1'>
                     <div className='flex items-center gap-1 border-r border-navy-100 pr-2 mr-2 pl-1'>
-                       <button onClick={handleJumpToToday} className='text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-navy-50 text-navy-600 transition-colors'>Hoje</button>
-                       <button onClick={handleJumpToWeek} className='text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-navy-50 text-navy-600 transition-colors'>Sem</button>
-                       <button onClick={handleJumpToMonth} className='text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-navy-50 text-navy-600 transition-colors'>Mês</button>
+                       <button onClick={handleJumpToToday} className='btn-ghost px-3 py-1.5'>Hoje</button>
+                       <button onClick={handleJumpToWeek} className='btn-ghost px-3 py-1.5'>Sem</button>
+                       <button onClick={handleJumpToMonth} className='btn-ghost px-3 py-1.5'>Mês</button>
                     </div>
                     
                     <button onClick={handlePrevDate} className='p-1.5 hover:bg-navy-50 rounded-lg text-navy-400 hover:text-navy-900 transition-colors'>
@@ -1266,7 +1266,7 @@ export function Schedule() {
                     className={clsx(
                       'relative flex items-center gap-2 px-3 py-2 border rounded-lg text-sm font-medium transition-colors shadow-sm',
                       showRequestsPanel 
-                        ? 'bg-amber-50 text-amber-700 border-amber-200' 
+                        ? 'bg-primary-50 text-primary-700 border-primary-200' 
                         : 'bg-white hover:bg-navy-50 text-navy-700 border-navy-200'
                     )}
                     title="Solicitações de Alteração"
@@ -1289,7 +1289,7 @@ export function Schedule() {
                        className={clsx(
                          'relative flex items-center gap-2 px-3 py-2 border rounded-lg text-sm font-medium transition-colors shadow-sm',
                          showMyRequestsPanel
-                           ? 'bg-amber-50 text-amber-700 border-amber-200'
+                           ? 'bg-primary-50 text-primary-700 border-primary-200'
                            : 'bg-white hover:bg-navy-50 text-navy-700 border-navy-200'
                        )}
                        title="Minhas Solicitações de Alteração"
@@ -1304,7 +1304,7 @@ export function Schedule() {
                      </button>
                      <button
                        onClick={() => { setSolicitacaoModalTab('alterar'); setShowSolicitacaoModal(true); }}
-                       className='flex items-center gap-2 px-3 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-sm font-medium transition-colors shadow-sm'
+                       className='flex items-center gap-2 btn-primary bg-primary-600 transition-colors shadow-sm'
                        title="Solicitar Alteração de Agenda"
                      >
                        <MessageSquarePlus className='w-4 h-4' />
@@ -1317,7 +1317,7 @@ export function Schedule() {
                    <>
                      <button 
                       onClick={() => setShowReportModal(true)}
-                      className='flex items-center gap-2 px-3 py-2 bg-white hover:bg-navy-50 text-navy-700 border border-navy-200 rounded-lg text-sm font-medium transition-colors shadow-sm'
+                      className='flex items-center gap-2 px-3 py-2 btn-secondary transition-colors shadow-sm'
                       title="Relatório de Bordo"
                     >
                        <ClipboardList className='w-4 h-4' /> <span className='hidden sm:inline'>Relatório</span>
@@ -1325,7 +1325,7 @@ export function Schedule() {
 
                      <button
                       onClick={() => setShowBulkModal(true)}
-                      className='flex items-center gap-2 px-3 py-2 bg-white hover:bg-navy-50 text-navy-700 border border-navy-200 rounded-lg text-sm font-medium transition-colors shadow-sm'
+                      className='flex items-center gap-2 px-3 py-2 btn-secondary transition-colors shadow-sm'
                       title="Editar agendas em massa"
                     >
                        <Layers className='w-4 h-4' /> <span className='hidden sm:inline'>Em massa</span>
@@ -1333,7 +1333,7 @@ export function Schedule() {
 
                      <button
                       onClick={() => setShowModal(true)}
-                      className='flex items-center gap-2 px-3 py-2 bg-navy-900 hover:bg-navy-800 text-white rounded-lg text-sm font-medium transition-colors shadow-sm'
+                      className='flex items-center gap-2 px-3 py-2 btn-primary transition-colors shadow-sm'
                     >
                       <Plus className='w-4 h-4' /> Novo
                     </button>
@@ -3056,10 +3056,10 @@ export function Schedule() {
                       <table className='w-full text-left border-collapse'>
                         <thead className='bg-navy-50 sticky top-0 z-10 text-xs font-bold text-navy-500 uppercase tracking-wider'>
                            <tr>
-                             <th className='p-3 border-b border-navy-200'>Data</th>
-                             <th className='p-3 border-b border-navy-200'>Consultor</th>
-                             <th className='p-3 border-b border-navy-200'>Projeto</th>
-                             <th className='p-3 border-b border-navy-200 w-1/2'>Atividade Descrita</th>
+                             <th className='table-header'>Data</th>
+                             <th className='table-header'>Consultor</th>
+                             <th className='table-header'>Projeto</th>
+                             <th className='table-header w-1/2'>Atividade Descrita</th>
                            </tr>
                         </thead>
                         <tbody className='divide-y divide-navy-100 text-sm'>

@@ -67,9 +67,9 @@ const roleLabel: Record<string, string> = {
 };
 
 const roleColors: Record<string, string> = {
-  ADM: 'bg-primary-100 text-primary-800',
-  CONSULTOR: 'bg-emerald-100 text-emerald-800',
-  GERENTE: 'bg-amber-100 text-amber-800',
+  ADM: 'badge pill-info',
+  CONSULTOR: 'badge pill-neutral',
+  GERENTE: 'badge pill-neutral',
 };
 
 export function Consultants() {
@@ -385,7 +385,7 @@ export function Consultants() {
               <CheckCircle2 className='w-5 h-5 text-emerald-600' />
             </div>
             <div>
-              <p className='text-2xl font-bold text-emerald-700'>{stats.ativos}</p>
+              <p className='text-2xl font-bold text-navy-900'>{stats.ativos}</p>
               <p className='text-xs text-navy-500'>Ativos</p>
             </div>
           </div>
@@ -396,7 +396,7 @@ export function Consultants() {
               <Shield className='w-5 h-5 text-primary-600' />
             </div>
             <div>
-              <p className='text-2xl font-bold text-primary-700'>{stats.admins}</p>
+              <p className='text-2xl font-bold text-navy-900'>{stats.admins}</p>
               <p className='text-xs text-navy-500'>Admins</p>
             </div>
           </div>
@@ -407,7 +407,7 @@ export function Consultants() {
               <User className='w-5 h-5 text-amber-600' />
             </div>
             <div>
-              <p className='text-2xl font-bold text-amber-700'>{stats.consultores}</p>
+              <p className='text-2xl font-bold text-navy-900'>{stats.consultores}</p>
               <p className='text-xs text-navy-500'>Consultores</p>
             </div>
           </div>
@@ -431,7 +431,7 @@ export function Consultants() {
       {/* Grid List */}
       {filtered.length === 0 ? (
         <div className='card p-12 text-center text-navy-400'>
-          <Users className='w-12 h-12 mx-auto mb-3 opacity-30' />
+          <Users className='w-12 h-12 mx-auto mb-3 opacity-20 text-navy-400' />
           <p className='text-lg font-medium'>Nenhum consultor encontrado</p>
           <p className='text-sm mt-1'>Tente ajustar a busca ou adicione um novo consultor.</p>
         </div>
@@ -441,7 +441,7 @@ export function Consultants() {
             <div key={consultant.id} className='card card-hover group'>
               <div className='p-6'>
                 <div className='flex justify-between items-start mb-4'>
-                  <div className='w-12 h-12 rounded-full bg-gradient-to-br from-navy-100 to-navy-200 flex items-center justify-center text-navy-700 font-bold text-lg border-2 border-white shadow-sm'>
+                  <div className='w-12 h-12 rounded-full bg-navy-100 text-navy-600 flex items-center justify-center text-navy-700 font-bold text-lg border-2 border-white shadow-sm'>
                     {consultant.avatar}
                   </div>
                   {/* Action Buttons */}
@@ -473,8 +473,8 @@ export function Consultants() {
                 <div className='mb-4'>
                   <h3 className='font-bold text-lg text-navy-900'>{consultant.name}</h3>
                   <span className={clsx(
-                    'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mt-1',
-                    roleColors[consultant.role] || 'bg-navy-100 text-navy-800'
+                    'mt-1',
+                    roleColors[consultant.role] || 'badge pill-neutral'
                   )}>
                     {roleLabel[consultant.role] || consultant.role}
                   </span>
@@ -506,8 +506,8 @@ export function Consultants() {
                   className={clsx(
                     'flex items-center gap-2 text-xs font-medium rounded-full px-2.5 py-1 transition-colors',
                     consultant.status === 'Ativo'
-                      ? 'text-emerald-700 bg-emerald-50 hover:bg-emerald-100'
-                      : 'text-red-700 bg-red-50 hover:bg-red-100'
+                      ? 'pill-success border border-emerald-100'
+                      : 'pill-danger border border-rose-100'
                   )}
                 >
                   <div className={clsx(
