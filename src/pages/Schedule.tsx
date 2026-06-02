@@ -1709,15 +1709,18 @@ export function Schedule() {
                         </div>
 
                         {/* Per-Consultant Table */}
-                        <div className="bg-white border border-navy-200 rounded-xl overflow-hidden shadow-sm">
-                           <div className="grid grid-cols-[1fr_80px_80px_80px_1fr] gap-2 px-5 py-3.5 table-header border-t-0">
-                              <span>Consultor</span>
-                              <span className="text-center">Ocupados</span>
-                              <span className="text-center">Livres</span>
-                              <span className="text-center">Ocupação</span>
-                              <span>Distribuição</span>
-                           </div>
-                           {consultantStats.map((stat) => (
+                        <div className="bg-white border border-navy-200 rounded-xl shadow-sm overflow-hidden flex flex-col">
+                           <div className="overflow-x-auto custom-scrollbar flex-1">
+                              <div className="min-w-[800px]">
+                                 <div className="grid grid-cols-[1fr_80px_80px_80px_1fr] gap-2 px-5 py-3.5 table-header border-t-0 bg-navy-50 sticky top-0 z-10">
+                                    <div className="text-left font-bold text-[10px] uppercase tracking-wider text-navy-500">Consultor</div>
+                                    <div className="text-center font-bold text-[10px] uppercase tracking-wider text-navy-500">Ocupados</div>
+                                    <div className="text-center font-bold text-[10px] uppercase tracking-wider text-navy-500">Livres</div>
+                                    <div className="text-center font-bold text-[10px] uppercase tracking-wider text-navy-500">Ocupação</div>
+                                    <div className="text-left font-bold text-[10px] uppercase tracking-wider text-navy-500 pl-4">Distribuição</div>
+                                 </div>
+                                 <div className="bg-white">
+                                    {consultantStats.map((stat) => (
                               <div
                                  key={stat.id}
                                  onClick={() => { setSelectedConsultantId(stat.id); setViewMode('grid'); setTimeView('month'); }}
@@ -1771,7 +1774,10 @@ export function Schedule() {
                                     </div>
                                  </div>
                               </div>
-                           ))}
+                                    ))}
+                                 </div>
+                              </div>
+                           </div>
                         </div>
 
                         {/* Tip */}
