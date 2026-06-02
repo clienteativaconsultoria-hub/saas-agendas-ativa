@@ -1695,11 +1695,11 @@ export function Schedule() {
                         {/* Legend + Work Days Badge */}
                         <div className="flex flex-wrap items-center gap-4 text-sm mb-5">
                            <span className="flex items-center gap-1.5 text-navy-500">
-                              <span className="w-3 h-3 rounded-full bg-emerald-400 inline-block"></span>
+                              <span className="w-3 h-3 rounded-full bg-navy-200 inline-block"></span>
                               Disponível
                            </span>
                            <span className="flex items-center gap-1.5 text-navy-500">
-                              <span className="w-3 h-3 rounded-full bg-red-400 inline-block"></span>
+                              <span className="w-3 h-3 rounded-full bg-primary-500 inline-block"></span>
                               Ocupado
                            </span>
                            <span className="px-2.5 py-1 bg-navy-100 rounded-full text-xs font-bold text-navy-600">
@@ -1709,23 +1709,23 @@ export function Schedule() {
 
                         {/* KPI Cards */}
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-                           <div className="bg-emerald-50 border border-emerald-100 rounded-xl p-5 text-center">
-                              <div className="text-4xl font-bold text-emerald-600">{totalAvailable}</div>
-                              <div className="text-xs font-semibold text-emerald-500 uppercase tracking-wide mt-1">Dias Disponíveis (soma)</div>
+                           <div className="card p-5 text-center">
+                              <div className="text-4xl font-bold text-navy-900">{totalAvailable}</div>
+                              <div className="text-xs font-semibold text-navy-500 uppercase tracking-wide mt-1">Dias Disponíveis (soma)</div>
                            </div>
-                           <div className="bg-red-50 border border-red-100 rounded-xl p-5 text-center">
-                              <div className="text-4xl font-bold text-red-600">{totalBusy}</div>
-                              <div className="text-xs font-semibold text-red-500 uppercase tracking-wide mt-1">Dias Ocupados (soma)</div>
+                           <div className="card p-5 text-center">
+                              <div className="text-4xl font-bold text-navy-900">{totalBusy}</div>
+                              <div className="text-xs font-semibold text-navy-500 uppercase tracking-wide mt-1">Dias Ocupados (soma)</div>
                            </div>
-                           <div className="bg-primary-50 border border-primary-100 rounded-xl p-5 text-center">
+                           <div className="card p-5 text-center">
                               <div className="text-4xl font-bold text-primary-600">{avgOccupancy}%</div>
-                              <div className="text-xs font-semibold text-primary-500 uppercase tracking-wide mt-1">Taxa Média de Ocupação</div>
+                              <div className="text-xs font-semibold text-navy-500 uppercase tracking-wide mt-1">Taxa Média de Ocupação</div>
                            </div>
                         </div>
 
                         {/* Per-Consultant Table */}
                         <div className="bg-white border border-navy-200 rounded-xl overflow-hidden shadow-sm">
-                           <div className="grid grid-cols-[1fr_80px_80px_80px_1fr] gap-2 px-5 py-3.5 border-b border-navy-200 bg-navy-50 text-[11px] font-bold text-navy-500 uppercase tracking-wider">
+                           <div className="grid grid-cols-[1fr_80px_80px_80px_1fr] gap-2 px-5 py-3.5 table-header border-t-0">
                               <span>Consultor</span>
                               <span className="text-center">Ocupados</span>
                               <span className="text-center">Livres</span>
@@ -1741,7 +1741,7 @@ export function Schedule() {
                                  )}
                               >
                                  <div className="flex items-center gap-3 min-w-0">
-                                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-navy-100 to-navy-200 flex items-center justify-center text-navy-700 text-xs font-bold border border-navy-200 shrink-0">
+                                    <div className="w-10 h-10 rounded-full bg-navy-100 text-navy-600 flex items-center justify-center text-navy-700 text-xs font-bold border border-navy-200 shrink-0">
                                        {stat.name.substring(0,2).toUpperCase()}
                                     </div>
                                     <div className="overflow-hidden">
@@ -1750,10 +1750,10 @@ export function Schedule() {
                                     </div>
                                  </div>
                                  <div className="flex items-center justify-center">
-                                    <span className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-red-50 text-base font-bold text-red-600 border border-red-100">{stat.busy}</span>
+                                    <span className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-navy-50 text-base font-bold text-primary-600 border border-navy-100">{stat.busy}</span>
                                  </div>
                                  <div className="flex items-center justify-center">
-                                    <span className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-emerald-50 text-base font-bold text-emerald-600 border border-emerald-100">{stat.available}</span>
+                                    <span className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-navy-50 text-base font-bold text-navy-600 border border-navy-100">{stat.available}</span>
                                  </div>
                                  <div className="flex items-center justify-center">
                                     <span className={clsx(
