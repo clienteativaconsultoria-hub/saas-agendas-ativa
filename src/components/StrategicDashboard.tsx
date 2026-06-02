@@ -14,7 +14,7 @@ import {
   TrendingUp, TrendingDown, Minus, ChevronLeft, ChevronRight
 } from 'lucide-react';
 
-const CHART_COLORS = ['#0369a1', '#0ea5e9', '#14b8a6', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#64748b'];
+const CHART_COLORS = ['#3b76e1', '#10b981', '#f59e0b', '#8b5cf6', '#f43f5e', '#0ea5e9', '#6366f1', '#64748b'];
 
 interface Allocation {
   id: string;
@@ -343,7 +343,7 @@ export function StrategicDashboard() {
         {/* Chart 1: Occupation per Consultant */}
         <div className="card p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-base font-bold text-navy-800">Ocupação por Consultor</h3>
+            <h3 className="text-[1.125rem] font-bold text-navy-950">Ocupação por Consultor</h3>
             <span className="text-xs text-navy-400">{kpis.totalAllocatedDays}/{kpis.totalCapacity} dias</span>
           </div>
           {occupationByConsultant.length === 0 ? (
@@ -367,7 +367,7 @@ export function StrategicDashboard() {
                     {occupationByConsultant.map((entry, i) => (
                       <Cell
                         key={i}
-                        fill={entry.allocation >= 100 ? '#ef4444' : entry.allocation >= 80 ? '#f59e0b' : '#0ea5e9'}
+                        fill={entry.allocation >= 100 ? '#f43f5e' : entry.allocation >= 80 ? '#f59e0b' : '#3b76e1'}
                       />
                     ))}
                   </Bar>
@@ -380,7 +380,7 @@ export function StrategicDashboard() {
         {/* Chart 2: Project Distribution */}
         <div className="card p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-base font-bold text-navy-800">Distribuição por Projeto</h3>
+            <h3 className="text-[1.125rem] font-bold text-navy-950">Distribuição por Projeto</h3>
             <span className="text-xs text-navy-400">Top {projectDistribution.length} projetos</span>
           </div>
           {projectDistribution.length === 0 ? (
@@ -421,7 +421,7 @@ export function StrategicDashboard() {
         {/* Chart 3: Monthly Evolution */}
         <div className="card p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-base font-bold text-navy-800">Evolução Mensal</h3>
+            <h3 className="text-[1.125rem] font-bold text-navy-950">Evolução Mensal</h3>
             <span className="text-xs text-navy-400">Últimos 5 meses</span>
           </div>
           <div className="h-[280px]">
@@ -429,21 +429,21 @@ export function StrategicDashboard() {
               <AreaChart data={monthlyEvolution} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
                 <defs>
                   <linearGradient id="colorAloc" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#0ea5e9" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="#0ea5e9" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#3b76e1" stopOpacity={0.4} />
+                    <stop offset="95%" stopColor="#3b76e1" stopOpacity={0} />
                   </linearGradient>
                   <linearGradient id="colorLogs" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.4} />
+                    <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
                 <XAxis dataKey="name" tick={{ fontSize: 11 }} />
                 <YAxis tick={{ fontSize: 11 }} />
-                <RechartsTooltip contentStyle={{ borderRadius: 8, border: '1px solid #e2e8f0', fontSize: 12 }} />
+                <RechartsTooltip contentStyle={{ borderRadius: 12, border: '1px solid #e2e8f0', fontSize: 12, boxShadow: '0 4px 20px -2px rgba(15,23,42,0.05)' }} />
                 <Legend wrapperStyle={{ fontSize: 11 }} />
-                <Area type="monotone" dataKey="Dias Alocados" stroke="#0ea5e9" strokeWidth={2.5} fill="url(#colorAloc)" dot={{ r: 4 }} activeDot={{ r: 6 }} />
-                <Area type="monotone" dataKey="Diários Preenchidos" stroke="#8b5cf6" strokeWidth={2} fill="url(#colorLogs)" dot={{ r: 3 }} />
+                <Area type="monotone" dataKey="Dias Alocados" stroke="#3b76e1" strokeWidth={3} fill="url(#colorAloc)" dot={{ r: 4, fill: '#3b76e1', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 6 }} />
+                <Area type="monotone" dataKey="Diários Preenchidos" stroke="#10b981" strokeWidth={3} fill="url(#colorLogs)" dot={{ r: 4, fill: '#10b981', strokeWidth: 2, stroke: '#fff' }} />
               </AreaChart>
             </ResponsiveContainer>
           </div>
@@ -452,7 +452,7 @@ export function StrategicDashboard() {
         {/* Chart 4: Future Availability */}
         <div className="card p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-base font-bold text-navy-800">Previsão de Disponibilidade</h3>
+            <h3 className="text-[1.125rem] font-bold text-navy-950">Previsão de Disponibilidade</h3>
             <span className="text-xs text-navy-400">Próximos 3 meses</span>
           </div>
           {futureAvailability.every(d => d.Ocupado === 0 && d.Livre === 0) ? (
@@ -466,23 +466,23 @@ export function StrategicDashboard() {
                   <YAxis tick={{ fontSize: 11 }} />
                   <RechartsTooltip
                     formatter={(value: any, name: string | undefined) => [`${value} dias`, name]}
-                    contentStyle={{ borderRadius: 8, border: '1px solid #e2e8f0', fontSize: 12 }}
+                    contentStyle={{ borderRadius: 12, border: '1px solid #e2e8f0', fontSize: 12, boxShadow: '0 4px 20px -2px rgba(15,23,42,0.05)' }}
                   />
                   <Legend wrapperStyle={{ fontSize: 11 }} />
-                  <Bar dataKey="Ocupado" stackId="a" fill="#94a3b8" radius={[0, 0, 0, 0]} barSize={40} />
-                  <Bar dataKey="Livre" stackId="a" fill="#22c55e" radius={[4, 4, 0, 0]} barSize={40} />
+                  <Bar dataKey="Ocupado" stackId="a" fill="#cbd5e1" radius={[0, 0, 0, 0]} barSize={40} />
+                  <Bar dataKey="Livre" stackId="a" fill="#10b981" radius={[6, 6, 0, 0]} barSize={40} />
                 </ComposedChart>
               </ResponsiveContainer>
             </div>
           )}
           {/* Percentage labels below */}
-          <div className="flex justify-around mt-3">
+          <div className="flex justify-around mt-3 pt-4 border-t border-navy-50">
             {futureAvailability.map((m, i) => (
               <div key={i} className="text-center">
-                <span className={`text-sm font-bold ${m.pct > 80 ? 'text-red-500' : m.pct > 50 ? 'text-amber-500' : 'text-emerald-600'}`}>
+                <span className={`text-[1.25rem] font-extrabold ${m.pct > 80 ? 'text-rose-500' : m.pct > 50 ? 'text-amber-500' : 'text-emerald-500'}`}>
                   {m.pct}%
                 </span>
-                <p className="text-[10px] text-navy-400">ocupado</p>
+                <p className="text-[10px] text-navy-400 font-bold tracking-wider uppercase mt-0.5">ocupado</p>
               </div>
             ))}
           </div>

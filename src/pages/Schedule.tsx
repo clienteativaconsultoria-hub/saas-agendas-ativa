@@ -1203,16 +1203,16 @@ export function Schedule() {
                  <div className='w-px h-8 bg-navy-100 mx-2 hidden md:block'></div>
 
                  {/* Resolution Switcher */}
-                 <div className='inline-flex bg-navy-50 rounded-lg p-1 border border-navy-100 shadow-sm'>
+                 <div className='flex items-center gap-1 p-1 bg-white rounded-xl border border-navy-100 shadow-sm'>
                     {(['day', 'week', 'month'] as TimeView[]).map((mode) => (
                       <button
                         key={mode}
                         onClick={() => setTimeView(mode)}
                         className={clsx(
-                          'px-4 py-1.5 rounded-md text-sm font-semibold transition-all capitalize',
+                          'px-5 py-2 rounded-lg text-sm font-semibold transition-all duration-200 capitalize',
                           timeView === mode 
-                            ? 'bg-white text-primary-700 shadow-sm ring-1 ring-black/5' 
-                            : 'text-navy-500 hover:text-navy-700 hover:bg-navy-100/50'
+                            ? 'bg-navy-950 text-white shadow-md' 
+                            : 'text-navy-500 hover:text-navy-900 hover:bg-navy-50'
                         )}
                       >
                         {mode === 'day' ? 'Dia' : mode === 'week' ? 'Semana' : 'Mês'}
@@ -1221,22 +1221,22 @@ export function Schedule() {
                  </div>
 
                  {/* Date Navigation */}
-                 <div className='flex items-center bg-white border border-navy-100 rounded-lg shadow-sm px-2 py-1 gap-2'>
-                    <div className='flex items-center gap-1 border-r border-navy-100 pr-2 mr-2'>
-                       <button onClick={handleJumpToToday} className='text-xs font-semibold px-2 py-1 rounded hover:bg-navy-50 text-navy-600 transition-colors' title='Ir para Hoje'>Hoje</button>
-                       <button onClick={handleJumpToWeek} className='text-xs font-semibold px-2 py-1 rounded hover:bg-navy-50 text-navy-600 transition-colors' title='Ver semana atual'>Sem</button>
-                       <button onClick={handleJumpToMonth} className='text-xs font-semibold px-2 py-1 rounded hover:bg-navy-50 text-navy-600 transition-colors' title='Ver mês atual'>Mês</button>
+                 <div className='flex items-center bg-white border border-navy-100 rounded-xl shadow-sm p-1 gap-1'>
+                    <div className='flex items-center gap-1 border-r border-navy-100 pr-2 mr-2 pl-1'>
+                       <button onClick={handleJumpToToday} className='text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-navy-50 text-navy-600 transition-colors'>Hoje</button>
+                       <button onClick={handleJumpToWeek} className='text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-navy-50 text-navy-600 transition-colors'>Sem</button>
+                       <button onClick={handleJumpToMonth} className='text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-navy-50 text-navy-600 transition-colors'>Mês</button>
                     </div>
                     
-                    <button onClick={handlePrevDate} className='p-1 hover:bg-navy-50 rounded-md text-navy-400 hover:text-navy-900 transition-colors'>
+                    <button onClick={handlePrevDate} className='p-1.5 hover:bg-navy-50 rounded-lg text-navy-400 hover:text-navy-900 transition-colors'>
                       <ChevronLeft className='w-5 h-5' />
                     </button>
-                    <span className='font-bold text-navy-800 min-w-[200px] text-center text-sm px-2'>
+                    <span className='font-extrabold text-navy-950 min-w-[200px] text-center text-sm px-2 tracking-tight'>
                        {timeView === 'day' && 'Próximos 7 dias'}
                        {timeView === 'week' && `${format(timeColumns[0], 'dd MMM', { locale: ptBR })} - ${format(timeColumns[timeColumns.length-1], 'dd MMM yyyy', { locale: ptBR })}`}
                        {timeView === 'month' && format(currentDate, 'MMMM yyyy', { locale: ptBR }).toUpperCase()}
                     </span>
-                    <button onClick={handleNextDate} className='p-1 hover:bg-navy-50 rounded-md text-navy-400 hover:text-navy-900 transition-colors'>
+                    <button onClick={handleNextDate} className='p-1.5 hover:bg-navy-50 rounded-lg text-navy-400 hover:text-navy-900 transition-colors'>
                       <ChevronRight className='w-5 h-5' />
                     </button>
                  </div>
@@ -1942,7 +1942,7 @@ export function Schedule() {
            
            {/* Table Header */}
            <div className='flex overflow-hidden border-b border-navy-200 bg-navy-50/90 z-20'>
-               <div className='w-64 shrink-0 p-3 font-semibold text-xs text-navy-500 uppercase tracking-wider border-r border-navy-200 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.05)] z-20 bg-navy-50'>
+               <div className='w-64 shrink-0 p-3 font-bold text-[11px] text-navy-500 uppercase tracking-widest border-r border-navy-200 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.05)] z-20 bg-white/50 backdrop-blur-md'>
                  Consultor
                </div>
                
@@ -2008,7 +2008,7 @@ export function Schedule() {
 
                             return (
                               <div key={idx} className={clsx(
-                                'border-r border-navy-100 p-1 box-border shrink-0 flex flex-col gap-1 overflow-y-auto transition-colors',
+                                'border-r border-navy-100 p-1.5 box-border shrink-0 flex flex-col gap-1.5 overflow-y-auto transition-colors',
                                 isToday ? 'bg-primary-50/20' : isWeekend ? 'bg-slate-50/40' : '',
                                 timeView === 'week' ? 'w-32' : 'w-24'
                               )}>
@@ -2021,7 +2021,7 @@ export function Schedule() {
                                       key={`${cell.id}-${cIdx}`}
                                       onClick={() => cell.projectId !== 'free' && handleCellClick(cell)}
                                       className={clsx(
-                                        'w-full min-h-[28px] rounded-md flex items-center justify-center text-xs font-medium cursor-pointer transition-all hover:scale-[1.02] border',
+                                        'w-full min-h-[30px] rounded-md flex items-center justify-center text-[11px] font-bold tracking-tight cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border shadow-sm',
                                         cell.proj?.color || 'bg-navy-50 border-navy-100 text-navy-300 hover:bg-navy-100',
                                         cell.projectId === 'free' && 'hidden'
                                       )}
@@ -2097,10 +2097,10 @@ export function Schedule() {
                                   <RePieChart>
                                      <Pie
                                         data={[
-                                           { name: 'Em Andamento', value: projects.filter(p => p.status === 'Em Andamento').length, color: '#3b82f6' },
+                                           { name: 'Em Andamento', value: projects.filter(p => p.status === 'Em Andamento').length, color: '#3b76e1' },
                                            { name: 'Em Planejamento', value: projects.filter(p => p.status === 'Em Planejamento').length, color: '#f59e0b' },
                                            { name: 'Concluído', value: projects.filter(p => p.status === 'Concluído').length, color: '#10b981' },
-                                           { name: 'Crítico', value: projects.filter(p => p.status === 'Crítico').length, color: '#ef4444' }
+                                           { name: 'Crítico', value: projects.filter(p => p.status === 'Crítico').length, color: '#f43f5e' }
                                         ].filter(d => d.value > 0)}
                                         dataKey="value"
                                         nameKey="name"
@@ -2111,7 +2111,7 @@ export function Schedule() {
                                      >
                                        {
                                           projects.map((_, index) => (
-                                             <Cell key={`cell-${index}`} fill={['#3b82f6', '#f59e0b', '#10b981', '#ef4444'][index % 4]} />
+                                             <Cell key={`cell-${index}`} fill={['#3b76e1', '#f59e0b', '#10b981', '#f43f5e'][index % 4]} />
                                           )) // Note: Colors handled in data map above effectively
                                        }
                                      </Pie>
@@ -2144,7 +2144,7 @@ export function Schedule() {
                                      <XAxis type="number" />
                                      <YAxis dataKey="name" type="category" width={100} style={{ fontSize: '12px' }} />
                                      <Tooltip />
-                                     <Bar dataKey="days" fill="#4f46e5" radius={[0, 4, 4, 0]} name="Dias" />
+                                     <Bar dataKey="days" fill="#3b76e1" radius={[0, 6, 6, 0]} name="Dias" />
                                   </BarChart>
                               </ResponsiveContainer>
                            </div>
@@ -2192,7 +2192,7 @@ export function Schedule() {
                                               acc[curr.projectId].value += 1; // cada registro = 1 dia
                                               return acc;
                                            }, {} as Record<string, {name: string, value: number}>)).map((_, index) => (
-                                              <Cell key={`cell-${index}`} fill={['#6366f1', '#8b5cf6', '#ec4899', '#14b8a6', '#f59e0b'][index % 5]} />
+                                              <Cell key={`cell-${index}`} fill={['#3b76e1', '#8b5cf6', '#f43f5e', '#10b981', '#f59e0b'][index % 5]} />
                                           ))
                                        }
                                     </Pie>
