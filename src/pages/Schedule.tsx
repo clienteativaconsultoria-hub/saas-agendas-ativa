@@ -1352,7 +1352,7 @@ export function Schedule() {
                     <input 
                        type='text' 
                        placeholder='Buscar por nome ou cargo...'
-                       className='pl-10 block w-full rounded-lg border-navy-200 bg-navy-50 border text-sm text-navy-900 focus:ring-primary-500 focus:border-primary-500 p-2.5 outline-none focus:bg-white transition-all'
+                       className='input pl-10 bg-navy-50 border-navy-100'
                        value={filterText}
                        onChange={(e) => setFilterText(e.target.value)}
                     />
@@ -1360,7 +1360,7 @@ export function Schedule() {
                  
                  <div>
                     <select 
-                       className='block w-full rounded-lg border-navy-200 bg-navy-50 border text-sm text-navy-900 focus:ring-primary-500 focus:border-primary-500 p-2.5 outline-none focus:bg-white transition-all'
+                       className='input bg-navy-50 border-navy-100'
                        value={selectedProjectFilter}
                        onChange={(e) => setSelectedProjectFilter(e.target.value)}
                     >
@@ -1373,7 +1373,7 @@ export function Schedule() {
 
                  <div className="flex gap-2">
                     <select 
-                       className='block w-full rounded-lg border-navy-200 bg-navy-50 border text-sm text-navy-900 focus:ring-primary-500 focus:border-primary-500 p-2.5 outline-none focus:bg-white transition-all'
+                       className='input bg-navy-50 border-navy-100'
                        value={selectedManagerFilter}
                        onChange={(e) => setSelectedManagerFilter(e.target.value)}
                     >
@@ -2059,7 +2059,7 @@ export function Schedule() {
              <div className='max-w-6xl mx-auto space-y-8'>
                 <div className='mb-6'>
                    <h2 className='text-xl font-bold text-navy-900'>Dashboard de Alocações</h2>
-                   <p className='text-navy-500'>Visão geral de desempenho e distribuição.</p>
+                   <p className='text-sm text-navy-500 mt-0.5'>Visão geral de desempenho e distribuição.</p>
                 </div>
 
                 {/* KPI Cards */}
@@ -3022,7 +3022,7 @@ export function Schedule() {
                  <label className='block text-xs font-bold text-navy-600 uppercase tracking-wider mb-1'>Mês de Referência</label>
                  <input 
                    type='month'
-                   className='rounded-lg border-navy-300 shadow-sm focus:border-primary-500 text-sm p-2 bg-white'
+                   className='input p-2 bg-white'
                    value={reportMonth}
                    onChange={(e) => setReportMonth(e.target.value)}
                  />
@@ -3030,7 +3030,7 @@ export function Schedule() {
               <div className='min-w-[200px]'>
                  <label className='block text-xs font-bold text-navy-600 uppercase tracking-wider mb-1'>Consultor</label>
                  <select 
-                     className='w-full rounded-lg border-navy-300 shadow-sm focus:border-primary-500 text-sm p-2 bg-white'
+                     className='input p-2 bg-white'
                      value={reportConsultant}
                      onChange={(e) => setReportConsultant(e.target.value)}
                  >
@@ -3135,7 +3135,7 @@ export function Schedule() {
                       <User className='w-4 h-4' /> Consultor
                     </label>
                     <select
-                      className='w-full rounded-lg border-navy-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm p-2.5 border bg-white'
+                      className='input p-2.5 bg-white'
                       value={newAlloc.consultantId}
                       onChange={(e) => setNewAlloc({...newAlloc, consultantId: e.target.value})}
                     >
@@ -3152,7 +3152,7 @@ export function Schedule() {
                       <Briefcase className='w-4 h-4' /> Projeto
                     </label>
                     <select
-                      className='w-full rounded-lg border-navy-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm p-2.5 border bg-white'
+                      className='input p-2.5 bg-white'
                       value={newAlloc.projectId}
                       onChange={(e) => {
                         const sel = projects.find(p => p.id === e.target.value);
