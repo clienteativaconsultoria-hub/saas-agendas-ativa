@@ -348,9 +348,9 @@ export function Projects() {
       {/* Stats Overview */}
       <div className='grid grid-cols-1 md:grid-cols-4 gap-4'>
         {[
-          { label: 'Projetos Ativos', value: projects.filter(p => p.status === 'Em Andamento').length, icon: Briefcase, color: 'text-primary-600', bg: 'bg-primary-50' },
-          { label: 'Tipo Particular', value: projects.filter(p => p.tipo === 'Particular').length, icon: Building2, color: 'text-amber-600', bg: 'bg-amber-50' },
-          { label: 'Tipo MV', value: projects.filter(p => p.tipo === 'MV').length, icon: Briefcase, color: 'text-indigo-600', bg: 'bg-indigo-50' },
+          { label: 'Projetos Ativos', value: projects.filter(p => p.status === 'Em Andamento').length, icon: Briefcase, color: 'text-primary-600', bg: 'bg-navy-50' },
+          { label: 'Tipo Particular', value: projects.filter(p => p.tipo === 'Particular').length, icon: Building2, color: 'text-primary-600', bg: 'bg-navy-50' },
+          { label: 'Tipo MV', value: projects.filter(p => p.tipo === 'MV').length, icon: Briefcase, color: 'text-primary-600', bg: 'bg-navy-50' },
           { label: 'Clientes Únicos', value: new Set(projects.map(p => p.client).filter(c => c !== 'Não informado')).size, icon: Building2, color: 'text-navy-600', bg: 'bg-navy-50' },
         ].map((stat, idx) => (
           <div key={idx} className='card p-4 flex items-center justify-between'>

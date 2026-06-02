@@ -232,10 +232,10 @@ export function Requests() {
       {/* ── Stats ── */}
       <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
         {[
-          { label: 'Total',     value: requests.length,  icon: Bell,         color: 'text-navy-600',    bg: 'bg-navy-50'    },
-          { label: 'Pendentes', value: counts.pending,   icon: Clock,        color: 'text-amber-600',   bg: 'bg-amber-50'   },
-          { label: 'Aprovados', value: counts.approved,  icon: CheckCircle2, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-          { label: 'Recusados', value: counts.rejected,  icon: AlertCircle,  color: 'text-red-500',     bg: 'bg-red-50'     },
+          { label: 'Total',     value: requests.length,  icon: Bell,         color: 'text-primary-600', bg: 'bg-navy-50'    },
+          { label: 'Pendentes', value: counts.pending,   icon: Clock,        color: 'text-primary-600', bg: 'bg-navy-50'   },
+          { label: 'Aprovados', value: counts.approved,  icon: CheckCircle2, color: 'text-primary-600', bg: 'bg-navy-50' },
+          { label: 'Recusados', value: counts.rejected,  icon: AlertCircle,  color: 'text-primary-600', bg: 'bg-navy-50'     },
         ].map(s => (
           <div key={s.label} className='card p-4 flex items-center justify-between'>
             <div>

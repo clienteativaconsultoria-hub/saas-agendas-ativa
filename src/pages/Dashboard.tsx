@@ -157,8 +157,8 @@ export function Dashboard() {
           <div className='hidden lg:flex items-center gap-3 flex-shrink-0'>
             {[
               { label: 'Hoje', value: todayAllocations.length, icon: CalendarDays, color: 'text-primary-300' },
-              { label: 'Alertas', value: projectAlerts.length, icon: AlertTriangle, color: 'text-amber-300' },
-              { label: 'Pendentes', value: pendingLogs.length, icon: Clock, color: 'text-purple-300' },
+              { label: 'Alertas', value: projectAlerts.length, icon: AlertTriangle, color: 'text-primary-300' },
+              { label: 'Pendentes', value: pendingLogs.length, icon: Clock, color: 'text-primary-300' },
             ].map((k) => (
               <div key={k.label} className='flex flex-col items-center px-5 py-4 rounded-xl'
                 style={{ background: 'rgba(255,255,255,0.07)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.10)' }}>
@@ -354,13 +354,13 @@ export function Dashboard() {
             <div className='card flex flex-col' style={{ minHeight: '380px' }}>
               <div className='px-5 py-4 border-b border-navy-50 flex items-center justify-between'>
                 <div className='flex items-center gap-2.5'>
-                  <div className='w-8 h-8 rounded-lg bg-purple-50 flex items-center justify-center'>
-                    <Clock className='w-4 h-4 text-purple-500' />
+                  <div className='w-8 h-8 rounded-lg bg-navy-50 flex items-center justify-center'>
+                    <Clock className='w-4 h-4 text-primary-500' />
                   </div>
                   <h3 className='font-bold text-navy-900 text-sm'>Diários Pendentes</h3>
                 </div>
                 {pendingLogs.length > 0 && (
-                  <span className='min-w-[24px] h-6 flex items-center justify-center px-2 rounded-full text-xs font-bold bg-purple-100 text-purple-700'>
+                  <span className='min-w-[24px] h-6 flex items-center justify-center px-2 rounded-full text-xs font-bold bg-navy-100 text-navy-700'>
                     {pendingLogs.length}
                   </span>
                 )}
@@ -412,9 +412,9 @@ export function Dashboard() {
             <p className='text-xs font-bold uppercase tracking-widest text-navy-400 mb-3'>Ações rápidas</p>
             <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
               {[
-                { to: '/schedule', icon: CalendarDays, label: 'Nova Alocação', sub: 'Acessar grade de agendas', iconBg: 'bg-primary-50', iconColor: 'text-primary-600' },
-                { to: '/projects', icon: Building2, label: 'Novo Projeto', sub: 'Cadastrar cliente ou projeto', iconBg: 'bg-indigo-50', iconColor: 'text-indigo-600' },
-                { to: '/consultants', icon: Users, label: 'Gerenciar Equipe', sub: 'Ver e editar consultores', iconBg: 'bg-emerald-50', iconColor: 'text-emerald-600' },
+                { to: '/schedule', icon: CalendarDays, label: 'Nova Alocação', sub: 'Acessar grade de agendas', iconBg: 'bg-navy-50', iconColor: 'text-primary-600' },
+                { to: '/projects', icon: Building2, label: 'Novo Projeto', sub: 'Cadastrar cliente ou projeto', iconBg: 'bg-navy-50', iconColor: 'text-primary-600' },
+                { to: '/consultants', icon: Users, label: 'Gerenciar Equipe', sub: 'Ver e editar consultores', iconBg: 'bg-navy-50', iconColor: 'text-primary-600' },
               ].map(item => (
                 <NavLink key={item.to} to={item.to} className='group'>
                   <div className='card card-hover p-4 flex items-center gap-4'>

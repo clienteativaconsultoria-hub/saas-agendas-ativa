@@ -14,7 +14,7 @@ import {
   TrendingUp, TrendingDown, Minus, ChevronLeft, ChevronRight
 } from 'lucide-react';
 
-const CHART_COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#f43f5e', '#0ea5e9', '#6366f1', '#64748b'];
+const CHART_COLORS = ['#3b82f6', '#60a5fa', '#93c5fd', '#bfdbfe', '#1e40af', '#2563eb', '#1d4ed8', '#1e3a8a'];
 
 interface Allocation {
   id: string;
@@ -313,11 +313,11 @@ export function StrategicDashboard() {
       {/* KPI Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: 'Consultores ativos', value: kpis.activeConsultants, sub: 'equipe', Icon: Users, iconBg: 'bg-primary-50', iconColor: 'text-primary-600', badge: null },
-          { label: 'Projetos alocados', value: kpis.activeProjects, sub: 'no mês', Icon: Briefcase, iconBg: 'bg-amber-50', iconColor: 'text-amber-600', badge: null },
-          { label: 'Taxa de ocupação', value: `${kpis.occupationPct}%`, sub: 'do mês', Icon: CalendarCheck, iconBg: 'bg-emerald-50', iconColor: 'text-emerald-600',
+          { label: 'Consultores ativos', value: kpis.activeConsultants, sub: 'equipe', Icon: Users, iconBg: 'bg-navy-50', iconColor: 'text-primary-600', badge: null },
+          { label: 'Projetos alocados', value: kpis.activeProjects, sub: 'no mês', Icon: Briefcase, iconBg: 'bg-navy-50', iconColor: 'text-primary-600', badge: null },
+          { label: 'Taxa de ocupação', value: `${kpis.occupationPct}%`, sub: 'do mês', Icon: CalendarCheck, iconBg: 'bg-navy-50', iconColor: 'text-primary-600',
             badge: kpis.occupationTrend !== 0 ? { icon: TrendIcon, color: trendColor, text: `${Math.abs(kpis.occupationTrend)}%` } : null },
-          { label: 'Diários preenchidos', value: `${kpis.logCompletionPct}%`, sub: `${kpis.logCompleted}/${kpis.logTotal} registros`, Icon: ClipboardCheck, iconBg: 'bg-purple-50', iconColor: 'text-purple-600', badge: null },
+          { label: 'Diários preenchidos', value: `${kpis.logCompletionPct}%`, sub: `${kpis.logCompleted}/${kpis.logTotal} registros`, Icon: ClipboardCheck, iconBg: 'bg-navy-50', iconColor: 'text-primary-600', badge: null },
         ].map((kpi) => (
           <div key={kpi.label} className="card p-5">
             <div className="flex items-center justify-between mb-4">
@@ -367,7 +367,7 @@ export function StrategicDashboard() {
                     {occupationByConsultant.map((entry, i) => (
                       <Cell
                         key={i}
-                        fill={entry.allocation >= 100 ? '#f43f5e' : entry.allocation >= 80 ? '#f59e0b' : '#3b82f6'}
+                        fill={entry.allocation >= 100 ? '#1e3a8a' : entry.allocation >= 80 ? '#60a5fa' : '#3b82f6'}
                       />
                     ))}
                   </Bar>
@@ -433,8 +433,8 @@ export function StrategicDashboard() {
                     <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
                   </linearGradient>
                   <linearGradient id="colorLogs" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.4} />
-                    <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#93c5fd" stopOpacity={0.4} />
+                    <stop offset="95%" stopColor="#93c5fd" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
@@ -443,7 +443,7 @@ export function StrategicDashboard() {
                 <RechartsTooltip contentStyle={{ borderRadius: 12, border: '1px solid #e2e8f0', fontSize: 12, boxShadow: '0 4px 20px -2px rgba(15,23,42,0.05)' }} />
                 <Legend wrapperStyle={{ fontSize: 11 }} />
                 <Area type="monotone" dataKey="Dias Alocados" stroke="#3b82f6" strokeWidth={3} fill="url(#colorAloc)" dot={{ r: 4, fill: '#3b82f6', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 6 }} />
-                <Area type="monotone" dataKey="Diários Preenchidos" stroke="#10b981" strokeWidth={3} fill="url(#colorLogs)" dot={{ r: 4, fill: '#10b981', strokeWidth: 2, stroke: '#fff' }} />
+                <Area type="monotone" dataKey="Diários Preenchidos" stroke="#93c5fd" strokeWidth={3} fill="url(#colorLogs)" dot={{ r: 4, fill: '#93c5fd', strokeWidth: 2, stroke: '#fff' }} />
               </AreaChart>
             </ResponsiveContainer>
           </div>

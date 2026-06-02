@@ -2065,10 +2065,10 @@ export function Schedule() {
                 {/* KPI Cards */}
                 <div className='grid grid-cols-1 md:grid-cols-4 gap-4'>
                    {[
-                      { label: 'Total Alocações', value: allocations.length, icon: CalendarDays, color: 'text-primary-600', bg: 'bg-primary-50' },
-                      { label: 'Projetos Ativos', value: new Set(allocations.map(a => a.projectId)).size, icon: Briefcase, color: 'text-amber-600', bg: 'bg-amber-50' },
-                      { label: 'Consultores Alocados', value: new Set(allocations.map(a => a.consultantId)).size, icon: User, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-                      { label: 'Diários Preenchidos', value: logs.length, icon: FileText, color: 'text-purple-600', bg: 'bg-purple-50' },
+                      { label: 'Total Alocações', value: allocations.length, icon: CalendarDays, color: 'text-primary-600', bg: 'bg-navy-50' },
+                      { label: 'Projetos Ativos', value: new Set(allocations.map(a => a.projectId)).size, icon: Briefcase, color: 'text-primary-600', bg: 'bg-navy-50' },
+                      { label: 'Consultores Alocados', value: new Set(allocations.map(a => a.consultantId)).size, icon: User, color: 'text-primary-600', bg: 'bg-navy-50' },
+                      { label: 'Diários Preenchidos', value: logs.length, icon: FileText, color: 'text-primary-600', bg: 'bg-navy-50' },
                    ].map((stat, i) => (
                       <div key={i} className='card p-4 flex items-center justify-between'>
                          <div>
@@ -2111,7 +2111,7 @@ export function Schedule() {
                                      >
                                        {
                                           projects.map((_, index) => (
-                                             <Cell key={`cell-${index}`} fill={['#3b82f6', '#f59e0b', '#10b981', '#f43f5e'][index % 4]} />
+                                             <Cell key={`cell-${index}`} fill={['#1e3a8a', '#3b82f6', '#60a5fa', '#bfdbfe'][index % 4]} />
                                           )) // Note: Colors handled in data map above effectively
                                        }
                                      </Pie>
@@ -2192,7 +2192,7 @@ export function Schedule() {
                                               acc[curr.projectId].value += 1; // cada registro = 1 dia
                                               return acc;
                                            }, {} as Record<string, {name: string, value: number}>)).map((_, index) => (
-                                              <Cell key={`cell-${index}`} fill={['#3b82f6', '#8b5cf6', '#f43f5e', '#10b981', '#f59e0b'][index % 5]} />
+                                              <Cell key={`cell-${index}`} fill={['#1e3a8a', '#2563eb', '#3b82f6', '#60a5fa', '#93c5fd'][index % 5]} />
                                           ))
                                        }
                                     </Pie>
