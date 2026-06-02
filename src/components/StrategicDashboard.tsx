@@ -14,7 +14,7 @@ import {
   TrendingUp, TrendingDown, Minus, ChevronLeft, ChevronRight
 } from 'lucide-react';
 
-const CHART_COLORS = ['#3b76e1', '#10b981', '#f59e0b', '#8b5cf6', '#f43f5e', '#0ea5e9', '#6366f1', '#64748b'];
+const CHART_COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#f43f5e', '#0ea5e9', '#6366f1', '#64748b'];
 
 interface Allocation {
   id: string;
@@ -297,14 +297,14 @@ export function StrategicDashboard() {
           <h2 className="text-[1.375rem] font-extrabold text-navy-950 tracking-tight">Painel Estratégico</h2>
           <p className="text-sm text-navy-500 mt-0.5">Indicadores de ocupação e evolução da equipe</p>
         </div>
-        <div className="flex items-center gap-1 p-1 bg-[#0f1c2e] rounded-xl">
-          <button onClick={() => goMonth(-1)} className="p-2 rounded-lg hover:bg-white/10 text-white/60 hover:text-white transition-colors">
+        <div className="flex items-center gap-1 p-1 bg-white rounded-xl border border-navy-100 shadow-sm">
+          <button onClick={() => goMonth(-1)} className="p-2 rounded-lg hover:bg-navy-50 text-navy-400 hover:text-navy-700 transition-colors">
             <ChevronLeft className="w-4 h-4" />
           </button>
-          <span className="text-sm font-bold text-white min-w-[130px] text-center capitalize px-2">
+          <span className="text-sm font-bold text-navy-900 min-w-[130px] text-center capitalize px-2">
             {format(referenceDate, 'MMMM yyyy', { locale: ptBR })}
           </span>
-          <button onClick={() => goMonth(1)} className="p-2 rounded-lg hover:bg-white/10 text-white/60 hover:text-white transition-colors">
+          <button onClick={() => goMonth(1)} className="p-2 rounded-lg hover:bg-navy-50 text-navy-400 hover:text-navy-700 transition-colors">
             <ChevronRight className="w-4 h-4" />
           </button>
         </div>
@@ -367,7 +367,7 @@ export function StrategicDashboard() {
                     {occupationByConsultant.map((entry, i) => (
                       <Cell
                         key={i}
-                        fill={entry.allocation >= 100 ? '#f43f5e' : entry.allocation >= 80 ? '#f59e0b' : '#3b76e1'}
+                        fill={entry.allocation >= 100 ? '#f43f5e' : entry.allocation >= 80 ? '#f59e0b' : '#3b82f6'}
                       />
                     ))}
                   </Bar>
@@ -429,8 +429,8 @@ export function StrategicDashboard() {
               <AreaChart data={monthlyEvolution} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
                 <defs>
                   <linearGradient id="colorAloc" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#3b76e1" stopOpacity={0.4} />
-                    <stop offset="95%" stopColor="#3b76e1" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.4} />
+                    <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
                   </linearGradient>
                   <linearGradient id="colorLogs" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#10b981" stopOpacity={0.4} />
@@ -442,7 +442,7 @@ export function StrategicDashboard() {
                 <YAxis tick={{ fontSize: 11 }} />
                 <RechartsTooltip contentStyle={{ borderRadius: 12, border: '1px solid #e2e8f0', fontSize: 12, boxShadow: '0 4px 20px -2px rgba(15,23,42,0.05)' }} />
                 <Legend wrapperStyle={{ fontSize: 11 }} />
-                <Area type="monotone" dataKey="Dias Alocados" stroke="#3b76e1" strokeWidth={3} fill="url(#colorAloc)" dot={{ r: 4, fill: '#3b76e1', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 6 }} />
+                <Area type="monotone" dataKey="Dias Alocados" stroke="#3b82f6" strokeWidth={3} fill="url(#colorAloc)" dot={{ r: 4, fill: '#3b82f6', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 6 }} />
                 <Area type="monotone" dataKey="Diários Preenchidos" stroke="#10b981" strokeWidth={3} fill="url(#colorLogs)" dot={{ r: 4, fill: '#10b981', strokeWidth: 2, stroke: '#fff' }} />
               </AreaChart>
             </ResponsiveContainer>

@@ -38,13 +38,13 @@ export function Login() {
       {/* Left panel — dark branding */}
       <div className='hidden lg:flex lg:w-[46%] flex-col justify-between p-12 relative overflow-hidden'
         style={{
-          background: 'linear-gradient(145deg, #0b1727 0%, #0f2645 55%, #0c3a7a 100%)',
+          background: 'linear-gradient(145deg, #0f172a 0%, #1e293b 55%, #1e3a8a 100%)',
         }}>
         {/* Glow orbs */}
         <div className='absolute top-[-80px] left-[-80px] w-96 h-96 rounded-full pointer-events-none'
-          style={{ background: 'radial-gradient(circle, rgba(26,114,232,0.25) 0%, transparent 70%)' }} />
+          style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.2) 0%, transparent 70%)' }} />
         <div className='absolute bottom-[-40px] right-[-40px] w-64 h-64 rounded-full pointer-events-none'
-          style={{ background: 'radial-gradient(circle, rgba(59,144,245,0.15) 0%, transparent 70%)' }} />
+          style={{ background: 'radial-gradient(circle, rgba(96,165,250,0.12) 0%, transparent 70%)' }} />
 
         {/* Grid overlay */}
         <svg className='absolute inset-0 w-full h-full opacity-[0.05]' xmlns='http://www.w3.org/2000/svg'>
@@ -98,7 +98,7 @@ export function Login() {
       </div>
 
       {/* Right panel — form */}
-      <div className='flex-1 flex items-center justify-center p-8 bg-[#f0f4fa]'>
+      <div className='flex-1 flex items-center justify-center p-8 bg-navy-50'>
         <div className='w-full max-w-sm'>
 
           {/* Mobile logo */}

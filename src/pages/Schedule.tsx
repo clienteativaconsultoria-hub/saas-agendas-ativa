@@ -1203,16 +1203,16 @@ export function Schedule() {
                  <div className='w-px h-8 bg-navy-100 mx-2 hidden md:block'></div>
 
                  {/* Resolution Switcher */}
-                 <div className='flex items-center gap-1 p-1 bg-white rounded-xl border border-navy-100 shadow-sm'>
+                 <div className='flex items-center gap-1 p-1 bg-navy-100 rounded-xl'>
                     {(['day', 'week', 'month'] as TimeView[]).map((mode) => (
                       <button
                         key={mode}
                         onClick={() => setTimeView(mode)}
                         className={clsx(
-                          'px-5 py-2 rounded-lg text-sm font-semibold transition-all duration-200 capitalize',
+                          'px-4 py-1.5 rounded-lg text-sm font-semibold transition-all duration-150 capitalize',
                           timeView === mode 
-                            ? 'bg-navy-950 text-white shadow-md' 
-                            : 'text-navy-500 hover:text-navy-900 hover:bg-navy-50'
+                            ? 'bg-white text-navy-900 shadow-sm' 
+                            : 'text-navy-500 hover:text-navy-700'
                         )}
                       >
                         {mode === 'day' ? 'Dia' : mode === 'week' ? 'Semana' : 'Mês'}
@@ -1823,7 +1823,7 @@ export function Schedule() {
                        {/* Controls & Stats */}
                        <div className="card flex flex-col lg:flex-row items-center justify-between gap-6">
                           <div className="flex items-center gap-4 w-full lg:w-auto">
-                              <div className="w-14 h-14 rounded-full bg-linear-to-br from-primary-50 to-primary-100 text-primary-700 flex items-center justify-center text-xl font-bold border border-primary-200 shadow-inner">
+                              <div className="w-14 h-14 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center text-xl font-bold border border-primary-200 shadow-inner">
                                  {targetConsultant.name?.substring(0,2).toUpperCase()}
                               </div>
                               <div className="flex-1 min-w-[200px]">
@@ -2097,7 +2097,7 @@ export function Schedule() {
                                   <RePieChart>
                                      <Pie
                                         data={[
-                                           { name: 'Em Andamento', value: projects.filter(p => p.status === 'Em Andamento').length, color: '#3b76e1' },
+                                           { name: 'Em Andamento', value: projects.filter(p => p.status === 'Em Andamento').length, color: '#3b82f6' },
                                            { name: 'Em Planejamento', value: projects.filter(p => p.status === 'Em Planejamento').length, color: '#f59e0b' },
                                            { name: 'Concluído', value: projects.filter(p => p.status === 'Concluído').length, color: '#10b981' },
                                            { name: 'Crítico', value: projects.filter(p => p.status === 'Crítico').length, color: '#f43f5e' }
@@ -2111,7 +2111,7 @@ export function Schedule() {
                                      >
                                        {
                                           projects.map((_, index) => (
-                                             <Cell key={`cell-${index}`} fill={['#3b76e1', '#f59e0b', '#10b981', '#f43f5e'][index % 4]} />
+                                             <Cell key={`cell-${index}`} fill={['#3b82f6', '#f59e0b', '#10b981', '#f43f5e'][index % 4]} />
                                           )) // Note: Colors handled in data map above effectively
                                        }
                                      </Pie>
@@ -2144,7 +2144,7 @@ export function Schedule() {
                                      <XAxis type="number" />
                                      <YAxis dataKey="name" type="category" width={100} style={{ fontSize: '12px' }} />
                                      <Tooltip />
-                                     <Bar dataKey="days" fill="#3b76e1" radius={[0, 6, 6, 0]} name="Dias" />
+                                     <Bar dataKey="days" fill="#3b82f6" radius={[0, 6, 6, 0]} name="Dias" />
                                   </BarChart>
                               </ResponsiveContainer>
                            </div>
@@ -2192,7 +2192,7 @@ export function Schedule() {
                                               acc[curr.projectId].value += 1; // cada registro = 1 dia
                                               return acc;
                                            }, {} as Record<string, {name: string, value: number}>)).map((_, index) => (
-                                              <Cell key={`cell-${index}`} fill={['#3b76e1', '#8b5cf6', '#f43f5e', '#10b981', '#f59e0b'][index % 5]} />
+                                              <Cell key={`cell-${index}`} fill={['#3b82f6', '#8b5cf6', '#f43f5e', '#10b981', '#f59e0b'][index % 5]} />
                                           ))
                                        }
                                     </Pie>

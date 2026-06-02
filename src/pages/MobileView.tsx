@@ -76,7 +76,7 @@ function MobileLogin() {
   return (
     <div className="min-h-screen bg-navy-50 flex flex-col justify-center px-5">
       <div className="flex flex-col items-center mb-8">
-        <div className="w-14 h-14 bg-gradient-to-br from-primary-600 to-primary-800 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-primary-500/30">
+        <div className="w-14 h-14 bg-primary-600 rounded-2xl flex items-center justify-center text-white shadow-md">
           <Calendar className="w-8 h-8" />
         </div>
         <h1 className="mt-4 text-2xl font-bold text-navy-900">

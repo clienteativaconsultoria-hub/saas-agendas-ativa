@@ -357,7 +357,7 @@ export function Requests() {
                   <div className='flex items-start gap-4'>
 
                     {/* Avatar initials */}
-                    <div className='w-9 h-9 rounded-xl bg-gradient-to-br from-primary-50 to-primary-100 border border-primary-200 flex items-center justify-center text-primary-700 font-bold text-xs shrink-0 mt-0.5'>
+                    <div className='w-9 h-9 rounded-xl bg-primary-50 border border-primary-100 flex items-center justify-center text-primary-700 font-bold text-xs shrink-0 mt-0.5'>
                       {initials}
                     </div>
 

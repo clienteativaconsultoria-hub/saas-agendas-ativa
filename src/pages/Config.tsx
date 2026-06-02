@@ -110,7 +110,7 @@ export function Config() {
          </div>
          
          <div className='flex items-center gap-5 mb-10 pb-10 border-b border-navy-50'>
-            <div className='h-20 w-20 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-700 border-4 border-white shadow-lg flex items-center justify-center shrink-0'>
+            <div className='h-20 w-20 rounded-2xl bg-primary-600 border-4 border-white shadow-md flex items-center justify-center shrink-0'>
               <span className='text-white text-2xl font-bold'>
                 {profile.full_name ? profile.full_name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase() : 'US'}
               </span>

@@ -118,16 +118,14 @@ export function Dashboard() {
     <div className='min-h-full p-6 space-y-6'>
 
       {/* ── Hero Banner ── */}
-      <div className='relative overflow-hidden rounded-2xl' style={{
-        background: 'linear-gradient(135deg, #0f1c2e 0%, #1a3456 50%, #0e3b7a 100%)',
-        boxShadow: '0 8px 32px rgba(15,23,42,0.22), 0 0 0 1px rgba(255,255,255,0.05) inset'
-      }}>
+      <div className='relative overflow-hidden rounded-2xl bg-navy-900'
+        style={{ boxShadow: '0 4px 24px rgba(15,23,42,0.15)' }}>
         {/* Background mesh */}
         <div className='absolute inset-0 overflow-hidden pointer-events-none'>
-          <div className='absolute -top-24 -right-24 w-96 h-96 rounded-full opacity-20'
-            style={{ background: 'radial-gradient(circle, #3b90f5 0%, transparent 70%)' }} />
+          <div className='absolute -top-24 -right-24 w-96 h-96 rounded-full opacity-15'
+            style={{ background: 'radial-gradient(circle, #3b82f6 0%, transparent 70%)' }} />
           <div className='absolute -bottom-16 -left-16 w-72 h-72 rounded-full opacity-10'
-            style={{ background: 'radial-gradient(circle, #66adff 0%, transparent 70%)' }} />
+            style={{ background: 'radial-gradient(circle, #60a5fa 0%, transparent 70%)' }} />
           {/* Grid lines */}
           <svg className='absolute inset-0 w-full h-full opacity-[0.04]' xmlns='http://www.w3.org/2000/svg'>
             <defs>
@@ -175,8 +173,7 @@ export function Dashboard() {
 
       {/* ── Tab Switcher ── */}
       {(userRole === 'ADM' || userRole === 'GERENTE') && (
-        <div className='flex items-center gap-1 p-1 bg-white rounded-xl border border-navy-100 w-fit'
-          style={{ boxShadow: '0 1px 3px rgba(15,23,42,0.06)' }}>
+        <div className='flex items-center gap-1 p-1 bg-navy-100 rounded-xl w-fit'>
           {[
             { key: 'OPERATIONAL', icon: LayoutDashboard, label: 'Operacional' },
             { key: 'STRATEGIC',   icon: BarChart3,       label: 'Estratégico' },
@@ -185,10 +182,10 @@ export function Dashboard() {
               key={tab.key}
               onClick={() => setActiveTab(tab.key as any)}
               className={[
-                'flex items-center gap-2 px-5 py-2 rounded-lg text-sm font-semibold transition-all duration-200',
+                'flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-semibold transition-all duration-150',
                 activeTab === tab.key
-                  ? 'bg-navy-950 text-white shadow-md'
-                  : 'text-navy-500 hover:text-navy-900 hover:bg-navy-50'
+                  ? 'bg-white text-navy-900 shadow-sm'
+                  : 'text-navy-500 hover:text-navy-700'
               ].join(' ')}
             >
               <tab.icon className='w-4 h-4' />

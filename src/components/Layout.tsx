@@ -70,21 +70,21 @@ export function Layout() {
     : 'U';
 
   return (
-    <div className='flex h-screen overflow-hidden bg-[#f0f4fa]'>
+    <div className='flex h-screen overflow-hidden bg-navy-50'>
 
       {/* ── Sidebar (dark) ── */}
       <aside
         className={clsx(
           'relative flex flex-col transition-all duration-300 ease-in-out z-20 flex-shrink-0',
-          'bg-[#0f1c2e] border-r border-white/5',
+          'bg-navy-900 border-r border-navy-800',
           collapsed ? 'w-[72px]' : 'w-64'
         )}
-        style={{ boxShadow: '4px 0 24px rgba(0,0,0,0.18)' }}
+        style={{ boxShadow: '2px 0 12px rgba(0,0,0,0.08)' }}
       >
         {/* Logo strip */}
-        <div className='flex items-center h-16 px-4 border-b border-white/8 shrink-0'>
+        <div className='flex items-center h-14 px-4 border-b border-navy-800 shrink-0'>
           {/* Icon */}
-          <div className='w-8 h-8 rounded-lg bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center flex-shrink-0 shadow-lg'>
+          <div className='w-8 h-8 rounded-lg bg-primary-600 flex items-center justify-center flex-shrink-0'>
             <Calendar className='w-4 h-4 text-white' />
           </div>
 
@@ -147,10 +147,10 @@ export function Layout() {
         </nav>
 
         {/* User footer */}
-        <div className='p-3 border-t border-white/8 shrink-0'>
+        <div className='p-3 border-t border-navy-800 shrink-0'>
           {!collapsed ? (
             <div className='flex items-center gap-3 p-2 rounded-xl hover:bg-white/7 transition-colors group cursor-default'>
-              <div className='w-8 h-8 rounded-lg bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center text-white text-xs font-bold flex-shrink-0'>
+              <div className='w-8 h-8 rounded-lg bg-primary-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0'>
                 {initials}
               </div>
               <div className='flex-1 min-w-0'>
@@ -171,7 +171,7 @@ export function Layout() {
             </div>
           ) : (
             <div className='flex flex-col items-center gap-2'>
-              <div className='w-8 h-8 rounded-lg bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center text-white text-xs font-bold'>
+              <div className='w-8 h-8 rounded-lg bg-primary-600 flex items-center justify-center text-white text-xs font-bold'>
                 {initials}
               </div>
               <button
@@ -189,7 +189,7 @@ export function Layout() {
       <div className='flex-1 flex flex-col min-w-0 overflow-hidden'>
 
         {/* Topbar */}
-        <header className='h-14 flex-shrink-0 flex items-center justify-between px-6 bg-white/70 backdrop-blur-xl border-b border-navy-100/80'>
+        <header className='h-14 flex-shrink-0 flex items-center justify-between px-6 bg-white border-b border-navy-100'>
           {/* Search */}
           <div className='relative flex-1 max-w-md group'>
             <Search className='w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-navy-400 group-focus-within:text-primary-500 transition-colors' />
