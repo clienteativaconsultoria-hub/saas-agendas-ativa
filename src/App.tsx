@@ -8,6 +8,8 @@ import { Consultants } from './pages/Consultants';
 import { Projects } from './pages/Projects';
 import { Reports } from './pages/Reports';
 import { Requests } from './pages/Requests';
+import { Import } from './pages/Import';
+import { MobileView } from './pages/MobileView';
 import { Layout } from './components/Layout';
 
 function App() {
@@ -15,6 +17,7 @@ function App() {
     <Router>
       <Routes>
         <Route path='/login' element={<Login />} />
+        <Route path='/m' element={<MobileView />} />
         
         <Route element={<Layout />}>
           <Route path='/dashboard' element={<Dashboard />} />
@@ -23,6 +26,7 @@ function App() {
           <Route path='/projects' element={<Projects />} />
           <Route path='/reports' element={<Reports />} />
           <Route path='/requests' element={<Requests />} />
+          <Route path='/import' element={<Import />} />
           <Route path='/config' element={<Config />} />
         </Route>
 
