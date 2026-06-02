@@ -147,9 +147,14 @@ export function Dashboard() {
               {greeting}, {firstName} 👋
             </h1>
             <p className='text-white/50 text-sm max-w-lg'>
-              {userRole === 'ADM'
-                ? 'Visão geral da operação. Acompanhe a equipe, prazos e pendências em tempo real.'
-                : 'Seu painel pessoal. Veja sua agenda do dia e status dos seus projetos.'}
+              {userRole === 'ADM' ? (
+                <>
+                  Visão geral da operação.<br />
+                  Acompanhe a equipe, prazos e pendências em tempo real.
+                </>
+              ) : (
+                'Seu painel pessoal. Veja sua agenda do dia e status dos seus projetos.'
+              )}
             </p>
           </div>
 

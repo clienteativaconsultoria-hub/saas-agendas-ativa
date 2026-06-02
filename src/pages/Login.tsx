@@ -63,7 +63,7 @@ export function Login() {
               <Calendar className='w-5 h-5 text-primary-400' />
             </div>
             <span className='text-white font-bold text-xl tracking-tight'>
-              Agendas<span className='text-primary-400'>Ativa</span>
+              Agendas
             </span>
           </div>
         </div>
@@ -107,7 +107,7 @@ export function Login() {
               <Calendar className='w-5 h-5 text-white' />
             </div>
             <span className='text-navy-900 font-bold text-xl'>
-              Agendas<span className='text-primary-600'>Ativa</span>
+              Agendas
             </span>
           </div>
 

@@ -91,7 +91,7 @@ export function Layout() {
           {!collapsed && (
             <div className='ml-3 overflow-hidden'>
               <span className='text-white font-bold text-base tracking-tight leading-none'>
-                Agendas<span className='text-primary-400'>Ativa</span>
+                Agendas
               </span>
             </div>
           )}

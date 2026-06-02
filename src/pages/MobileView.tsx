@@ -80,7 +80,7 @@ function MobileLogin() {
           <Calendar className="w-8 h-8" />
         </div>
         <h1 className="mt-4 text-2xl font-bold text-navy-900">
-          Agendas<span className="text-primary-600">Ativa</span>
+          Agendas
         </h1>
         <p className="text-sm text-navy-500 mt-1">Consulta rápida no celular</p>
       </div>
@@ -217,7 +217,7 @@ function MobileSchedule() {
           <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center text-white">
             <Calendar className="w-5 h-5" />
           </div>
-          <span className="font-bold text-navy-900">Agendas<span className="text-primary-600">Ativa</span></span>
+          <span className="font-bold text-navy-900">Agendas</span>
         </div>
         <button onClick={handleLogout} className="p-2 rounded-lg text-navy-400 hover:bg-navy-50 hover:text-primary-500">
           <LogOut className="w-5 h-5" />
