@@ -461,20 +461,7 @@ export function Schedule() {
     if (timeView === 'month') setCurrentDate(d => addMonths(d, 1));
   };
   
-  const handleJumpToToday = () => {
-    setCurrentDate(new Date());
-    setTimeView('day');
-  };
 
-  const handleJumpToWeek = () => {
-    setCurrentDate(new Date());
-    setTimeView('week');
-  };
-
-  const handleJumpToMonth = () => {
-    setCurrentDate(new Date());
-    setTimeView('month');
-  };
 
   // --- Multi-Allocation Logic ---
   const getCellData = (consultantId: string, dateInfo: Date) => {
@@ -1223,9 +1210,7 @@ export function Schedule() {
                  {/* Date Navigation */}
                  <div className='flex items-center bg-white border border-navy-100 rounded-xl shadow-sm p-1 gap-1'>
                     <div className='flex items-center gap-1 border-r border-navy-100 pr-2 mr-2 pl-1'>
-                       <button onClick={handleJumpToToday} className='btn-ghost px-3 py-1.5'>Hoje</button>
-                       <button onClick={handleJumpToWeek} className='btn-ghost px-3 py-1.5'>Sem</button>
-                       <button onClick={handleJumpToMonth} className='btn-ghost px-3 py-1.5'>Mês</button>
+                       <button onClick={() => setCurrentDate(new Date())} className='btn-ghost px-3 py-1.5 font-semibold text-navy-700'>Hoje</button>
                     </div>
                     
                     <button onClick={handlePrevDate} className='p-1.5 hover:bg-navy-50 rounded-lg text-navy-400 hover:text-navy-900 transition-colors'>
