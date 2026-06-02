@@ -1208,28 +1208,30 @@ export function Schedule() {
                  </div>
 
                  {/* Date Navigation */}
-                 <div className='flex items-center bg-white border border-navy-100 rounded-xl shadow-sm p-1 gap-1'>
-                    <div className='flex items-center gap-1 border-r border-navy-100 pr-2 mr-2 pl-1'>
-                       <button onClick={() => setCurrentDate(new Date())} className='btn-ghost px-3 py-1.5 font-semibold text-navy-700'>Hoje</button>
+                 <div className='flex items-center bg-white border border-navy-100 rounded-xl shadow-sm p-1 gap-1 max-w-full lg:w-auto justify-between lg:justify-start'>
+                    <div className='flex items-center gap-1 border-r border-navy-100 pr-1 sm:pr-2 lg:mr-2 pl-1 shrink-0'>
+                       <button onClick={() => setCurrentDate(new Date())} className='btn-ghost px-2 lg:px-3 py-1.5 text-xs sm:text-sm lg:text-base font-semibold text-navy-700'>Hoje</button>
                     </div>
                     
-                    <button onClick={handlePrevDate} className='p-1.5 hover:bg-navy-50 rounded-lg text-navy-400 hover:text-navy-900 transition-colors'>
-                      <ChevronLeft className='w-5 h-5' />
-                    </button>
-                    <span className='font-extrabold text-navy-950 min-w-[200px] text-center text-sm px-2 tracking-tight'>
-                       {timeView === 'day' && 'Próximos 7 dias'}
-                       {timeView === 'week' && `${format(timeColumns[0], 'dd MMM', { locale: ptBR })} - ${format(timeColumns[timeColumns.length-1], 'dd MMM yyyy', { locale: ptBR })}`}
-                       {timeView === 'month' && format(currentDate, 'MMMM yyyy', { locale: ptBR }).toUpperCase()}
-                    </span>
-                    <button onClick={handleNextDate} className='p-1.5 hover:bg-navy-50 rounded-lg text-navy-400 hover:text-navy-900 transition-colors'>
-                      <ChevronRight className='w-5 h-5' />
-                    </button>
+                    <div className='flex items-center flex-1 justify-between min-w-0'>
+                       <button onClick={handlePrevDate} className='p-1 sm:p-1.5 hover:bg-navy-50 rounded-lg text-navy-400 hover:text-navy-900 transition-colors shrink-0'>
+                         <ChevronLeft className='w-4 h-4 sm:w-5 sm:h-5' />
+                       </button>
+                       <span className='font-extrabold text-navy-950 text-center text-[11px] sm:text-xs md:text-sm px-1 sm:px-2 tracking-tight truncate min-w-0 flex-1'>
+                          {timeView === 'day' && 'Próximos 7 dias'}
+                          {timeView === 'week' && `${format(timeColumns[0], 'dd MMM', { locale: ptBR })} - ${format(timeColumns[timeColumns.length-1], 'dd MMM yyyy', { locale: ptBR })}`}
+                          {timeView === 'month' && format(currentDate, 'MMMM yyyy', { locale: ptBR }).toUpperCase()}
+                       </span>
+                       <button onClick={handleNextDate} className='p-1 sm:p-1.5 hover:bg-navy-50 rounded-lg text-navy-400 hover:text-navy-900 transition-colors shrink-0'>
+                         <ChevronRight className='w-4 h-4 sm:w-5 sm:h-5' />
+                       </button>
+                    </div>
                  </div>
               </div>
 
               {/* Right: Actions & Filters */}
-              <div className='flex flex-wrap items-center justify-end gap-3'>
-                 <div className='flex items-center gap-2 border-r border-navy-100 pr-3 mr-1'>
+              <div className='flex items-center gap-2 w-full lg:w-auto overflow-x-auto pb-1 -mb-1 custom-scrollbar shrink-0 whitespace-nowrap mt-1 lg:mt-0'>
+                 <div className='flex items-center gap-2 border-r border-navy-100 pr-3 mr-1 shrink-0'>
                    <button 
                     onClick={() => setShowFilter(!showFilter)} 
                     className={clsx(
@@ -1249,7 +1251,7 @@ export function Schedule() {
                    <button 
                     onClick={() => setShowRequestsPanel(!showRequestsPanel)}
                     className={clsx(
-                      'relative flex items-center gap-2 px-3 py-2 border rounded-lg text-sm font-medium transition-colors shadow-sm',
+                      'relative flex items-center gap-2 px-3 py-2 border rounded-lg text-sm font-medium transition-colors shadow-sm shrink-0',
                       showRequestsPanel 
                         ? 'bg-primary-50 text-primary-700 border-primary-200' 
                         : 'bg-white hover:bg-navy-50 text-navy-700 border-navy-200'
@@ -1272,7 +1274,7 @@ export function Schedule() {
                      <button
                        onClick={() => { setShowMyRequestsPanel(!showMyRequestsPanel); fetchMyRequests(); }}
                        className={clsx(
-                         'relative flex items-center gap-2 px-3 py-2 border rounded-lg text-sm font-medium transition-colors shadow-sm',
+                         'relative flex items-center gap-2 px-3 py-2 border rounded-lg text-sm font-medium transition-colors shadow-sm shrink-0',
                          showMyRequestsPanel
                            ? 'bg-primary-50 text-primary-700 border-primary-200'
                            : 'bg-white hover:bg-navy-50 text-navy-700 border-navy-200'
@@ -1289,7 +1291,7 @@ export function Schedule() {
                      </button>
                      <button
                        onClick={() => { setSolicitacaoModalTab('alterar'); setShowSolicitacaoModal(true); }}
-                       className='flex items-center gap-2 btn-primary bg-primary-600 transition-colors shadow-sm'
+                       className='flex items-center gap-2 btn-primary bg-primary-600 transition-colors shadow-sm shrink-0'
                        title="Solicitar Alteração de Agenda"
                      >
                        <MessageSquarePlus className='w-4 h-4' />
@@ -1302,7 +1304,7 @@ export function Schedule() {
                    <>
                      <button 
                       onClick={() => setShowReportModal(true)}
-                      className='flex items-center gap-2 px-3 py-2 btn-secondary transition-colors shadow-sm'
+                      className='flex items-center gap-2 px-3 py-2 btn-secondary transition-colors shadow-sm shrink-0'
                       title="Relatório de Bordo"
                     >
                        <ClipboardList className='w-4 h-4' /> <span className='hidden sm:inline'>Relatório</span>
@@ -1310,7 +1312,7 @@ export function Schedule() {
 
                      <button
                       onClick={() => setShowBulkModal(true)}
-                      className='flex items-center gap-2 px-3 py-2 btn-secondary transition-colors shadow-sm'
+                      className='flex items-center gap-2 px-3 py-2 btn-secondary transition-colors shadow-sm shrink-0'
                       title="Editar agendas em massa"
                     >
                        <Layers className='w-4 h-4' /> <span className='hidden sm:inline'>Em massa</span>
@@ -1318,7 +1320,7 @@ export function Schedule() {
 
                      <button
                       onClick={() => setShowModal(true)}
-                      className='flex items-center gap-2 px-3 py-2 btn-primary transition-colors shadow-sm'
+                      className='flex items-center gap-2 px-3 py-2 btn-primary transition-colors shadow-sm shrink-0'
                     >
                       <Plus className='w-4 h-4' /> Novo
                     </button>
