@@ -14,6 +14,7 @@ export type Database = {
           email: string;
           full_name: string;
           role: 'ADM' | 'GERENTE' | 'CONSULTOR';
+          manager_key: string | null;
           avatar_url: string | null;
           phone: string | null;
           location: string | null;
@@ -25,6 +26,7 @@ export type Database = {
           email: string;
           full_name: string;
           role?: 'ADM' | 'GERENTE' | 'CONSULTOR';
+          manager_key?: string | null;
           avatar_url?: string | null;
           phone?: string | null;
           location?: string | null;
@@ -36,6 +38,7 @@ export type Database = {
           email?: string;
           full_name?: string;
           role?: 'ADM' | 'GERENTE' | 'CONSULTOR';
+          manager_key?: string | null;
           avatar_url?: string | null;
           phone?: string | null;
           location?: string | null;

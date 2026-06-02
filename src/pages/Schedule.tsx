@@ -114,6 +114,11 @@ type UserRole = 'ADM' | 'CONSULTOR' | 'GERENTE' | null;
 // Projetos privados aparecem mascarados como "Particular" para GERENTE/CONSULTOR
 const MASKED_PROJECT_ID = 'private-masked';
 
+// Normaliza nome de gerente p/ casar GERENTE logado ↔ campo manager das agendas
+// (sem acento, sem caixa, sem espaços nas pontas — mesma regra do banco).
+const normManager = (s?: string | null) =>
+  (s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').trim().toUpperCase();
+
 export function Schedule() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
@@ -305,11 +310,15 @@ export function Schedule() {
         // 1. Get User
         const { data: { user } } = await supabase.auth.getUser();
         let role: UserRole = 'CONSULTOR'; // Default fallback safe
-        
+        let managerKey: string | null = null;
+
         if (user) {
           setCurrentUser(user);
-          const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
-          if (profile) role = profile.role as UserRole;
+          const { data: profile } = await supabase.from('profiles').select('role, manager_key').eq('id', user.id).single();
+          if (profile) {
+            role = profile.role as UserRole;
+            managerKey = profile.manager_key ?? null;
+          }
         }
         setUserRole(role);
 
@@ -402,7 +411,13 @@ export function Schedule() {
                  manager: masked ? null : a.manager,
                };
             });
-        setAllocations(loadedAllocations);
+
+        // Escopo do GERENTE: vê apenas as agendas do manager vinculado a ele (match normalizado).
+        // Projetos privados/particulares já foram mascarados (manager = null) e não casam.
+        const scopedAllocations = (role === 'GERENTE' && managerKey)
+          ? loadedAllocations.filter(a => normManager(a.manager) === normManager(managerKey))
+          : loadedAllocations;
+        setAllocations(scopedAllocations);
         
         setLoading(false);
      };

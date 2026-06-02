@@ -12,6 +12,10 @@ import { supabase } from '../lib/supabase';
 const MASKED_PROJECT_ID = 'private-masked';
 const HIDDEN_EMAILS = ['andreimagagna@gmail.com', 'andrei@futuree.org'];
 
+// Normaliza nome de gerente p/ casar GERENTE logado ↔ campo manager das agendas.
+const normManager = (s?: string | null) =>
+  (s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').trim().toUpperCase();
+
 type Role = 'ADM' | 'GERENTE' | 'CONSULTOR' | null;
 type Consultant = { id: string; name: string; email?: string };
 type Project = { id: string; name: string; is_private?: boolean };
@@ -138,9 +142,13 @@ function MobileSchedule() {
       setLoading(true);
       const { data: { user } } = await supabase.auth.getUser();
       let r: Role = 'CONSULTOR';
+      let managerKey: string | null = null;
       if (user) {
-        const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
-        if (profile) r = profile.role as Role;
+        const { data: profile } = await supabase.from('profiles').select('role, manager_key').eq('id', user.id).single();
+        if (profile) {
+          r = profile.role as Role;
+          managerKey = profile.manager_key ?? null;
+        }
       }
 
       const { data: consData } = await supabase.from('profiles').select('id, full_name, email').order('full_name');
@@ -160,7 +168,7 @@ function MobileSchedule() {
       let allocQ = supabase.from('allocations').select('*');
       if (r === 'CONSULTOR' && user) allocQ = allocQ.eq('consultant_id', user.id);
       const { data: allocData } = await allocQ;
-      const allocs: Alloc[] = (allocData || []).map((a: any) => {
+      let allocs: Alloc[] = (allocData || []).map((a: any) => {
         const masked = r !== 'ADM' && !visible.has(a.project_id);
         return {
           id: a.id,
@@ -171,6 +179,10 @@ function MobileSchedule() {
           manager: masked ? null : a.manager,
         };
       });
+      // Escopo do GERENTE: só as agendas do manager vinculado a ele (privado já vem mascarado).
+      if (r === 'GERENTE' && managerKey) {
+        allocs = allocs.filter(a => normManager(a.manager) === normManager(managerKey));
+      }
       setAllocations(allocs);
       setLoading(false);
     })();
