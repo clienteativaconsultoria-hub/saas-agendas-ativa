@@ -220,7 +220,7 @@ export function Import() {
       </div>
 
       {/* Upload */}
-      <div className="bg-white p-6 rounded-xl border border-navy-100 shadow-sm">
+      <div className="card p-6">
         <label className={`flex flex-col items-center justify-center gap-3 border-2 border-dashed rounded-xl p-8 cursor-pointer transition-colors ${loadingData ? 'opacity-50 pointer-events-none' : 'border-navy-200 hover:border-primary-400 hover:bg-navy-50/50'}`}>
           <input
             type="file"
@@ -285,7 +285,7 @@ export function Import() {
             </div>
           )}
 
-          <div className="bg-white rounded-xl border border-navy-100 shadow-sm overflow-hidden">
+          <div className="card overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
                 <thead className="bg-navy-50 border-b border-navy-200">

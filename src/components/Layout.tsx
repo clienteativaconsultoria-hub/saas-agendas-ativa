@@ -77,11 +77,11 @@ export function Layout() {
   ];
 
   return (
-    <div className='flex h-screen bg-navy-50 overflow-hidden'>
+    <div className='flex h-screen bg-transparent overflow-hidden'>
       {/* Sidebar */}
-      <aside 
+      <aside
         className={clsx(
-          'bg-white border-r border-navy-100 flex flex-col transition-all duration-300 z-20 shadow-sm',
+          'bg-white/95 backdrop-blur-sm border-r border-navy-100 flex flex-col transition-all duration-300 z-20',
           collapsed ? 'w-20' : 'w-72'
         )}
       >
@@ -115,14 +115,14 @@ export function Layout() {
                key={item.to}
                to={item.to}
                className={({ isActive }) => clsx(
-                 'flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 group',
-                 isActive 
-                   ? 'bg-primary-50 text-primary-700 shadow-sm' 
+                 'relative flex items-center px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-200 group',
+                 isActive
+                   ? 'bg-gradient-to-r from-primary-50 to-primary-100/40 text-primary-700 ring-1 ring-primary-100 shadow-[var(--shadow-soft)] before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-5 before:w-1 before:rounded-full before:bg-primary-600'
                    : 'text-navy-600 hover:bg-navy-50 hover:text-navy-900'
                )}
              >
                <item.icon className={clsx(
-                 'w-5 h-5 transition-colors',
+                 'w-5 h-5 transition-transform',
                  collapsed ? 'mx-auto' : 'mr-3',
                  'group-hover:scale-110'
                )} />
@@ -167,7 +167,7 @@ export function Layout() {
       {/* Main Content */}
       <main className='flex-1 flex flex-col min-w-0'>
         {/* Header */}
-        <header className='h-16 bg-white border-b border-navy-100 flex items-center justify-between px-8 shadow-sm'>
+        <header className='h-16 bg-white/80 backdrop-blur-md border-b border-navy-100 flex items-center justify-between px-8'>
            <div className='flex items-center flex-1 max-w-xl'>
              <div className='relative w-full group'>
                <Search className='w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-navy-400 group-focus-within:text-primary-500 transition-colors' />
@@ -188,7 +188,7 @@ export function Layout() {
         </header>
 
         {/* Viewport */}
-        <div className='flex-1 overflow-auto bg-navy-50 custom-scrollbar'>
+        <div className='flex-1 overflow-auto bg-transparent custom-scrollbar'>
            <Outlet />
         </div>
       </main>

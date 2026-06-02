@@ -200,7 +200,7 @@ export function Dashboard() {
              <div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
           
           {/* Card 1: Agendas de Hoje */}
-          <div className='bg-white rounded-xl border border-navy-100 shadow-sm flex flex-col h-[400px]'>
+          <div className='card flex flex-col h-[400px]'>
              <div className='p-4 border-b border-navy-50 flex items-center justify-between'>
                 <h3 className='font-bold text-navy-900 flex items-center gap-2'>
                    <CalendarDays className='w-5 h-5 text-primary-600' />
@@ -246,7 +246,7 @@ export function Dashboard() {
           </div>
 
           {/* Card 2: Alertas e Prazos + Solicitações */}
-          <div className='bg-white rounded-xl border border-navy-100 shadow-sm flex flex-col h-[400px]'>
+          <div className='card flex flex-col h-[400px]'>
              <div className='p-4 border-b border-navy-50 flex items-center justify-between'>
                 <h3 className='font-bold text-navy-900 flex items-center gap-2'>
                    <AlertTriangle className='w-5 h-5 text-amber-600' />
@@ -324,7 +324,7 @@ export function Dashboard() {
           </div>
 
           {/* Card 3: Diários Pendentes */}
-          <div className='bg-white rounded-xl border border-navy-100 shadow-sm flex flex-col h-[400px]'>
+          <div className='card flex flex-col h-[400px]'>
              <div className='p-4 border-b border-navy-50 flex items-center justify-between'>
                 <h3 className='font-bold text-navy-900 flex items-center gap-2'>
                    <Clock className='w-5 h-5 text-purple-600' />
@@ -377,8 +377,8 @@ export function Dashboard() {
        {/* Quick Actions Grid (Collapsed) */}
        <div className='grid grid-cols-1 md:grid-cols-3 gap-6 opacity-80 hover:opacity-100 transition-opacity'>
           <NavLink to="/schedule" className='group'>
-            <div className='bg-white p-4 rounded-xl border border-navy-100 shadow-sm flex items-center gap-4 hover:shadow-md transition-all'>
-               <div className='w-10 h-10 bg-primary-50 rounded-lg flex items-center justify-center text-primary-600 group-hover:scale-110 transition-transform'>
+            <div className='card card-hover p-4 flex items-center gap-4'>
+               <div className='w-10 h-10 bg-primary-50 rounded-xl flex items-center justify-center text-primary-600 group-hover:scale-110 transition-transform'>
                   <CalendarDays className='w-5 h-5' />
                </div>
                <div>
@@ -389,8 +389,8 @@ export function Dashboard() {
           </NavLink>
 
           <NavLink to="/projects" className='group'>
-             <div className='bg-white p-4 rounded-xl border border-navy-100 shadow-sm flex items-center gap-4 hover:shadow-md transition-all'>
-               <div className='w-10 h-10 bg-primary-50 rounded-lg flex items-center justify-center text-primary-600 group-hover:scale-110 transition-transform'>
+             <div className='card card-hover p-4 flex items-center gap-4'>
+               <div className='w-10 h-10 bg-primary-50 rounded-xl flex items-center justify-center text-primary-600 group-hover:scale-110 transition-transform'>
                   <Building2 className='w-5 h-5' />
                </div>
                <div>
@@ -401,8 +401,8 @@ export function Dashboard() {
           </NavLink>
 
           <NavLink to="/consultants" className='group'>
-             <div className='bg-white p-4 rounded-xl border border-navy-100 shadow-sm flex items-center gap-4 hover:shadow-md transition-all'>
-               <div className='w-10 h-10 bg-primary-50 rounded-lg flex items-center justify-center text-primary-600 group-hover:scale-110 transition-transform'>
+             <div className='card card-hover p-4 flex items-center gap-4'>
+               <div className='w-10 h-10 bg-primary-50 rounded-xl flex items-center justify-center text-primary-600 group-hover:scale-110 transition-transform'>
                   <Users className='w-5 h-5' />
                </div>
                <div>

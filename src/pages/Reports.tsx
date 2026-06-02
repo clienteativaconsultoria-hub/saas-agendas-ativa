@@ -243,7 +243,7 @@ export function Reports() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white p-6 rounded-xl border border-navy-100 shadow-sm space-y-4">
+      <div className="card p-6 space-y-4">
         {/* Period presets */}
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-xs font-semibold text-navy-600 uppercase tracking-wider flex items-center gap-1.5 mr-1">
@@ -408,23 +408,23 @@ export function Reports() {
       {/* Stats Cards */}
       {hasSearched && logs.length > 0 && (
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-          <div className="bg-white rounded-xl border border-navy-100 p-4 shadow-sm text-center">
+          <div className="card p-4 text-center">
             <p className="text-2xl font-bold text-navy-900">{stats.total}</p>
             <p className="text-xs text-navy-500 mt-0.5">Total Registros</p>
           </div>
-          <div className="bg-white rounded-xl border border-navy-100 p-4 shadow-sm text-center">
+          <div className="card p-4 text-center">
             <p className="text-2xl font-bold text-emerald-600">{stats.completed}</p>
             <p className="text-xs text-navy-500 mt-0.5">Concluídos</p>
           </div>
-          <div className="bg-white rounded-xl border border-navy-100 p-4 shadow-sm text-center">
+          <div className="card p-4 text-center">
             <p className="text-2xl font-bold text-amber-600">{stats.pending}</p>
             <p className="text-xs text-navy-500 mt-0.5">Pendentes</p>
           </div>
-          <div className="bg-white rounded-xl border border-navy-100 p-4 shadow-sm text-center">
+          <div className="card p-4 text-center">
             <p className="text-2xl font-bold text-primary-600">{stats.uniqueConsultants}</p>
             <p className="text-xs text-navy-500 mt-0.5">Consultores</p>
           </div>
-          <div className="bg-white rounded-xl border border-navy-100 p-4 shadow-sm text-center">
+          <div className="card p-4 text-center">
             <p className="text-2xl font-bold text-purple-600">{stats.uniqueProjects}</p>
             <p className="text-xs text-navy-500 mt-0.5">Projetos</p>
           </div>
@@ -432,7 +432,7 @@ export function Reports() {
       )}
 
       {/* Results Table */}
-      <div className="bg-white rounded-xl border border-navy-100 shadow-sm overflow-hidden">
+      <div className="card overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center h-64 text-navy-500 animate-pulse">
             Carregando dados...

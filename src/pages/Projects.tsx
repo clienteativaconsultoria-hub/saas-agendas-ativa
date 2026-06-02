@@ -339,7 +339,7 @@ export function Projects() {
         </div>
         <button
           onClick={() => { setEditingId(null); setNewProject(emptyProjectForm); setShowModal(true); }}
-          className='flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium shadow-sm transition-colors'
+          className='flex items-center gap-2 btn-primary'
         >
           <Plus className='w-4 h-4' /> Novo Projeto
         </button>
@@ -353,7 +353,7 @@ export function Projects() {
           { label: 'Tipo MV', value: projects.filter(p => p.tipo === 'MV').length, icon: Briefcase, color: 'text-indigo-600', bg: 'bg-indigo-50' },
           { label: 'Clientes Únicos', value: new Set(projects.map(p => p.client).filter(c => c !== 'Não informado')).size, icon: Building2, color: 'text-navy-600', bg: 'bg-navy-50' },
         ].map((stat, idx) => (
-          <div key={idx} className='bg-white p-4 rounded-xl border border-navy-100 shadow-sm flex items-center justify-between'>
+          <div key={idx} className='card p-4 flex items-center justify-between'>
              <div>
                <p className='text-sm text-navy-500 font-medium'>{stat.label}</p>
                <p className='text-2xl font-bold text-navy-900 mt-1'>{stat.value}</p>
@@ -365,7 +365,7 @@ export function Projects() {
         ))}
       </div>
 
-      <div className='bg-white rounded-xl border border-navy-100 shadow-sm overflow-hidden'>
+      <div className='card overflow-hidden'>
         {/* Table Header / Toolbar */}
         <div className='p-4 border-b border-navy-100 flex flex-col sm:flex-row items-center justify-between gap-4'>
             <div className='flex flex-wrap items-center gap-2'>
@@ -516,7 +516,7 @@ export function Projects() {
        {/* Modal Novo Projeto */}
        {showModal && (
         <div className='absolute inset-0 z-50 flex items-center justify-center p-4 bg-navy-900/60 backdrop-blur-sm animate-in fade-in duration-200'>
-          <div className='bg-white rounded-xl shadow-2xl w-full max-w-lg p-6 animate-in zoom-in-95 duration-200 border border-navy-100'>
+          <div className='card shadow-2xl w-full max-w-lg p-6 animate-in zoom-in-95 duration-200 border border-navy-100'>
             <div className='flex justify-between items-center mb-6 border-b border-navy-50 pb-4'>
               <h3 className='text-xl font-bold text-navy-900'>{editingId ? 'Editar Projeto' : 'Novo Projeto'}</h3>
               <button onClick={handleCloseModal} className='p-1 text-navy-400 hover:bg-navy-50 rounded-lg'>
@@ -529,7 +529,7 @@ export function Projects() {
                   <label className='block text-sm font-medium text-navy-700 mb-1'>Nome do Projeto</label>
                   <input 
                     type='text' 
-                    className='w-full rounded-lg border-navy-300 shadow-sm focus:border-primary-500 text-sm p-2.5 border'
+                    className='input w-full'
                     value={newProject.name}
                     onChange={(e) => setNewProject({...newProject, name: e.target.value})}
                   />
@@ -550,7 +550,7 @@ export function Projects() {
                   </label>
                   <input 
                     type='text' 
-                    className='w-full rounded-lg border-navy-300 shadow-sm focus:border-primary-500 text-sm p-2.5 border'
+                    className='input w-full'
                     placeholder='Ex: UNIMED ARARAS, ESSELENSE, SC RIBEIRAO PRETO...'
                     value={newProject.client}
                     onChange={(e) => setNewProject({...newProject, client: e.target.value})}
@@ -563,7 +563,7 @@ export function Projects() {
                   <label className='block text-sm font-medium text-navy-700 mb-1'>Gerente</label>
                   <input
                     type='text'
-                    className='w-full rounded-lg border-navy-300 shadow-sm focus:border-primary-500 text-sm p-2.5 border'
+                    className='input w-full'
                     placeholder='Nome do gerente responsável'
                     value={newProject.manager}
                     onChange={(e) => setNewProject({...newProject, manager: e.target.value})}
@@ -573,7 +573,7 @@ export function Projects() {
                   <label className='block text-sm font-medium text-navy-700 mb-1'>Número da OS</label>
                   <input
                     type='text'
-                    className='w-full rounded-lg border-navy-300 shadow-sm focus:border-primary-500 text-sm p-2.5 border'
+                    className='input w-full'
                     placeholder='Ex: OS-12345'
                     value={newProject.os}
                     onChange={(e) => setNewProject({...newProject, os: e.target.value})}
@@ -584,7 +584,7 @@ export function Projects() {
                   <div>
                     <label className='block text-sm font-medium text-navy-700 mb-1'>Status</label>
                     <select
-                        className='w-full rounded-lg border-navy-300 shadow-sm focus:border-primary-500 text-sm p-2.5 border bg-white'
+                        className='input w-full bg-white'
                         value={newProject.status}
                         onChange={(e) => setNewProject({...newProject, status: e.target.value})}
                     >
@@ -598,7 +598,7 @@ export function Projects() {
                     <label className='block text-sm font-medium text-navy-700 mb-1'>Prazo</label>
                     <input 
                         type='date' 
-                        className='w-full rounded-lg border-navy-300 shadow-sm focus:border-primary-500 text-sm p-2.5 border'
+                        className='input w-full'
                         value={newProject.deadline}
                         onChange={(e) => setNewProject({...newProject, deadline: e.target.value})}
                     />
@@ -610,7 +610,7 @@ export function Projects() {
                     type='number' 
                     min="0"
                     max="100"
-                    className='w-full rounded-lg border-navy-300 shadow-sm focus:border-primary-500 text-sm p-2.5 border'
+                    className='input w-full'
                     value={newProject.progress}
                     onChange={(e) => setNewProject({...newProject, progress: parseInt(e.target.value)})}
                   />
@@ -634,13 +634,13 @@ export function Projects() {
             <div className='pt-6 mt-6 flex justify-end gap-3 border-t border-navy-50'>
               <button
                 onClick={handleCloseModal}
-                className='px-4 py-2.5 border border-navy-300 text-navy-700 font-medium rounded-lg hover:bg-navy-50 transition-colors'
+                className='btn-secondary'
               >
                 Cancelar
               </button>
               <button
                 onClick={handleSaveProject}
-                className='flex items-center gap-2 px-6 py-2.5 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors shadow-lg shadow-primary-900/20'
+                className='btn-primary px-6'
               >
                 <Save className='w-4 h-4' /> {editingId ? 'Salvar Alterações' : 'Salvar Projeto'}
               </button>

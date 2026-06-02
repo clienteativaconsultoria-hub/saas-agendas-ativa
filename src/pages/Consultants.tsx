@@ -360,7 +360,7 @@ export function Consultants() {
         </div>
         <button 
           onClick={openCreate}
-          className='flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium shadow-sm transition-colors'
+          className='flex items-center gap-2 btn-primary'
         >
           <Plus className='w-4 h-4' /> Novo Consultor
         </button>
@@ -368,7 +368,7 @@ export function Consultants() {
 
       {/* Stats Cards */}
       <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
-        <div className='bg-white rounded-xl border border-navy-100 p-4 shadow-sm'>
+        <div className='card p-4'>
           <div className='flex items-center gap-3'>
             <div className='w-10 h-10 rounded-lg bg-navy-100 flex items-center justify-center'>
               <Users className='w-5 h-5 text-navy-600' />
@@ -379,7 +379,7 @@ export function Consultants() {
             </div>
           </div>
         </div>
-        <div className='bg-white rounded-xl border border-navy-100 p-4 shadow-sm'>
+        <div className='card p-4'>
           <div className='flex items-center gap-3'>
             <div className='w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center'>
               <CheckCircle2 className='w-5 h-5 text-emerald-600' />
@@ -390,7 +390,7 @@ export function Consultants() {
             </div>
           </div>
         </div>
-        <div className='bg-white rounded-xl border border-navy-100 p-4 shadow-sm'>
+        <div className='card p-4'>
           <div className='flex items-center gap-3'>
             <div className='w-10 h-10 rounded-lg bg-primary-100 flex items-center justify-center'>
               <Shield className='w-5 h-5 text-primary-600' />
@@ -401,7 +401,7 @@ export function Consultants() {
             </div>
           </div>
         </div>
-        <div className='bg-white rounded-xl border border-navy-100 p-4 shadow-sm'>
+        <div className='card p-4'>
           <div className='flex items-center gap-3'>
             <div className='w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center'>
               <User className='w-5 h-5 text-amber-600' />
@@ -415,7 +415,7 @@ export function Consultants() {
       </div>
 
       {/* Search Bar */}
-      <div className='bg-white p-4 rounded-xl border border-navy-100 shadow-sm'>
+      <div className='card p-4'>
         <div className='relative max-w-md'>
           <Search className='w-5 h-5 absolute left-3 top-2.5 text-navy-400' />
           <input 
@@ -438,7 +438,7 @@ export function Consultants() {
       ) : (
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
           {filtered.map((consultant) => (
-            <div key={consultant.id} className='bg-white rounded-xl border border-navy-100 shadow-sm hover:shadow-md transition-shadow group'>
+            <div key={consultant.id} className='card hover:shadow-md transition-shadow group'>
               <div className='p-6'>
                 <div className='flex justify-between items-start mb-4'>
                   <div className='w-12 h-12 rounded-full bg-gradient-to-br from-navy-100 to-navy-200 flex items-center justify-center text-navy-700 font-bold text-lg border-2 border-white shadow-sm'>
@@ -531,7 +531,7 @@ export function Consultants() {
       {/* ────────── Modal Criar / Editar Consultor ────────── */}
       {showModal && (
         <div className='fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy-900/60 backdrop-blur-sm'>
-          <div className='bg-white rounded-xl shadow-2xl w-full max-w-lg p-6 border border-navy-100 max-h-[90vh] overflow-y-auto'>
+          <div className='card shadow-2xl w-full max-w-lg p-6 border border-navy-100 max-h-[90vh] overflow-y-auto'>
             <div className='flex justify-between items-center mb-6 border-b border-navy-50 pb-4'>
               <h3 className='text-xl font-bold text-navy-900'>
                 {editingId ? 'Editar Consultor' : 'Novo Consultor'}
@@ -643,7 +643,7 @@ export function Consultants() {
             <div className='pt-6 mt-6 flex justify-end gap-3 border-t border-navy-50'>
               <button 
                 onClick={closeModal}
-                className='px-4 py-2.5 border border-navy-300 text-navy-700 font-medium rounded-lg hover:bg-navy-50 transition-colors'
+                className='btn-secondary'
               >
                 Cancelar
               </button>
@@ -663,7 +663,7 @@ export function Consultants() {
       {/* ────────── Modal Confirmação de Exclusão ────────── */}
       {deleteId && (
         <div className='fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy-900/60 backdrop-blur-sm'>
-          <div className='bg-white rounded-xl shadow-2xl w-full max-w-sm p-6 border border-navy-100'>
+          <div className='card shadow-2xl w-full max-w-sm p-6 border border-navy-100'>
             <div className='flex flex-col items-center text-center'>
               <div className='w-12 h-12 rounded-full bg-red-100 flex items-center justify-center mb-4'>
                 <Trash2 className='w-6 h-6 text-red-600' />
@@ -678,7 +678,7 @@ export function Consultants() {
               <div className='flex gap-3 w-full'>
                 <button 
                   onClick={() => setDeleteId(null)}
-                  className='flex-1 px-4 py-2.5 border border-navy-300 text-navy-700 font-medium rounded-lg hover:bg-navy-50 transition-colors'
+                  className='flex-1 btn-secondary'
                 >
                   Cancelar
                 </button>

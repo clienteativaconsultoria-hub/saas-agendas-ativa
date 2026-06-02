@@ -101,7 +101,7 @@ export function Config() {
 
   return (
     <div className='max-w-2xl mx-auto p-6 md:p-8 animate-in fade-in duration-500'>
-       <div className='bg-white rounded-xl shadow-sm border border-navy-100 p-8'>
+       <div className='card p-8'>
          <div className='flex items-center justify-between mb-8'>
             <h3 className='text-xl font-bold text-navy-900'>Meu Perfil</h3>
             <span className='px-3 py-1 bg-primary-50 text-primary-700 text-xs font-semibold rounded-full'>

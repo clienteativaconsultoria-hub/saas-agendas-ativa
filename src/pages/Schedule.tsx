@@ -1155,7 +1155,7 @@ export function Schedule() {
       <div className='flex-1 flex flex-col h-full overflow-hidden p-6'>
           
         {/* Top Controls */}
-        <div className='bg-white rounded-xl shadow-sm border border-navy-100 p-4 shrink-0 mb-6'>
+        <div className='card p-4 shrink-0 mb-6'>
            <div className='flex flex-col xl:flex-row justify-between gap-4'>
               
               {/* Left: Resolution & Navigation */}
@@ -1616,7 +1616,7 @@ export function Schedule() {
 
         {/* Content Body */}
         {viewMode === 'overview' ? (
-            <div className='flex-1 bg-white rounded-xl shadow-sm border border-navy-100 overflow-y-auto p-6 custom-scrollbar'>
+            <div className='flex-1 card overflow-y-auto p-6 custom-scrollbar'>
                {(() => {
                   const mStart = startOfMonth(currentDate);
                   const mEnd = endOfMonth(currentDate);
@@ -1798,7 +1798,7 @@ export function Schedule() {
                })()}
             </div>
         ) : viewMode === 'grid' && timeView === 'month' ? (
-            <div className='flex-1 bg-white rounded-xl shadow-sm border border-navy-100 overflow-y-auto p-6 custom-scrollbar'>
+            <div className='flex-1 card overflow-y-auto p-6 custom-scrollbar'>
                {(() => {
                   const targetId = selectedConsultantId || (consultants.length > 0 ? consultants[0].id : '');
                   const targetConsultant = consultants.find(c => c.id === targetId);
@@ -1821,7 +1821,7 @@ export function Schedule() {
                   return (
                     <div className="max-w-5xl mx-auto space-y-8 animate-in fade-in duration-500">
                        {/* Controls & Stats */}
-                       <div className="bg-white p-6 rounded-2xl shadow-sm border border-navy-100 flex flex-col lg:flex-row items-center justify-between gap-6">
+                       <div className="card flex flex-col lg:flex-row items-center justify-between gap-6">
                           <div className="flex items-center gap-4 w-full lg:w-auto">
                               <div className="w-14 h-14 rounded-full bg-linear-to-br from-primary-50 to-primary-100 text-primary-700 flex items-center justify-center text-xl font-bold border border-primary-200 shadow-inner">
                                  {targetConsultant.name?.substring(0,2).toUpperCase()}
@@ -1863,7 +1863,7 @@ export function Schedule() {
                        </div>
 
                        {/* Calendar */}
-                       <div className="bg-white rounded-2xl shadow-sm border border-navy-200 overflow-hidden">
+                       <div className="card overflow-hidden">
                           <div className="grid grid-cols-7 border-b border-navy-200 bg-navy-50">
                              {['SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SAB', 'DOM'].map(day => (
                                 <div key={day} className="py-4 text-center text-xs font-bold text-navy-500 uppercase tracking-wider">
@@ -1938,7 +1938,7 @@ export function Schedule() {
                })()}
             </div>
         ) : viewMode === 'grid' ? (
-        <div className='flex-1 bg-white rounded-xl shadow-sm border border-navy-100 overflow-hidden flex flex-col'>
+        <div className='flex-1 card overflow-hidden flex flex-col'>
            
            {/* Table Header */}
            <div className='flex overflow-hidden border-b border-navy-200 bg-navy-50/90 z-20'>
@@ -2055,7 +2055,7 @@ export function Schedule() {
            </div>
         </div>
         ) : (
-          <div className='flex-1 bg-white rounded-xl shadow-sm border border-navy-100 overflow-y-auto p-8'>
+          <div className='flex-1 card overflow-y-auto p-8'>
              <div className='max-w-6xl mx-auto space-y-8'>
                 <div className='mb-6'>
                    <h2 className='text-xl font-bold text-navy-900'>Dashboard de Alocações</h2>
@@ -2070,7 +2070,7 @@ export function Schedule() {
                       { label: 'Consultores Alocados', value: new Set(allocations.map(a => a.consultantId)).size, icon: User, color: 'text-emerald-600', bg: 'bg-emerald-50' },
                       { label: 'Diários Preenchidos', value: logs.length, icon: FileText, color: 'text-purple-600', bg: 'bg-purple-50' },
                    ].map((stat, i) => (
-                      <div key={i} className='bg-white p-4 rounded-xl border border-navy-100 shadow-sm flex items-center justify-between'>
+                      <div key={i} className='card p-4 flex items-center justify-between'>
                          <div>
                             <p className='text-sm text-navy-500 font-medium'>{stat.label}</p>
                             <p className='text-2xl font-bold text-navy-900 mt-1'>{stat.value}</p>
@@ -2087,7 +2087,7 @@ export function Schedule() {
                    {/* Project Distribution Chart (ADM View) */}
                    {userRole === 'ADM' && (
                      <>
-                        <div className='bg-white p-6 rounded-xl border border-navy-100 shadow-sm min-w-0'>
+                        <div className='card p-6 min-w-0'>
                            <h3 className='text-lg font-bold text-navy-900 mb-4 flex items-center gap-2'>
                               <PieChart className='w-5 h-5 text-navy-500' />
                               Distribuição de Status de Projetos
@@ -2122,7 +2122,7 @@ export function Schedule() {
                            </div>
                         </div>
 
-                        <div className='bg-white p-6 rounded-xl border border-navy-100 shadow-sm min-w-0'>
+                        <div className='card p-6 min-w-0'>
                            <h3 className='text-lg font-bold text-navy-900 mb-4 flex items-center gap-2'>
                               <BarChart3 className='w-5 h-5 text-navy-500' />
                               Top 5 Consultores (Dias Alocados)
@@ -2154,7 +2154,7 @@ export function Schedule() {
 
                    {/* Consultant View (Self Stats) */}
                    {(userRole === 'CONSULTOR' || !userRole) && (
-                      <div className='bg-white p-6 rounded-xl border border-navy-100 shadow-sm col-span-1 lg:col-span-2 min-w-0'>
+                      <div className='card p-6 col-span-1 lg:col-span-2 min-w-0'>
                            <h3 className='text-lg font-bold text-navy-900 mb-4 flex items-center gap-2'>
                               <PieChart className='w-5 h-5 text-navy-500' />
                               Meus Projetos (Distribuição de Tempo)
@@ -2248,7 +2248,7 @@ export function Schedule() {
 
                  {/* Edit Form (ADM) */}
                  {userRole === 'ADM' ? (
-                    <div className='bg-white rounded-lg p-4 border border-navy-200 space-y-4 shadow-sm'>
+                    <div className='card p-4 space-y-4'>
                         <h3 className="text-sm font-bold text-navy-800 uppercase tracking-wide mb-2">Editar Agenda</h3>
                         <div className="grid grid-cols-2 gap-4">
                            <div className="col-span-2">
@@ -2383,7 +2383,7 @@ export function Schedule() {
                          Solicitar Mudança nesta Agenda
                        </button>
                      ) : (
-                       <div className='bg-white rounded-lg p-4 border border-navy-200 space-y-3 shadow-sm'>
+                       <div className='card p-4 space-y-3'>
                          <div>
                            <label className='text-xs font-semibold text-navy-600 block mb-1'>Tipo de Solicitação</label>
                            <select
@@ -2579,7 +2579,7 @@ export function Schedule() {
       {/* --- Modal Edição em Massa (ADM) --- */}
       {showBulkModal && userRole === 'ADM' && (
         <div className='absolute inset-0 z-50 flex items-center justify-center p-4 bg-navy-900/60 backdrop-blur-sm animate-in fade-in duration-200'>
-          <div className='bg-white rounded-xl shadow-2xl w-full max-w-2xl animate-in zoom-in-95 duration-200 border border-navy-100 max-h-[90vh] flex flex-col'>
+          <div className='card shadow-2xl w-full max-w-2xl animate-in zoom-in-95 duration-200 border border-navy-100 max-h-[90vh] flex flex-col'>
             <div className='flex justify-between items-center p-6 border-b border-navy-100'>
               <div className='flex items-center gap-3'>
                 <div className='p-2 bg-primary-50 rounded-lg text-primary-600'>
@@ -2769,7 +2769,7 @@ export function Schedule() {
       {/* --- Modal Solicitar Alteração / Nova Agenda (Consultant) --- */}
       {showSolicitacaoModal && (
         <div className='absolute inset-0 z-50 flex items-center justify-center p-4 bg-navy-900/60 backdrop-blur-sm animate-in fade-in duration-200'>
-          <div className='bg-white rounded-xl shadow-2xl w-full max-w-lg animate-in zoom-in-95 duration-200 border border-navy-100 max-h-[90vh] flex flex-col'>
+          <div className='card shadow-2xl w-full max-w-lg animate-in zoom-in-95 duration-200 border border-navy-100 max-h-[90vh] flex flex-col'>
             {/* Header */}
             <div className='flex justify-between items-center p-6 border-b border-navy-100'>
               <div className='flex items-center gap-3'>
@@ -3000,7 +3000,7 @@ export function Schedule() {
       {/* --- Modal Relatório --- */}
       {showReportModal && (
         <div className='absolute inset-0 z-50 flex items-center justify-center p-4 bg-navy-900/60 backdrop-blur-sm animate-in fade-in duration-200'>
-          <div className='bg-white rounded-xl shadow-2xl w-full max-w-3xl p-6 animate-in zoom-in-95 duration-200 border border-navy-100 max-h-[90vh] flex flex-col'>
+          <div className='card shadow-2xl w-full max-w-3xl p-6 animate-in zoom-in-95 duration-200 border border-navy-100 max-h-[90vh] flex flex-col'>
             <div className='flex justify-between items-center mb-6 border-b border-navy-50 pb-4 shrink-0'>
               <div className='flex items-center gap-3'>
                  <div className='p-2 bg-primary-50 rounded-lg text-primary-600'>
@@ -3041,7 +3041,7 @@ export function Schedule() {
               <button 
                 onClick={handleGenerateReport}
                 disabled={loadingReport}
-                className='px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium shadow-sm transition-colors flex items-center gap-2 disabled:opacity-50'
+                className='btn-primary flex items-center gap-2 disabled:opacity-50'
               >
                 {loadingReport ? <Clock className='w-4 h-4 animate-spin' /> : <Search className='w-4 h-4' />}
                 Gerar Relatório
@@ -3116,7 +3116,7 @@ export function Schedule() {
       {/* --- Modal Nova Agendamento --- */}
       {showModal && (
         <div className='absolute inset-0 z-50 flex items-center justify-center p-4 bg-navy-900/60 backdrop-blur-sm animate-in fade-in duration-200'>
-          <div className='bg-white rounded-xl shadow-2xl w-full max-w-2xl p-6 animate-in zoom-in-95 duration-200 border border-navy-100 max-h-[90vh] overflow-y-auto'>
+          <div className='card shadow-2xl w-full max-w-2xl p-6 animate-in zoom-in-95 duration-200 border border-navy-100 max-h-[90vh] overflow-y-auto'>
             <div className='flex justify-between items-center mb-6 border-b border-navy-50 pb-4'>
               <h3 className='text-xl font-bold text-navy-900'>Criar nova agenda de forma rápida</h3>
               <button onClick={() => setShowModal(false)} className='p-1 text-navy-400 hover:bg-navy-50 rounded-lg'>
@@ -3177,7 +3177,7 @@ export function Schedule() {
                           type='text'
                           autoFocus
                           placeholder='Digite o nome...'
-                          className='w-full rounded-lg border-navy-300 shadow-sm focus:border-primary-500 text-sm p-2.5 border'
+                          className='input w-full'
                           value={newAlloc.newConsultantName}
                           onChange={(e) => setNewAlloc({...newAlloc, newConsultantName: e.target.value})}
                         />
@@ -3189,7 +3189,7 @@ export function Schedule() {
                         <input
                           type='text'
                           placeholder='Digite o projeto...'
-                          className='w-full rounded-lg border-navy-300 shadow-sm focus:border-primary-500 text-sm p-2.5 border'
+                          className='input w-full'
                           value={newAlloc.newProjectName}
                           onChange={(e) => setNewAlloc({...newAlloc, newProjectName: e.target.value})}
                         />
@@ -3218,7 +3218,7 @@ export function Schedule() {
                     <input
                       type='text'
                       placeholder='Número da OS'
-                      className='w-full rounded-lg border-navy-300 shadow-sm focus:border-primary-500 text-sm p-2.5 border'
+                      className='input w-full'
                       value={newAlloc.os}
                       onChange={(e) => setNewAlloc({...newAlloc, os: e.target.value})}
                     />
@@ -3233,7 +3233,7 @@ export function Schedule() {
                     <input
                       type='text'
                       placeholder='Preenchido automaticamente pelo projeto...'
-                      className='w-full rounded-lg border-navy-300 shadow-sm focus:border-primary-500 text-sm p-2.5 border'
+                      className='input w-full'
                       value={newAlloc.manager}
                       onChange={(e) => setNewAlloc({...newAlloc, manager: e.target.value})}
                     />
@@ -3248,7 +3248,7 @@ export function Schedule() {
                 </label>
                 <input
                   type='date'
-                  className='w-full rounded-lg border-navy-300 shadow-sm focus:border-primary-500 text-sm p-2.5 border'
+                  className='input w-full'
                   value={newAlloc.startDate}
                   onChange={(e) => setNewAlloc({...newAlloc, startDate: e.target.value})}
                 />
@@ -3260,7 +3260,7 @@ export function Schedule() {
                 </label>
                 <input
                   type='date'
-                  className='w-full rounded-lg border-navy-300 shadow-sm focus:border-primary-500 text-sm p-2.5 border'
+                  className='input w-full'
                   value={newAlloc.endDate}
                   onChange={(e) => setNewAlloc({...newAlloc, endDate: e.target.value})}
                 />
@@ -3271,13 +3271,13 @@ export function Schedule() {
              <div className='pt-6 mt-6 flex justify-end gap-3 border-t border-navy-50'>
               <button 
                 onClick={() => setShowModal(false)}
-                className='px-4 py-2.5 border border-navy-300 text-navy-700 font-medium rounded-lg hover:bg-navy-50 transition-colors'
+                className='btn-secondary'
               >
                 Cancelar
               </button>
               <button 
                 onClick={handleAddAllocation}
-                className='flex items-center gap-2 px-6 py-2.5 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors shadow-lg shadow-primary-900/20'
+                className='btn-primary px-6'
               >
                 <Save className='w-4 h-4' /> Criar Agenda
               </button>

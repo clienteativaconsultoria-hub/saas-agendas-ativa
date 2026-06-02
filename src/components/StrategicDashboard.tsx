@@ -309,7 +309,7 @@ export function StrategicDashboard() {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white rounded-xl border border-navy-100 p-5 shadow-sm">
+        <div className="card p-5">
           <div className="flex items-center justify-between mb-3">
             <div className="p-2 rounded-lg bg-primary-50">
               <Users className="w-5 h-5 text-primary-600" />
@@ -320,7 +320,7 @@ export function StrategicDashboard() {
           <p className="text-xs text-navy-500 mt-1">Consultores ativos</p>
         </div>
 
-        <div className="bg-white rounded-xl border border-navy-100 p-5 shadow-sm">
+        <div className="card p-5">
           <div className="flex items-center justify-between mb-3">
             <div className="p-2 rounded-lg bg-amber-50">
               <Briefcase className="w-5 h-5 text-amber-600" />
@@ -331,7 +331,7 @@ export function StrategicDashboard() {
           <p className="text-xs text-navy-500 mt-1">Projetos com alocação</p>
         </div>
 
-        <div className="bg-white rounded-xl border border-navy-100 p-5 shadow-sm">
+        <div className="card p-5">
           <div className="flex items-center justify-between mb-3">
             <div className="p-2 rounded-lg bg-emerald-50">
               <CalendarCheck className="w-5 h-5 text-emerald-600" />
@@ -345,7 +345,7 @@ export function StrategicDashboard() {
           <p className="text-xs text-navy-500 mt-1">Taxa de ocupação</p>
         </div>
 
-        <div className="bg-white rounded-xl border border-navy-100 p-5 shadow-sm">
+        <div className="card p-5">
           <div className="flex items-center justify-between mb-3">
             <div className="p-2 rounded-lg bg-purple-50">
               <ClipboardCheck className="w-5 h-5 text-purple-600" />
@@ -361,7 +361,7 @@ export function StrategicDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
         {/* Chart 1: Occupation per Consultant */}
-        <div className="bg-white p-6 rounded-xl border border-navy-100 shadow-sm">
+        <div className="card p-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-base font-bold text-navy-800">Ocupação por Consultor</h3>
             <span className="text-xs text-navy-400">{kpis.totalAllocatedDays}/{kpis.totalCapacity} dias</span>
@@ -398,7 +398,7 @@ export function StrategicDashboard() {
         </div>
 
         {/* Chart 2: Project Distribution */}
-        <div className="bg-white p-6 rounded-xl border border-navy-100 shadow-sm">
+        <div className="card p-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-base font-bold text-navy-800">Distribuição por Projeto</h3>
             <span className="text-xs text-navy-400">Top {projectDistribution.length} projetos</span>
@@ -439,7 +439,7 @@ export function StrategicDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
         {/* Chart 3: Monthly Evolution */}
-        <div className="bg-white p-6 rounded-xl border border-navy-100 shadow-sm">
+        <div className="card p-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-base font-bold text-navy-800">Evolução Mensal</h3>
             <span className="text-xs text-navy-400">Últimos 5 meses</span>
@@ -470,7 +470,7 @@ export function StrategicDashboard() {
         </div>
 
         {/* Chart 4: Future Availability */}
-        <div className="bg-white p-6 rounded-xl border border-navy-100 shadow-sm">
+        <div className="card p-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-base font-bold text-navy-800">Previsão de Disponibilidade</h3>
             <span className="text-xs text-navy-400">Próximos 3 meses</span>

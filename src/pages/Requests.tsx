@@ -237,7 +237,7 @@ export function Requests() {
           { label: 'Aprovados', value: counts.approved,  icon: CheckCircle2, color: 'text-emerald-600', bg: 'bg-emerald-50' },
           { label: 'Recusados', value: counts.rejected,  icon: AlertCircle,  color: 'text-red-500',     bg: 'bg-red-50'     },
         ].map(s => (
-          <div key={s.label} className='bg-white p-4 rounded-xl border border-navy-100 shadow-sm flex items-center justify-between'>
+          <div key={s.label} className='card p-4 flex items-center justify-between'>
             <div>
               <p className='text-sm text-navy-500 font-medium'>{s.label}</p>
               <p className='text-2xl font-bold text-navy-900 mt-1'>{s.value}</p>
@@ -250,7 +250,7 @@ export function Requests() {
       </div>
 
       {/* ── Main card ── */}
-      <div className='bg-white rounded-xl border border-navy-100 shadow-sm overflow-hidden'>
+      <div className='card overflow-hidden'>
 
         {/* Toolbar */}
         <div className='p-4 border-b border-navy-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 flex-wrap'>

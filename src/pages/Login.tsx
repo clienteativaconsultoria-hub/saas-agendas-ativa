@@ -47,7 +47,7 @@ export function Login() {
   };
 
   return (
-    <div className='min-h-screen bg-navy-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8'>
+    <div className='min-h-screen bg-transparent flex flex-col justify-center py-12 sm:px-6 lg:px-8'>
       <div className='sm:mx-auto sm:w-full sm:max-w-md'>
         <div className='flex justify-center'>
           <div className='w-12 h-12 bg-gradient-to-br from-primary-600 to-primary-800 rounded-xl flex items-center justify-center text-white shadow-lg shadow-primary-500/30'>
@@ -63,7 +63,7 @@ export function Login() {
       </div>
 
       <div className='mt-8 sm:mx-auto sm:w-full sm:max-w-md'>
-        <div className='bg-white py-8 px-4 shadow-xl shadow-navy-100/50 sm:rounded-xl sm:px-10 border border-navy-100'>
+        <div className='bg-white py-8 px-6 sm:px-10 rounded-2xl border border-navy-100 shadow-[var(--shadow-lift)]'>
           <form className='space-y-6' onSubmit={handleLogin}>
             
             {error && (
@@ -89,7 +89,7 @@ export function Login() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className='block w-full pl-10 sm:text-sm border-navy-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 p-2.5 border outline-none'
+                  className='block w-full pl-10 sm:text-sm rounded-xl border border-navy-200 p-2.5 outline-none transition-all focus:border-primary-400 focus:ring-4 focus:ring-primary-100'
                   placeholder='nome@empresa.com'
                 />
               </div>
@@ -111,7 +111,7 @@ export function Login() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className='block w-full pl-10 sm:text-sm border-navy-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 p-2.5 border outline-none'
+                  className='block w-full pl-10 sm:text-sm rounded-xl border border-navy-200 p-2.5 outline-none transition-all focus:border-primary-400 focus:ring-4 focus:ring-primary-100'
                   placeholder='••••••••'
                 />
               </div>
@@ -141,7 +141,7 @@ export function Login() {
               <button
                 type='submit'
                 disabled={loading}
-                className='w-full flex justify-center items-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-navy-900 hover:bg-navy-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-navy-900 transition-all disabled:opacity-70 disabled:cursor-not-allowed'
+                className='btn-primary w-full py-3'
               >
                 {loading ? (
                    <>
