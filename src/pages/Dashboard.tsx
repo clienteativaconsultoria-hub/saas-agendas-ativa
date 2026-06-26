@@ -176,8 +176,8 @@ export function Dashboard() {
         </div>
       </div>
 
-      {/* ── Tab Switcher ── */}
-      {(userRole === 'ADM' || userRole === 'GERENTE') && (
+      {/* ── Tab Switcher (métricas estratégicas: somente ADM) ── */}
+      {userRole === 'ADM' && (
         <div className='flex items-center gap-1 p-1 bg-navy-100 rounded-xl w-fit'>
           {[
             { key: 'OPERATIONAL', icon: LayoutDashboard, label: 'Operacional' },
@@ -201,7 +201,7 @@ export function Dashboard() {
       )}
 
       {/* ── Content ── */}
-      {activeTab === 'STRATEGIC' ? (
+      {activeTab === 'STRATEGIC' && userRole === 'ADM' ? (
         <StrategicDashboard />
       ) : (
         <div className='space-y-6 animate-in fade-in duration-300'>
