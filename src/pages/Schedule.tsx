@@ -114,6 +114,22 @@ type UserRole = 'ADM' | 'CONSULTOR' | 'GERENTE' | null;
 // Projetos privados aparecem mascarados como "Particular" para GERENTE/CONSULTOR
 const MASKED_PROJECT_ID = 'private-masked';
 
+// Solicitações de "Nova Agenda" guardam os detalhes no campo reason como texto:
+//   "Projeto: X\nConsultor: Y\n<observações>"  (a linha Consultor é opcional —
+//   presente quando o solicitante é GERENTE pedindo agenda para outro consultor)
+function parseNovaAgendaReason(reason: string | null | undefined) {
+  const lines = (reason || '').split('\n');
+  let projeto = '';
+  let consultor = '';
+  const rest: string[] = [];
+  for (const line of lines) {
+    if (!projeto && line.startsWith('Projeto:')) projeto = line.replace('Projeto:', '').trim();
+    else if (!consultor && line.startsWith('Consultor:')) consultor = line.replace('Consultor:', '').trim();
+    else rest.push(line);
+  }
+  return { projeto, consultor, details: rest.join('\n').trim() };
+}
+
 // Normaliza nome de gerente p/ casar GERENTE logado ↔ campo manager das agendas
 // (sem acento, sem caixa, sem espaços nas pontas — mesma regra do banco).
 const normManager = (s?: string | null) =>
@@ -206,6 +222,7 @@ export function Schedule() {
   const [submittingSolicitacao, setSubmittingSolicitacao] = useState(false);
   // Nova agenda
   const [novaAgendaProject, setNovaAgendaProject] = useState('');
+  const [novaAgendaConsultantId, setNovaAgendaConsultantId] = useState('');
   const [novaAgendaStartDate, setNovaAgendaStartDate] = useState('');
   const [novaAgendaDays, setNovaAgendaDays] = useState<number | null>(null);
   const [novaAgendaObs, setNovaAgendaObs] = useState('');
@@ -379,13 +396,16 @@ export function Schedule() {
            loadedProjects.forEach(p => visibleProjectIds.add(p.id));
            visibleProjectIds.add('free');
 
-           // Para GERENTE, adiciona um projeto "Particular" mascarado para representar
-           // alocações em projetos privados sem expor o nome real.
+           // Para não-ADM, adiciona um projeto mascarado para representar alocações
+           // em projetos privados sem expor o nome real. O GERENTE não pode ver
+           // nenhum projeto Particular: para ele o bloco é apenas "Ocupado" (genérico);
+           // para o CONSULTOR (vendo a própria agenda) mantém-se "Particular".
+           const maskedName = role === 'GERENTE' ? 'Ocupado' : 'Particular';
            const projectsToSet = role === 'ADM'
              ? loadedProjects
              : [...loadedProjects, {
                  id: MASKED_PROJECT_ID,
-                 name: 'Particular',
+                 name: maskedName,
                  color: 'bg-navy-200 text-navy-700 border-navy-300',
                  is_private: true
                }];
@@ -861,13 +881,24 @@ export function Schedule() {
       alert('Preencha o projeto, a data de início e a descrição.');
       return;
     }
+    // GERENTE solicita agenda para um consultor específico — obrigatório escolher quem.
+    if (userRole === 'GERENTE' && !novaAgendaConsultantId) {
+      alert('Selecione o consultor para quem a agenda será solicitada.');
+      return;
+    }
     setSubmittingSolicitacao(true);
     try {
+      const consultorNome = consultants.find(c => c.id === novaAgendaConsultantId)?.name || '';
+      const reason = [
+        `Projeto: ${novaAgendaProject.trim()}`,
+        consultorNome ? `Consultor: ${consultorNome}` : null,
+        novaAgendaObs.trim()
+      ].filter(Boolean).join('\n');
       const { error } = await supabase.from('change_requests').insert({
         allocation_id: null,
         requester_id: currentUser.id,
         request_type: 'new_agenda',
-        reason: `Projeto: ${novaAgendaProject.trim()}\n${novaAgendaObs.trim()}`,
+        reason,
         suggested_start_date: novaAgendaStartDate,
         suggested_days: novaAgendaDays || null
       });
@@ -875,6 +906,7 @@ export function Schedule() {
       alert('Solicitação de nova agenda enviada! O administrador será notificado.');
       setShowSolicitacaoModal(false);
       setNovaAgendaProject('');
+      setNovaAgendaConsultantId('');
       setNovaAgendaStartDate('');
       setNovaAgendaDays(null);
       setNovaAgendaObs('');
@@ -1415,10 +1447,10 @@ export function Schedule() {
                   const allocation = allocations.find(a => a.id === req.allocation_id);
                   const project = allocation ? projects.find(p => p.id === allocation.projectId) : null;
                   const isNovaAgenda = req.request_type === 'new_agenda';
-                  const novaAgendaProject = isNovaAgenda && req.reason?.startsWith('Projeto:')
-                    ? req.reason.split('\n')[0].replace('Projeto:', '').trim() : '';
-                  const novaAgendaDetails = isNovaAgenda
-                    ? req.reason?.split('\n').slice(1).join('\n').trim() : req.reason;
+                  const novaAgendaParsed = parseNovaAgendaReason(req.reason);
+                  const novaAgendaProject = isNovaAgenda ? novaAgendaParsed.projeto : '';
+                  const novaAgendaConsultor = isNovaAgenda ? novaAgendaParsed.consultor : '';
+                  const novaAgendaDetails = isNovaAgenda ? novaAgendaParsed.details : req.reason;
                   return (
                     <div key={req.id} className={clsx(
                       'rounded-lg p-4 border transition-all',
@@ -1446,6 +1478,7 @@ export function Schedule() {
                           {isNovaAgenda ? (
                             <>
                               {novaAgendaProject && <p className='text-xs text-navy-500 mb-1'>Projeto solicitado: <span className='font-semibold'>{novaAgendaProject}</span></p>}
+                              {novaAgendaConsultor && <p className='text-xs text-navy-500 mb-1'>Consultor: <span className='font-semibold'>{novaAgendaConsultor}</span></p>}
                               {req.suggested_start_date && (
                                 <p className='text-xs text-navy-500 mb-1'>
                                   Data solicitada: {format(parseISO(req.suggested_start_date), 'dd/MM/yyyy')}
@@ -1537,13 +1570,11 @@ export function Schedule() {
                   const reqAlloc = (req as any).allocation;
                   const reqProject = reqAlloc?.project;
                   const isNovaAgenda = req.request_type === 'new_agenda';
-                  // For nova agenda, extract project name from reason prefix "Projeto: X\n..."
-                  const novaAgendaProjectName = isNovaAgenda
-                    ? (req.reason?.startsWith('Projeto:') ? req.reason.split('\n')[0].replace('Projeto:', '').trim() : '')
-                    : '';
-                  const novaAgendaDescription = isNovaAgenda
-                    ? req.reason?.split('\n').slice(1).join('\n').trim()
-                    : req.reason;
+                  // For nova agenda, detalhes vêm codificados no reason ("Projeto: X\nConsultor: Y\n...")
+                  const novaAgendaParsed = parseNovaAgendaReason(req.reason);
+                  const novaAgendaProjectName = isNovaAgenda ? novaAgendaParsed.projeto : '';
+                  const novaAgendaConsultorName = isNovaAgenda ? novaAgendaParsed.consultor : '';
+                  const novaAgendaDescription = isNovaAgenda ? novaAgendaParsed.details : req.reason;
                   return (
                     <div key={req.id} className={clsx(
                       'rounded-lg p-4 border',
@@ -1571,6 +1602,9 @@ export function Schedule() {
                             <div className='mb-1'>
                               {novaAgendaProjectName && (
                                 <p className='text-xs text-navy-500 mb-0.5'>Projeto: <span className='font-semibold'>{novaAgendaProjectName}</span></p>
+                              )}
+                              {novaAgendaConsultorName && (
+                                <p className='text-xs text-navy-500 mb-0.5'>Consultor: <span className='font-semibold'>{novaAgendaConsultorName}</span></p>
                               )}
                               {req.suggested_start_date && (
                                 <p className='text-xs text-navy-500 mb-0.5'>
@@ -2918,6 +2952,24 @@ export function Schedule() {
                     Solicite a criação de uma nova agenda. O administrador irá analisar e criar a alocação.
                   </div>
 
+                  {userRole === 'GERENTE' && (
+                    <div>
+                      <label className='block text-sm font-semibold text-navy-700 mb-1.5 flex items-center gap-2'>
+                        <User className='w-4 h-4' /> Consultor <span className='text-primary-500'>*</span>
+                      </label>
+                      <select
+                        value={novaAgendaConsultantId}
+                        onChange={e => setNovaAgendaConsultantId(e.target.value)}
+                        className='w-full rounded-lg border border-navy-200 bg-white text-sm p-2.5 focus:ring-2 focus:ring-primary-100 focus:border-primary-400'
+                      >
+                        <option value=''>Selecione o consultor...</option>
+                        {consultants.map(c => (
+                          <option key={c.id} value={c.id}>{c.name}</option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+
                   <div>
                     <label className='block text-sm font-semibold text-navy-700 mb-1.5 flex items-center gap-2'>
                       <Briefcase className='w-4 h-4' /> Projeto / Cliente <span className='text-primary-500'>*</span>
@@ -2978,7 +3030,7 @@ export function Schedule() {
                     </button>
                     <button
                       onClick={handleSubmitNovaAgenda}
-                      disabled={submittingSolicitacao || !novaAgendaProject.trim() || !novaAgendaStartDate || !novaAgendaObs.trim()}
+                      disabled={submittingSolicitacao || !novaAgendaProject.trim() || !novaAgendaStartDate || !novaAgendaObs.trim() || (userRole === 'GERENTE' && !novaAgendaConsultantId)}
                       className='flex items-center gap-2 px-6 py-2.5 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg transition-colors shadow-sm disabled:opacity-50'
                     >
                       <Send className='w-4 h-4' />

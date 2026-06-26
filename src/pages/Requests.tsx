@@ -12,6 +12,7 @@ import {
   AlertCircle,
   Briefcase,
   RefreshCw,
+  User,
 } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -85,9 +86,15 @@ function getInitials(name: string) {
 function parseNovaAgenda(r: RequestRow) {
   if (r.request_type !== 'new_agenda') return null;
   const lines = (r.reason || '').split('\n');
-  const projectLine = lines[0]?.startsWith('Projeto:') ? lines[0].replace('Projeto:', '').trim() : '';
-  const desc = lines.slice(1).join('\n').trim();
-  return { projectName: projectLine, description: desc };
+  let projectName = '';
+  let consultorName = '';
+  const rest: string[] = [];
+  for (const line of lines) {
+    if (!projectName && line.startsWith('Projeto:')) projectName = line.replace('Projeto:', '').trim();
+    else if (!consultorName && line.startsWith('Consultor:')) consultorName = line.replace('Consultor:', '').trim();
+    else rest.push(line);
+  }
+  return { projectName, consultorName, description: rest.join('\n').trim() };
 }
 
 export function Requests() {
@@ -405,6 +412,12 @@ export function Requests() {
                             <span className='flex items-center gap-1 text-xs text-navy-600'>
                               <Briefcase className='w-3.5 h-3.5 text-navy-400' />
                               <span className='font-medium'>{novaAgenda.projectName}</span>
+                            </span>
+                          )}
+                          {novaAgenda.consultorName && (
+                            <span className='flex items-center gap-1 text-xs text-navy-600'>
+                              <User className='w-3.5 h-3.5 text-navy-400' />
+                              <span className='font-medium'>{novaAgenda.consultorName}</span>
                             </span>
                           )}
                           {req.suggested_start_date && (
