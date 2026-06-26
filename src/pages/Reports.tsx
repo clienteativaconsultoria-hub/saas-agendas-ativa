@@ -47,7 +47,7 @@ export function Reports() {
 
   const fetchFilters = async () => {
     const [{ data: profileData }, { data: projectData }] = await Promise.all([
-      supabase.from('profiles').select('id, full_name, email').in('role', ['CONSULTOR', 'GERENTE']),
+      supabase.from('profiles').select('id, full_name, email').eq('role', 'CONSULTOR'),
       supabase.from('projects').select('id, name').order('name')
     ]);
     // Filter hidden emails

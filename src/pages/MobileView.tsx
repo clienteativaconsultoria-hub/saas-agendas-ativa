@@ -151,8 +151,9 @@ function MobileSchedule() {
         }
       }
 
-      const { data: consData } = await supabase.from('profiles').select('id, full_name, email').order('full_name');
+      const { data: consData } = await supabase.from('profiles').select('id, full_name, email, role').order('full_name');
       let cons = (consData || [])
+        .filter((c: any) => c.role === 'CONSULTOR')
         .map((c: any) => ({ id: c.id, name: c.full_name, email: c.email }))
         .filter(c => !HIDDEN_EMAILS.includes((c.email || '').toLowerCase()));
       if (r === 'CONSULTOR' && user) cons = cons.filter(c => c.id === user.id);
