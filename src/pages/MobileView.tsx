@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import {
   Calendar, Search, LogOut, Loader2, AlertCircle, Lock, Mail,
-  User, Briefcase, FileText, CalendarDays, ChevronRight, ArrowRight
+  User, Briefcase, FileText, CalendarDays, ChevronRight, ArrowRight, Wallet
 } from 'lucide-react';
 import {
   format, startOfWeek, endOfWeek, eachDayOfInterval, isSameDay
 } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 
 const MASKED_PROJECT_ID = 'private-masked';
 const HIDDEN_EMAILS = ['andreimagagna@gmail.com', 'andrei@futuree.org'];
+
+const brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
 
 // Normaliza nome de gerente p/ casar GERENTE logado ↔ campo manager das agendas.
 const normManager = (s?: string | null) =>
@@ -136,6 +139,8 @@ function MobileSchedule() {
   const [allocations, setAllocations] = useState<Alloc[]>([]);
   const [query, setQuery] = useState('');
   const [tab, setTab] = useState<'today' | 'week'>('today');
+  // null = tabela ainda não existe (migration não rodou) ou falhou: o atalho some e a tela segue.
+  const [expenses, setExpenses] = useState<{ count: number; total: number } | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -185,6 +190,19 @@ function MobileSchedule() {
         allocs = allocs.filter(a => normManager(a.manager) === normManager(managerKey));
       }
       setAllocations(allocs);
+
+      // Prestação de contas pendente (RLS já limita: consultor vê as dele, ADM vê todas).
+      const { data: expData, error: expError } = await supabase
+        .from('expense_reports')
+        .select('amount')
+        .eq('status', 'pending');
+      if (!expError && expData) {
+        setExpenses({
+          count: expData.length,
+          total: expData.reduce((acc: number, e: { amount: number }) => acc + Number(e.amount), 0),
+        });
+      }
+
       setLoading(false);
     })();
   }, []);
@@ -253,6 +271,32 @@ function MobileSchedule() {
             </button>
           ))}
         </div>
+
+        {/* Prestação de contas: atalho com o que está pendente */}
+        {expenses && (
+          <Link
+            to="/expenses"
+            className="flex items-center gap-3 bg-white rounded-xl border border-navy-100 p-3.5 shadow-sm active:bg-navy-50 transition-colors"
+          >
+            <div className="w-9 h-9 rounded-lg bg-primary-50 flex items-center justify-center shrink-0">
+              <Wallet className="w-4 h-4 text-primary-600" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="font-semibold text-navy-900 text-sm">Prestação de contas</p>
+              <p className="text-xs text-navy-500 mt-0.5 truncate">
+                {expenses.count > 0
+                  ? `${expenses.count} pendente${expenses.count === 1 ? '' : 's'} · ${brl.format(expenses.total)}`
+                  : 'Nada pendente. Toque para lançar.'}
+              </p>
+            </div>
+            {expenses.count > 0 && (
+              <span className="text-[11px] font-bold bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full shrink-0">
+                {expenses.count}
+              </span>
+            )}
+            <ChevronRight className="w-4 h-4 text-navy-300 shrink-0" />
+          </Link>
+        )}
       </div>
 
       {/* List */}

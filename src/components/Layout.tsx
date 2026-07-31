@@ -10,7 +10,8 @@ import {
   History,
   FileSpreadsheet,
   Bell,
-  Menu
+  Menu,
+  Wallet
 } from 'lucide-react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
@@ -60,6 +61,9 @@ export function Layout() {
     { to: '/projects',  icon: Briefcase,         label: 'Projetos' },
     ...(userProfile.role === 'ADM' || userProfile.role === 'GERENTE'
       ? [{ to: '/requests', icon: History, label: 'Solicitações' }]
+      : []),
+    ...(userProfile.role === 'ADM' || userProfile.role === 'CONSULTOR'
+      ? [{ to: '/expenses', icon: Wallet, label: 'Prestação de Contas' }]
       : []),
     ...(userProfile.role === 'ADM' ? [{ to: '/reports', icon: FileText, label: 'Relatórios' }] : []),
     ...(userProfile.role === 'ADM' ? [{ to: '/import',  icon: FileSpreadsheet, label: 'Conferência Excel' }] : []),

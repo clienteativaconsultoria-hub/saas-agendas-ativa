@@ -119,6 +119,47 @@ export type Database = {
           created_at?: string;
         };
       };
+      expense_reports: {
+        Row: {
+          id: string;
+          consultant_id: string;
+          project_id: string | null;
+          reference_date: string; // data da prestação de contas (coluna date)
+          amount: number;
+          kind: 'MV' | 'Particular';
+          notes: string | null;
+          status: 'pending' | 'paid';
+          paid_at: string | null;
+          paid_by: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          consultant_id: string;
+          project_id?: string | null;
+          reference_date: string;
+          amount: number;
+          kind?: 'MV' | 'Particular';
+          notes?: string | null;
+          status?: 'pending' | 'paid';
+          paid_at?: string | null;
+          paid_by?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          consultant_id?: string;
+          project_id?: string | null;
+          reference_date?: string;
+          amount?: number;
+          kind?: 'MV' | 'Particular';
+          notes?: string | null;
+          status?: 'pending' | 'paid';
+          paid_at?: string | null;
+          paid_by?: string | null;
+          created_at?: string;
+        };
+      };
     };
   };
 };
