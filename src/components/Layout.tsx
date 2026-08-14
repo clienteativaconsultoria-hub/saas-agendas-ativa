@@ -11,7 +11,8 @@ import {
   FileSpreadsheet,
   Bell,
   Menu,
-  Wallet
+  Wallet,
+  ClipboardCheck
 } from 'lucide-react';
 import { NavLink, Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
@@ -72,6 +73,9 @@ export function Layout() {
       : []),
     ...(userProfile.role === 'ADM' || userProfile.role === 'CONSULTOR'
       ? [{ to: '/expenses', icon: Wallet, label: 'Prestação de Contas' }]
+      : []),
+    ...(userProfile.role === 'ADM' || userProfile.role === 'CONSULTOR'
+      ? [{ to: '/rta', icon: ClipboardCheck, label: 'RTA' }]
       : []),
     ...(userProfile.role === 'ADM' ? [{ to: '/reports', icon: FileText, label: 'Relatórios' }] : []),
     ...(userProfile.role === 'ADM' ? [{ to: '/import',  icon: FileSpreadsheet, label: 'Conferência Excel' }] : []),

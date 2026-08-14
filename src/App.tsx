@@ -9,6 +9,7 @@ import { Projects } from './pages/Projects';
 import { Reports } from './pages/Reports';
 import { Requests } from './pages/Requests';
 import { ExpenseReports } from './pages/ExpenseReports';
+import { RtaReports } from './pages/RtaReports';
 import { Import } from './pages/Import';
 import { MobileView } from './pages/MobileView';
 import { Layout } from './components/Layout';
@@ -28,6 +29,7 @@ function App() {
           <Route path='/reports' element={<Reports />} />
           <Route path='/requests' element={<Requests />} />
           <Route path='/expenses' element={<ExpenseReports />} />
+          <Route path='/rta' element={<RtaReports />} />
           <Route path='/import' element={<Import />} />
           <Route path='/config' element={<Config />} />
         </Route>
