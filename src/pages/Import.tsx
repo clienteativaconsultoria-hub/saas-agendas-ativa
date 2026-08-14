@@ -68,7 +68,7 @@ export function Import() {
     (async () => {
       setLoadingData(true);
       const [{ data: cons }, { data: projs }, { data: allocs }] = await Promise.all([
-        supabase.from('profiles').select('id, full_name, role').eq('role', 'CONSULTOR'),
+        supabase.from('profiles').select('id, full_name, role').neq('role', 'GERENTE'),
         supabase.from('projects').select('id, name'),
         supabase.from('allocations').select('consultant_id, project_id, date, os'),
       ]);

@@ -360,8 +360,10 @@ export function Schedule() {
            loadedConsultants = loadedConsultants.filter(c => c.id === user.id);
         }
 
-        // GERENTE/ADM nunca entram na lista de consultores (alocação, dropdown, grade)
-        loadedConsultants = loadedConsultants.filter(c => c.role === 'CONSULTOR');
+        // GERENTE nunca entra na lista de consultores (alocação, dropdown, grade).
+        // ADM entra: o Lucas é ADM e tem agenda própria; as contas Andrei saem
+        // logo abaixo, por e-mail.
+        loadedConsultants = loadedConsultants.filter(c => c.role !== 'GERENTE');
 
         // Ocultar contas Andrei de todas as views (overview, dropdown, grade)
         const HIDDEN_EMAILS_LOAD = ['andreimagagna@gmail.com', 'andrei@futuree.org'];

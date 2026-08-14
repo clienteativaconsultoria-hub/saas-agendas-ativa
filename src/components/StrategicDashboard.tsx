@@ -110,7 +110,7 @@ export function StrategicDashboard() {
   // --- Computed data ---
   const projectMap = useMemo(() => new Map(projects.map(p => [p.id, p])), [projects]);
   const activeConsultants = useMemo(() => consultants.filter(c =>
-    c.role === 'CONSULTOR' && c.status === 'Ativo' && !HIDDEN_EMAILS.includes(c.email?.toLowerCase() || '')
+    c.role !== 'GERENTE' && c.status === 'Ativo' && !HIDDEN_EMAILS.includes(c.email?.toLowerCase() || '')
   ), [consultants]);
 
   // Current month allocations (expanded to dates)
