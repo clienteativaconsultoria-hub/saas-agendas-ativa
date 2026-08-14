@@ -13,13 +13,14 @@ import {
   Menu,
   Wallet
 } from 'lucide-react';
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { NavLink, Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 
 export function Layout() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userProfile, setUserProfile] = useState({ name: '', role: '' });
@@ -54,12 +55,19 @@ export function Layout() {
     navigate('/login');
   };
 
-  const navItems = [
+  // GERENTE vê só Agendas & Alocação: nada de métricas, consultores,
+  // projetos, solicitações ou configurações. Ele continua pedindo agenda
+  // pela aba "Nova Agenda" dentro da própria tela de Agendas.
+  const isGerente = userProfile.role === 'GERENTE';
+
+  const navItems = isGerente ? [
+    { to: '/schedule', icon: Calendar, label: 'Agendas & Alocação' },
+  ] : [
     { to: '/dashboard', icon: LayoutDashboard, label: 'Visão Geral' },
     { to: '/schedule',  icon: Calendar,         label: 'Agendas & Alocação' },
     { to: '/consultants', icon: Users,           label: 'Consultores' },
     { to: '/projects',  icon: Briefcase,         label: 'Projetos' },
-    ...(userProfile.role === 'ADM' || userProfile.role === 'GERENTE'
+    ...(userProfile.role === 'ADM'
       ? [{ to: '/requests', icon: History, label: 'Solicitações' }]
       : []),
     ...(userProfile.role === 'ADM' || userProfile.role === 'CONSULTOR'
@@ -69,6 +77,11 @@ export function Layout() {
     ...(userProfile.role === 'ADM' ? [{ to: '/import',  icon: FileSpreadsheet, label: 'Conferência Excel' }] : []),
     { to: '/config', icon: Settings, label: 'Configurações' },
   ];
+
+  // Rota digitada na mão também não passa: GERENTE sempre volta pra agenda.
+  if (isGerente && location.pathname !== '/schedule') {
+    return <Navigate to='/schedule' replace />;
+  }
 
   const initials = userProfile.name
     ? userProfile.name.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase()
