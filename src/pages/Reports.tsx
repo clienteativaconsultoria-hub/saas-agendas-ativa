@@ -19,6 +19,8 @@ const HIDDEN_EMAILS = ['andreimagagna@gmail.com', 'andrei@futuree.org'];
 const CHART_COLORS = ['#3b82f6', '#60a5fa', '#93c5fd', '#bfdbfe', '#1e40af', '#2563eb', '#1d4ed8', '#1e3a8a'];
 
 type PeriodPreset = 'month' | 'week' | 'quarter' | 'custom';
+// Como a lista de agendas sai na exportação: uma linha por dia ou uma por semana.
+type Grouping = 'dia' | 'semana';
 // O que o relatório traz: dias com agenda, dias livres, ou os dois.
 type AgendaKind = 'ocupadas' | 'disponiveis' | 'todas';
 
@@ -80,6 +82,7 @@ export function Reports() {
   const [selectedProject, setSelectedProject] = useState('all');
   const [kind, setKind] = useState<AgendaKind>('todas');
   const [businessOnly, setBusinessOnly] = useState(true);
+  const [grouping, setGrouping] = useState<Grouping>('dia');
 
   const [result, setResult] = useState<Result | null>(null);
   const [showExportMenu, setShowExportMenu] = useState(false);
@@ -369,14 +372,47 @@ export function Reports() {
   }, [result]);
 
   // --- Exportação ---
-  const agendaExportRows = () => (result?.rows || []).map(r => ({
-    'Data': br(r.date),
-    'Consultor': r.consultantName,
-    'Projeto': r.projectName,
-    'Cliente': r.projectClient || '',
-    'OS': r.os || '',
-    'Gerente': r.manager || ''
-  }));
+  // Por semana: junta os dias do mesmo consultor, projeto, OS e gerente dentro da
+  // mesma semana (segunda a domingo) numa linha só, com o primeiro e o último dia.
+  const weeklyRows = () => {
+    const map = new Map<string, { start: string; end: string; dias: number; r: AgendaRow }>();
+    (result?.rows || []).forEach(r => {
+      const week = format(startOfWeek(parseISO(r.date), { weekStartsOn: 1 }), 'yyyy-MM-dd');
+      const key = [week, r.consultantId, r.projectName, r.projectClient || '', r.os || '', normManager(r.manager)].join('|');
+      const cur = map.get(key);
+      if (!cur) map.set(key, { start: r.date, end: r.date, dias: 1, r });
+      else {
+        if (r.date < cur.start) cur.start = r.date;
+        if (r.date > cur.end) cur.end = r.date;
+        cur.dias++;
+      }
+    });
+    return [...map.values()].sort((a, b) =>
+      a.start.localeCompare(b.start) || a.r.consultantName.localeCompare(b.r.consultantName));
+  };
+
+  const agendaExportRows = (): Record<string, string | number>[] => {
+    if (grouping === 'semana') {
+      return weeklyRows().map(w => ({
+        'De': br(w.start),
+        'Até': br(w.end),
+        'Dias': w.dias,
+        'Consultor': w.r.consultantName,
+        'Projeto': w.r.projectName,
+        'Cliente': w.r.projectClient || '',
+        'OS': w.r.os || '',
+        'Gerente': w.r.manager || ''
+      }));
+    }
+    return (result?.rows || []).map(r => ({
+      'Data': br(r.date),
+      'Consultor': r.consultantName,
+      'Projeto': r.projectName,
+      'Cliente': r.projectClient || '',
+      'OS': r.os || '',
+      'Gerente': r.manager || ''
+    }));
+  };
 
   const freeExportRows = () => (result?.free || []).map(b => ({
     'Consultor': b.consultantName,
@@ -388,6 +424,7 @@ export function Reports() {
   const resumoRows = () => [
     { 'Indicador': 'Período', 'Valor': periodLabel() },
     { 'Indicador': 'Dias considerados', 'Valor': result?.businessOnly ? 'Somente dias úteis' : 'Todos os dias' },
+    { 'Indicador': 'Agendas listadas', 'Valor': grouping === 'semana' ? 'Por semana' : 'Por dia' },
     { 'Indicador': 'Agendas no período', 'Valor': stats?.agendas ?? 0 },
     { 'Indicador': 'Dias ocupados', 'Valor': stats?.ocupados ?? 0 },
     { 'Indicador': 'Dias disponíveis', 'Valor': stats?.livres ?? 0 },
@@ -458,12 +495,21 @@ export function Reports() {
     lines.push('');
 
     if (result.kind !== 'disponiveis') {
-      lines.push('== AGENDAS ==');
-      lines.push(`${pad('DATA', 12)}${pad('CONSULTOR', 32)}${pad('PROJETO', 34)}${pad('OS', 12)}GERENTE`);
-      lines.push('-'.repeat(110));
-      result.rows.forEach(r => {
-        lines.push(`${pad(br(r.date), 12)}${pad(r.consultantName, 32)}${pad(r.projectName, 34)}${pad(r.os || '', 12)}${r.manager || ''}`);
-      });
+      if (grouping === 'semana') {
+        lines.push('== AGENDAS (POR SEMANA) ==');
+        lines.push(`${pad('DE', 12)}${pad('ATE', 12)}${pad('DIAS', 6)}${pad('CONSULTOR', 32)}${pad('PROJETO', 34)}${pad('OS', 12)}GERENTE`);
+        lines.push('-'.repeat(128));
+        weeklyRows().forEach(w => {
+          lines.push(`${pad(br(w.start), 12)}${pad(br(w.end), 12)}${pad(String(w.dias), 6)}${pad(w.r.consultantName, 32)}${pad(w.r.projectName, 34)}${pad(w.r.os || '', 12)}${w.r.manager || ''}`);
+        });
+      } else {
+        lines.push('== AGENDAS ==');
+        lines.push(`${pad('DATA', 12)}${pad('CONSULTOR', 32)}${pad('PROJETO', 34)}${pad('OS', 12)}GERENTE`);
+        lines.push('-'.repeat(110));
+        result.rows.forEach(r => {
+          lines.push(`${pad(br(r.date), 12)}${pad(r.consultantName, 32)}${pad(r.projectName, 34)}${pad(r.os || '', 12)}${r.manager || ''}`);
+        });
+      }
       if (result.rows.length === 0) lines.push('(nenhuma agenda no periodo)');
       lines.push('');
     }
@@ -634,6 +680,14 @@ export function Reports() {
               className="rounded border-navy-300"
             />
             Considerar apenas dias úteis (seg–sex)
+          </label>
+
+          <label className="flex items-center gap-2 text-sm text-navy-600">
+            Exportar agendas
+            <select value={grouping} onChange={e => setGrouping(e.target.value as Grouping)} className="input py-1.5 w-auto">
+              <option value="dia">por dia</option>
+              <option value="semana">por semana</option>
+            </select>
           </label>
 
           <button onClick={handleGenerate} disabled={loading} className="btn-primary flex items-center gap-2">

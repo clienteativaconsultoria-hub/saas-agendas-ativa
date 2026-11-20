@@ -709,7 +709,7 @@ export function Schedule() {
          return;
        }
 
-       const insertRows = Array.from({ length: totalDays }, (_, i) => ({
+       let insertRows = Array.from({ length: totalDays }, (_, i) => ({
            consultant_id: finalConsultantId,
            project_id: finalProjectId,
            date: format(addDays(start, i), 'yyyy-MM-dd'),
@@ -717,12 +717,58 @@ export function Schedule() {
            manager: newAlloc.manager || null,
        }));
 
-       const { data: insertedAllocs, error: allocError } = await supabase
+       // O banco aceita só 1 agenda por consultor por dia. Antes de gravar,
+       // olha o que já existe no intervalo para não estourar o erro técnico.
+       const { data: existing, error: existingError } = await supabase
            .from('allocations')
-           .insert(insertRows)
-           .select();
+           .select('id, date, project_id')
+           .eq('consultant_id', finalConsultantId)
+           .gte('date', insertRows[0].date)
+           .lte('date', insertRows[insertRows.length - 1].date);
+       if (existingError) throw existingError;
+
+       const br = (d: string) => format(parseISO(d), 'dd/MM');
+       const sameProject = (existing || []).filter(e => e.project_id === finalProjectId);
+       const otherProject = (existing || []).filter(e => e.project_id !== finalProjectId);
+       const replacedIds: string[] = [];
+
+       if (otherProject.length > 0) {
+           const names = otherProject.map(e => `${br(e.date)} (${projects.find(p => p.id === e.project_id)?.name || 'outro projeto'})`).join(', ');
+           const replace = confirm(
+             `Estes dias já têm agenda de outro projeto: ${names}.\n\n` +
+             'OK = substituir por este projeto\nCancelar = manter como está e criar só nos dias livres'
+           );
+           if (replace) {
+             const ids = otherProject.map(e => e.id);
+             const { error: delError } = await supabase.from('allocations').delete().in('id', ids);
+             if (delError) throw delError;
+             replacedIds.push(...ids);
+           }
+       }
+
+       const taken = new Set([
+         ...sameProject.map(e => e.date),
+         ...otherProject.filter(e => !replacedIds.includes(e.id)).map(e => e.date),
+       ]);
+       insertRows = insertRows.filter(r => !taken.has(r.date));
+
+       if (insertRows.length === 0) {
+           alert('Esse consultor já tem agenda em todos esses dias. Nada novo para criar.');
+           if (replacedIds.length === 0) return;
+       }
+
+       const { data: insertedAllocs, error: allocError } = insertRows.length
+           ? await supabase.from('allocations').insert(insertRows).select()
+           : { data: [], error: null };
        
        if (allocError) throw allocError;
+
+       if (replacedIds.length) {
+           setAllocations(prev => prev.filter(a => !replacedIds.includes(a.id)));
+       }
+       if (sameProject.length > 0 && insertRows.length > 0) {
+           alert(`Agenda criada. ${sameProject.length} dia(s) já estavam com esse projeto e foram mantidos.`);
+       }
        
        if (insertedAllocs) {
            setAllocations(prev => [...prev, ...insertedAllocs.map(a => ({
