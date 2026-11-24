@@ -4,6 +4,7 @@ import {
   PieChart, Pie, Cell, AreaChart, Area, ComposedChart
 } from 'recharts';
 import { supabase } from '../lib/supabase';
+import { fetchAll } from '../lib/fetchAll';
 import {
   startOfMonth, endOfMonth, addMonths, format, subMonths,
   eachMonthOfInterval, isWeekend, eachDayOfInterval, parseISO
@@ -70,13 +71,13 @@ export function StrategicDashboard() {
       const [
         { data: profilesData },
         { data: projectsData },
-        { data: allocsData },
-        { data: logsData }
+        allocsData,
+        logsData
       ] = await Promise.all([
         supabase.from('profiles').select('id, full_name, email, role, status'),
         supabase.from('projects').select('id, name, status, deadline'),
-        supabase.from('allocations').select('*'),
-        supabase.from('project_daily_logs').select('*')
+        fetchAll<any>(() => supabase.from('allocations').select('*')),
+        fetchAll<any>(() => supabase.from('project_daily_logs').select('*'))
       ]);
 
       setConsultants(profilesData || []);

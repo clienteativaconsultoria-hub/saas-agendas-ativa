@@ -6,6 +6,7 @@ import {
 import * as XLSX from 'xlsx';
 import { format, parseISO } from 'date-fns';
 import { supabase } from '../lib/supabase';
+import { fetchAll } from '../lib/fetchAll';
 
 // Conferência de planilha Excel x sistema (somente leitura — não grava nada)
 
@@ -67,16 +68,21 @@ export function Import() {
   useEffect(() => {
     (async () => {
       setLoadingData(true);
-      const [{ data: cons }, { data: projs }, { data: allocs }] = await Promise.all([
+      try {
+      const [{ data: cons }, { data: projs }, allocs] = await Promise.all([
         supabase.from('profiles').select('id, full_name, role').neq('role', 'GERENTE'),
         supabase.from('projects').select('id, name'),
-        supabase.from('allocations').select('consultant_id, project_id, date, os'),
+        fetchAll<any>(() => supabase.from('allocations').select('consultant_id, project_id, date, os')),
       ]);
       setConsultants((cons || []).map((c: any) => ({ id: c.id, name: c.full_name })));
       setProjects((projs || []).map((p: any) => ({ id: p.id, name: p.name })));
-      setAllocations((allocs || []).map((a: any) => ({
+      setAllocations(allocs.map((a: any) => ({
         consultantId: a.consultant_id, projectId: a.project_id, date: a.date, os: a.os
       })));
+      } catch (err) {
+        console.error('Erro ao carregar dados:', err);
+        setError('Não foi possível carregar os dados. Recarregue a página.');
+      }
       setLoadingData(false);
     })();
   }, []);
