@@ -9,6 +9,7 @@ import {
 import { ptBR } from 'date-fns/locale';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
+import { fetchAll } from '../lib/fetchAll';
 
 const MASKED_PROJECT_ID = 'private-masked';
 const HIDDEN_EMAILS = ['andreimagagna@gmail.com', 'andrei@futuree.org'];
@@ -171,10 +172,17 @@ function MobileSchedule() {
         { id: MASKED_PROJECT_ID, name: 'Particular', is_private: true }
       ]);
 
-      let allocQ = supabase.from('allocations').select('*');
-      if (r === 'CONSULTOR' && user) allocQ = allocQ.eq('consultant_id', user.id);
-      const { data: allocData } = await allocQ;
-      let allocs: Alloc[] = (allocData || []).map((a: any) => {
+      let allocData: any[] = [];
+      try {
+        allocData = await fetchAll<any>(() => {
+          const q = supabase.from('allocations').select('*');
+          return r === 'CONSULTOR' && user ? q.eq('consultant_id', user.id) : q;
+        });
+      } catch (err) {
+        console.error('Erro ao carregar agendas:', err);
+        alert('Não foi possível carregar as agendas. Recarregue a página.');
+      }
+      let allocs: Alloc[] = allocData.map((a: any) => {
         const masked = r !== 'ADM' && !visible.has(a.project_id);
         return {
           id: a.id,

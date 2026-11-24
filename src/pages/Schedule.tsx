@@ -58,6 +58,7 @@ import {
 import { ptBR } from 'date-fns/locale';
 import clsx from 'clsx';
 import { supabase } from '../lib/supabase';
+import { fetchAll } from '../lib/fetchAll';
 
 // --- Types ---
 type Consultant = { id: string; name: string; role: string; email?: string; };
@@ -416,14 +417,17 @@ export function Schedule() {
         }
 
         // 4. Fetch Allocations
-        let allocQuery = supabase.from('allocations').select('*');
-
-        if (role === 'CONSULTOR' && user) {
-           allocQuery = allocQuery.eq('consultant_id', user.id);
+        let allocData: any[] = [];
+        try {
+           allocData = await fetchAll<any>(() => {
+              const q = supabase.from('allocations').select('*');
+              return role === 'CONSULTOR' && user ? q.eq('consultant_id', user.id) : q;
+           });
+        } catch (err) {
+           console.error('Erro ao carregar agendas:', err);
+           alert('Não foi possível carregar as agendas. Recarregue a página.');
         }
-
-        const { data: allocData } = await allocQuery;
-        const loadedAllocations = (allocData || [])
+        const loadedAllocations = allocData
             .map(a => {
                // Projeto não visível (privado) → mascara como "Particular" para não-ADM
                const masked = role !== 'ADM' && !visibleProjectIds.has(a.project_id);
@@ -1076,10 +1080,11 @@ export function Schedule() {
 
   // Recarrega as alocações do banco respeitando o papel atual
   const reloadAllocations = async () => {
-    let q = supabase.from('allocations').select('*');
-    if (userRole === 'CONSULTOR' && currentUser) q = q.eq('consultant_id', currentUser.id);
-    const { data } = await q;
-    setAllocations((data || []).map((a: any) => ({
+    const data = await fetchAll<any>(() => {
+      const q = supabase.from('allocations').select('*');
+      return userRole === 'CONSULTOR' && currentUser ? q.eq('consultant_id', currentUser.id) : q;
+    });
+    setAllocations(data.map((a: any) => ({
       id: a.id,
       consultantId: a.consultant_id,
       projectId: a.project_id,

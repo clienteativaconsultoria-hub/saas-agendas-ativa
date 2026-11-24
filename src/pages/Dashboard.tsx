@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
+import { fetchAll } from '../lib/fetchAll';
 import { format, subDays, parseISO, differenceInDays } from 'date-fns';
 import { StrategicDashboard } from '../components/StrategicDashboard';
 
@@ -50,13 +51,14 @@ export function Dashboard() {
         const todayStr = format(new Date(), 'yyyy-MM-dd');
         const yesterdayStr = format(subDays(new Date(), 1), 'yyyy-MM-dd');
 
-        let allocQuery = supabase.from('allocations').select(`
-          *,
-          consultant:profiles!consultant_id(full_name),
-          project:projects!project_id(name, color)
-        `);
-        if (role === 'CONSULTOR' && userId) allocQuery = allocQuery.eq('consultant_id', userId);
-        const { data: allAllocations } = await allocQuery;
+        const allAllocations = await fetchAll<any>(() => {
+          const q = supabase.from('allocations').select(`
+            *,
+            consultant:profiles!consultant_id(full_name),
+            project:projects!project_id(name, color)
+          `);
+          return role === 'CONSULTOR' && userId ? q.eq('consultant_id', userId) : q;
+        });
 
         const todayAllocs = (allAllocations || []).filter(a => a.date === todayStr);
         setTodayAllocations(todayAllocs);
